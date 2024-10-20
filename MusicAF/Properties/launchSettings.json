@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "MusicAF (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "MusicAF (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
