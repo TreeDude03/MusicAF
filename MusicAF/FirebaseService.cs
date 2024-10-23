@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+/*using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FirebaseAdmin;
@@ -33,4 +33,4 @@ public class FirebaseService
         CollectionReference collection = _firestoreDb.Collection(collectionName);
         await collection.AddAsync(data);
     }
-}
+}*/
