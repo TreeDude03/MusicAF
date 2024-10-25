@@ -26,7 +26,7 @@ namespace MusicAF
         public MainWindow()
         {
             this.InitializeComponent();
-            MainFrame.Navigate(typeof(MyLibraryPage));
+            MainFrame.Navigate(typeof(NowPlayingPage));
         }
 
 

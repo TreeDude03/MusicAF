@@ -8,89 +8,213 @@
     mc:Ignorable="d">
 
     <Grid>
-        <!-- Chia làm 3 hàng chính: Navigation (bên trái), Main Content (bên phải), Media Controls (dưới cùng) -->
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <!-- Navigation bên trái -->
+            <ColumnDefinition Width="220"/>
             <ColumnDefinition Width="*"/>
-            <!-- Nội dung chính bên phải -->
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
-            <!-- Khu vực nội dung chính -->
-            <RowDefinition Height="Auto"/>
-            <!-- Thanh điều khiển media -->
+            <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
 
-        <!-- Navigation Pane -->
-        <StackPanel Grid.Column="0" Background="#231C2C" Width="250" Padding="10">
-            <TextBlock Text="MusicAF" FontSize="24" FontWeight="Bold" Foreground="White" Margin="10"/>
-            <TextBox PlaceholderText="Search Tracks..." Margin="10"/>
-            <TextBlock Text="For You" FontSize="16" Foreground="White" Margin="10,20,0,5"/>
-            <TextBlock Text="Saved" FontSize="16" Foreground="White" Margin="10,5,0,5"/>
-            <TextBlock Text="My Library" FontSize="16" Foreground="White" Margin="10,5,0,5"/>
-
-            <TextBlock Text="Settings" FontSize="16" Foreground="White" Margin="10,50,0,5"/>
-        </StackPanel>
-
-        <!-- Main Content -->
-        <Grid Grid.Column="1" Grid.Row="0" Padding="20">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="3*"/>
-            </Grid.ColumnDefinitions>
-
-            <!-- Album Art -->
-            <Image Source="Assets/albumCover.jpg" Grid.Column="0" Width="400" Height="400" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
-            <!-- Song Information -->
-            <StackPanel Grid.Column="1" VerticalAlignment="Center" Padding="20">
-                <TextBlock Text="The Bolter" FontSize="28" FontWeight="Bold" Foreground="White" Margin="0,0,0,10"/>
-                <TextBlock Text="Taylor Swift" FontSize="22" Foreground="Gray" Margin="0,0,0,5"/>
-                <TextBlock Text="The Tortured Poets Department" FontSize="18" Foreground="Gray"/>
+        <!-- Window Title Bar with Back Button -->
+        <Grid Grid.Column="0" Grid.Row="0" Background="#171221">
+            <StackPanel Orientation="Horizontal" Margin="10,0,0,0" 
+                      VerticalAlignment="Center">
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;" 
+                         Foreground="White" FontSize="16"/>
+                <TextBlock Text="MusicAF" Margin="10,0,0,0" 
+                          Foreground="White" FontSize="16"/>
             </StackPanel>
         </Grid>
 
-        <!-- Media Controls -->
-        <Grid Grid.Row="1" Grid.ColumnSpan="2" Background="#231C2C" Padding="10">
-            <Grid.RowDefinitions>
-                <!-- Row for the slider and time display -->
-                <RowDefinition Height="Auto"/>
-                <!-- Row for the media buttons -->
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
+        <!-- Back Button and Up Next in Title Bar -->
+        <Grid Grid.Column="1" Grid.Row="0" Background="#1a1625">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
-                <!-- Start Time -->
                 <ColumnDefinition Width="*"/>
-                <!-- Progress Slider -->
                 <ColumnDefinition Width="Auto"/>
-                <!-- End Time -->
             </Grid.ColumnDefinitions>
 
-            <!-- Start Time -->
-            <TextBlock Text="02:48" Grid.Column="0" Grid.Row="0" Foreground="White" VerticalAlignment="Center"/>
+            <Button Grid.Column="0" Background="Transparent" BorderThickness="0" 
+                    Margin="10,0,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72B;" 
+                             Foreground="#808080"/>
+                </StackPanel>
+            </Button>
 
-            <!-- Slider for Progress -->
-            <Slider Grid.Column="1" Grid.Row="0" Minimum="0" Maximum="100" Value="50" VerticalAlignment="Center" Margin="20,0"/>
+            <TextBlock Grid.Column="2" Text="Up Next: OWL's Nest Bar" 
+                      Foreground="#808080" FontSize="14" 
+                      VerticalAlignment="Center" Margin="0,0,20,0"/>
+        </Grid>
 
-            <!-- End Time -->
-            <TextBlock Text="-01:43" Grid.Column="2" Grid.Row="0" Foreground="White" VerticalAlignment="Center" Margin="20,0"/>
+        <!-- Left Navigation Panel -->
+        <Grid Grid.Column="0" Grid.Row="1" Background="#171221">
+            <StackPanel>
+                <!-- Search Box -->
+                <Grid Margin="10,10,10,20">
+                    <TextBox PlaceholderText="Search..." 
+                             Background="#25202f" BorderThickness="0"/>
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE721;" 
+                             Foreground="Gray" HorizontalAlignment="Right" 
+                             VerticalAlignment="Center" Margin="0,0,10,0"/>
+                </Grid>
 
-            <!-- Media Buttons (Play, Pause, Next, Previous) -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.ColumnSpan="3" Margin="0,10,0,0">
-                <Button>
-                    <SymbolIcon Symbol="Previous"/>
-                </Button>
-                <Button>
-                    <SymbolIcon Symbol="Play"/>
-                </Button>
-                <Button>
-                    <SymbolIcon Symbol="Next"/>
-                </Button>
+                <!-- Navigation Menu -->
+                <StackPanel Margin="10,0,10,0" Spacing="5">
+                    <!-- For You -->
+                    <Grid Height="35">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE93C;" 
+                                     Foreground="#808080"/>
+                            <TextBlock Text="For you" Margin="10,5,0,0" 
+                                      Foreground="#808080"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Library -->
+                    <Grid Height="35">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8F1;" 
+                                     Foreground="#808080"/>
+                            <TextBlock Text="Library" Margin="10,5,0,0" 
+                                      Foreground="#808080"/>
+                        </StackPanel>
+                    </Grid>
+                    
+                    <!-- Saved -->
+                    <Grid Height="35">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8F1;" 
+                  Foreground="#808080"/>
+                            <TextBlock Text="Saved" Margin="10,5,0,0" 
+                   Foreground="#808080"/>
+                        </StackPanel>
+                    </Grid>
+
+
+                    <!-- Playlists -->
+                    <Grid Height="35">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE90B;" 
+                                     Foreground="#808080"/>
+                            <TextBlock Text="Playlists" Margin="10,5,0,0" 
+                                      Foreground="#808080"/>
+ 
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+
+              
+            
+                <!-- Settings at Bottom -->
+                <StackPanel VerticalAlignment="Bottom" Margin="10" Height="35">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE713;" 
+                                 Foreground="#808080"/>
+                        <TextBlock Text="Settings" Margin="10,0,0,0" 
+                                  Foreground="#808080"/>
+                    </StackPanel>
+                </StackPanel>
             </StackPanel>
         </Grid>
-      
+
+        <!-- Main Content Area -->
+        <Grid Grid.Column="1" Grid.Row="1" Background="#1a1625">
+            <!-- Album Art and Info -->
+            <Grid Margin="0,20,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Album Art -->
+                <Image Grid.Row="0" Source="/Assets/albumCover.jpg" 
+                       Width="400" Height="400" 
+                       HorizontalAlignment="Center" 
+                       Margin="0,0,0,20"/>
+
+                <!-- Track Info -->
+                <StackPanel Grid.Row="1" HorizontalAlignment="Center">
+                    <TextBlock Text="OWL's Nest Bar" 
+                             Foreground="White" 
+                             FontSize="24" 
+                             HorizontalAlignment="Center"/>
+                    <TextBlock Text="Satoshi Okubo" 
+                             Foreground="#808080" 
+                             FontSize="16" 
+                             HorizontalAlignment="Center"
+                             Margin="0,5,0,0"/>
+                    <TextBlock Text="Deadly Premonition 2 - A Blessing in Disguise" 
+                             Foreground="#808080" 
+                             FontSize="14"
+                             HorizontalAlignment="Center"
+                             Margin="0,5,0,0"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+        <!-- Playback Control Bar -->
+        <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" 
+              Background="#251f2e">
+            <!-- Progress Bar -->
+            <Slider Margin="0,-2,0,0" Background="#3f3647" 
+                    Foreground="#6b5f7b" BorderThickness="0" 
+                    Value="50" VerticalAlignment="Top"/>
+
+            <!-- Controls -->
+            <Grid Margin="10,15,10,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Time -->
+                <TextBlock Grid.Column="0" Text="02:48" 
+                          Foreground="#808080" VerticalAlignment="Center"/>
+
+                <!-- Playback Controls -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" 
+                          HorizontalAlignment="Center"  Spacing="20">
+                    <Button Background="Transparent" BorderThickness="0">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" 
+                                 Glyph="&#xE8B1;" Foreground="#808080"/>
+                    </Button>
+                    <Button Background="Transparent" BorderThickness="0">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" 
+                                 Glyph="&#xE892;" Foreground="#808080"/>
+                    </Button>
+                    <Button Background="Transparent" BorderThickness="0">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" 
+                                 Glyph="&#xE769;" Foreground="White"/>
+                    </Button>
+                    <Button Background="Transparent" BorderThickness="0">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" 
+                                 Glyph="&#xE893;" Foreground="#808080"/>
+                    </Button>
+                    <Button Background="Transparent" BorderThickness="0">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" 
+                                 Glyph="&#xE8EE;" Foreground="#808080"/>
+                    </Button>
+                </StackPanel>
+
+                <!-- Volume -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="10">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" 
+                             Glyph="&#xE767;" Foreground="#808080"/>
+                    <Slider Width="100" Value="80" Margin="0,10,0,0"
+                            Background="#3f3647" Foreground="#6b5f7b"/>
+                 
+                </StackPanel>
+
+                <!-- Time -->
+                <TextBlock Grid.Column="3" Text="02:48" 
+          Foreground="#808080" VerticalAlignment="Center" Margin="20,-10,0,0"/>
+            </Grid>
+        </Grid>
     </Grid>
 </Page>
