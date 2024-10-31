@@ -28,9 +28,11 @@ namespace MusicAF
             this.InitializeComponent();
         }
 
-        private void UploadMusicButton_Click(object sender, RoutedEventArgs e)
+        private async void UploadMusicButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(UploadMusicPage));
+            var dialog = new UploadMusicDialog(App.MainWindow); 
+            dialog.XamlRoot = this.XamlRoot;
+            await dialog.ShowAsync();
         }
     }
 }

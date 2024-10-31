@@ -15,7 +15,7 @@
   <ItemGroup>
     <None Remove="MyLibraryPage.xaml" />
     <None Remove="NowPlayingPage.xaml" />
-    <None Remove="UploadMusicPage.xaml" />
+    <None Remove="UploadMusicDialog.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,7 +45,7 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
-    <Page Update="UploadMusicPage.xaml">
+    <Page Update="UploadMusicDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

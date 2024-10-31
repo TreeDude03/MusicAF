@@ -1,0 +1,106 @@
+<ContentDialog
+    x:Class="MusicAF.UploadMusicDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Style="{StaticResource DefaultContentDialogStyle}"
+    Title="Upload Music"
+    CloseButtonText="Cancel"
+    DefaultButton="Primary">
+
+    <StackPanel  x:Name="DialogContent" Width="400">
+        <!-- Screen 1: File Selection -->
+        <Grid x:Name="FileSelectionScreen" Visibility="Visible">
+            <StackPanel HorizontalAlignment="Center" Spacing="20">
+                <Image Source="/Assets/uploadIcon.png" Width="100" Height="100"/>
+                <TextBlock Text="Select files to upload" 
+                         HorizontalAlignment="Center" 
+                         FontSize="20"/>
+                <TextBlock Text="or drag &amp; drop files here" 
+                         HorizontalAlignment="Center" 
+                         Foreground="Gray"/>
+
+                <ComboBox Header="Privacy" Width="200" SelectedIndex="0">
+                    <ComboBoxItem Content="Private"/>
+                    <ComboBoxItem Content="Public"/>
+                </ComboBox>
+
+                <Button Content="Select Files" 
+                        Style="{StaticResource AccentButtonStyle}"
+                        HorizontalAlignment="Center"
+                        Click="SelectFiles_Click"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Screen 2: File Upload Progress -->
+        <Grid x:Name="UploadProgressScreen" Visibility="Collapsed">
+            <StackPanel Spacing="15">
+                <TextBlock Text="Upload file(s)" 
+                         FontSize="20" 
+                         HorizontalAlignment="Center"/>
+
+                <StackPanel x:Name="FileProgressContainer">
+                    <!-- Progress items will be added here -->
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <FontIcon Grid.Column="0" 
+                                 Glyph="&#xE8E5;" 
+                                 FontSize="20"/>
+                        <TextBlock Grid.Column="1" 
+                                 Text="Audio_XBOX_Jan" 
+                                 Margin="10,0"/>
+                        <ProgressRing Grid.Column="2" 
+                                    IsActive="True" 
+                                    Width="20" 
+                                    Height="20"/>
+                    </Grid>
+                </StackPanel>
+
+                <CheckBox Content="Create a new playlist from uploaded files" 
+                         IsChecked="True"
+                         Margin="0,10"/>
+
+                <Button Content="Continue" 
+                        Style="{StaticResource AccentButtonStyle}"
+                        HorizontalAlignment="Left"
+                        Click="UploadFiles_Click"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Screen 3: File Details -->
+        <Grid x:Name="FileDetailsScreen" Visibility="Collapsed">
+            <StackPanel Spacing="15">
+                <TextBlock Text="File Details" 
+                         FontSize="20" 
+                         HorizontalAlignment="Center"/>
+
+                <StackPanel Background="#171221" Padding="15">
+                    <TextBox Header="Title" PlaceholderText="Enter song title"/>
+                    <TextBox Header="Artist" PlaceholderText="Enter artist name" Margin="0,10"/>
+                    <TextBox Header="Album" PlaceholderText="Enter album name" Margin="0,10"/>
+                    <ComboBox Header="Genre" PlaceholderText="Select genre" Width="200" Margin="0,10">
+                        <ComboBoxItem Content="Rock"/>
+                        <ComboBoxItem Content="Pop"/>
+                        <ComboBoxItem Content="Jazz"/>
+                        <ComboBoxItem Content="Classical"/>
+                        <ComboBoxItem Content="Electronic"/>
+                        <ComboBoxItem Content="Other"/>
+                    </ComboBox>
+                </StackPanel>
+
+                <CheckBox Content="I confirm I have the rights to upload this music" 
+                         IsChecked="False"
+                         Margin="0,10"/>
+
+                <Button Content="Upload" 
+                        Style="{StaticResource AccentButtonStyle}"
+                        HorizontalAlignment="Left"
+                        Click="FinalizeUpload_Click"/>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</ContentDialog>
