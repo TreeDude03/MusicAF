@@ -12,25 +12,38 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using Windows.System;
+using System.Threading.Tasks;
 
 namespace MusicAF
 {
-    /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainWindow : Window
     {
-        public MainWindow()
+        private User currentUser;
+        private FirestoreService _firestoreService;
+        //
+        public MainWindow(string userEmail)
         {
+            _firestoreService = FirestoreService.Instance;
+            _ = setUpUser(userEmail);
             this.InitializeComponent();
         }
 
-        private void myButton_Click(object sender, RoutedEventArgs e)
+        public async Task setUpUser(string userEmail)
         {
-            myButton.Content = "Clicked";
+            string login_email = await _firestoreService.GetFieldFromDocumentAsync<string>("users", userEmail, "Email");
+            string login_password = await _firestoreService.GetFieldFromDocumentAsync<string>("users", userEmail, "Password");
+            string datecreated = await _firestoreService.GetFieldFromDocumentAsync<string>("users", userEmail, "CreatedAt");
+            currentUser = new User()
+            {
+                Email = login_email,
+                Password = login_password,
+                CreatedAt = DateTime.Now,
+            };
+        }
+
+        private void UploadButton_Click(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

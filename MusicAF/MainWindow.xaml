@@ -6,9 +6,53 @@
     xmlns:local="using:MusicAF"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Title="Music AF">
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button x:Name="myButton" Click="myButton_Click">Click Me</Button>
-    </StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <!-- Header -->
+            <RowDefinition Height="*" />
+            <!-- Body -->
+            <RowDefinition Height="Auto" />
+            <!-- Footer -->
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <!-- Navigation -->
+            <ColumnDefinition Width="*" />
+            <!-- Main Content -->
+        </Grid.ColumnDefinitions>
+        <!-- Header -->
+        <Grid Grid.Row="0" Grid.ColumnSpan="2" Background="{ThemeResource SystemControlBackgroundBaseMediumBrush}" Padding="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="MUSICAF" FontSize="24" FontWeight="Bold" VerticalAlignment="Center" />
+            <Button Width="40" Height="40" Margin="10,0,0,0" Background="Transparent" Click="UploadButton_Click" HorizontalAlignment="Right">
+                <TextBlock Text="Upload" VerticalAlignment="Center" />
+            </Button>
+        </Grid>
+
+        <!-- Navigation -->
+        <StackPanel Grid.Row="1" Grid.Column="0" Background="LightGray" Padding="10">
+            <TextBlock Text="Navigation" FontSize="20" FontWeight="SemiBold" Margin="0,0,0,10" />
+        </StackPanel>
+
+        <!-- Main Content Area -->
+        <ScrollViewer Grid.Row="1" Grid.Column="1" Padding="10">
+            <StackPanel>
+                <TextBlock Text="Body Content" FontSize="20" FontWeight="SemiBold" Margin="0,0,0,10" />
+                <TextBlock Text="This is the main content area where body content is displayed." TextWrapping="Wrap"/>
+                <!-- Add more content here -->
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer -->
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Padding="10">
+            <TextBlock Text="Footer" FontSize="16" HorizontalAlignment="Center" />
+        </StackPanel>
+    </Grid>
 </Window>
