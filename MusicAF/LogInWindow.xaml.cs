@@ -10,6 +10,7 @@ using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Windows.UI.ViewManagement;
 
 namespace MusicAF
 {
@@ -21,6 +22,7 @@ namespace MusicAF
         {
             InitializeComponent();
             _firestoreService = FirestoreService.Instance;
+            this.AppWindow.MoveAndResize(new Windows.Graphics.RectInt32(0, 0, 1000, 900));
         }
 
         // Sign-Up Button Click
@@ -28,6 +30,7 @@ namespace MusicAF
         {
             //
             string email = EmailTextBox_Signup.Text;
+            string name = NameTextBox_Signup.Text;
             string password = PasswordBox_Signup.Password;
             string confirm = ConfirmPasswordBox_Signup.Password;
 
@@ -47,7 +50,7 @@ namespace MusicAF
                 return;
             }
             string encryptedPassword = SecurityHelper.EncryptPassword(password);
-            await SignUpUserAsync(email, encryptedPassword);
+            await SignUpUserAsync(email, name, encryptedPassword);
         }
 
         // Login Button Click
@@ -71,6 +74,7 @@ namespace MusicAF
             LoginPanel.Visibility = Visibility.Collapsed;
             SignupPanel.Visibility = Visibility.Visible;
             Title = "Music AF - Signup";
+            MessageTextBlock.Text = "";
         }
 
         private void LoginTextBlock_Click(object sender, RoutedEventArgs e)
@@ -78,24 +82,29 @@ namespace MusicAF
             SignupPanel.Visibility = Visibility.Collapsed;
             LoginPanel.Visibility = Visibility.Visible;
             Title = "Music AF - Login";
+            MessageTextBlock.Text = "";
         }
 
         // Sign-Up Logic
-        private async Task SignUpUserAsync(string email, string encryptedPassword)
+        private async Task SignUpUserAsync(string email, string name, string encryptedPassword)
         {
             // Check if the user already exists
             string signup_email = await _firestoreService.GetFieldFromDocumentAsync<string>("users", email, "Email");
             if (signup_email != null)
             {
-                MessageTextBlock.Text = "User already exists.";
+                MessageTextBlock.Text = "User email already exists.";
+                EmailTextBox_Signup.Text = "";
+                PasswordBox_Signup.Password = "";
+                ConfirmPasswordBox_Signup.Password = "";
                 return;
             }
-            await _firestoreService.AddDocumentAsync("users", email, new { Email = email, Password = encryptedPassword, CreatedAt = DateTime.UtcNow });
+            await _firestoreService.AddDocumentAsync("users", email, new { Email = email, Name = name, Password = encryptedPassword, CreatedAt = DateTime.UtcNow});
             MessageTextBlock.Text = "User signed up successfully. Please login";
             //
             SignupPanel.Visibility = Visibility.Collapsed;
             LoginPanel.Visibility = Visibility.Visible;
-
+            EmailTextBox_Login.Text = "";
+            PasswordBox_Login.Password = "";
         }
 
         // Login Logic
@@ -106,6 +115,8 @@ namespace MusicAF
             if (login_email == null)
             {
                 MessageTextBlock.Text = "User does not exist.";
+                EmailTextBox_Login.Text = "";
+                PasswordBox_Login.Password = "";
                 return;
             }
             if (login_password == encryptedPassword)
@@ -118,6 +129,7 @@ namespace MusicAF
             else
             {
                 MessageTextBlock.Text = "Incorrect password.";
+                PasswordBox_Login.Password = "";
             }
         }
     }

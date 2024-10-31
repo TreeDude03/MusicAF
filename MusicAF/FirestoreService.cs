@@ -70,7 +70,10 @@ namespace MusicAF
         public async Task<T> GetFieldFromDocumentAsync<T>(string collectionName, string documentId, string fieldName)
         {
             DocumentSnapshot snapshot = await GetDocumentAsync<DocumentSnapshot>(collectionName,documentId);
-
+            if (snapshot == null)
+            {
+                return default(T);
+            }
             if (snapshot.Exists)
             {
                 if (snapshot.TryGetValue(fieldName, out T fieldValue))

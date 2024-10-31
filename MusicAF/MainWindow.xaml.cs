@@ -19,27 +19,14 @@ namespace MusicAF
 {
     public sealed partial class MainWindow : Window
     {
-        private User currentUser;
+        private string currentUserEmail;
         private FirestoreService _firestoreService;
         //
         public MainWindow(string userEmail)
         {
             _firestoreService = FirestoreService.Instance;
-            _ = setUpUser(userEmail);
+            currentUserEmail = userEmail;
             this.InitializeComponent();
-        }
-
-        public async Task setUpUser(string userEmail)
-        {
-            string login_email = await _firestoreService.GetFieldFromDocumentAsync<string>("users", userEmail, "Email");
-            string login_password = await _firestoreService.GetFieldFromDocumentAsync<string>("users", userEmail, "Password");
-            string datecreated = await _firestoreService.GetFieldFromDocumentAsync<string>("users", userEmail, "CreatedAt");
-            currentUser = new User()
-            {
-                Email = login_email,
-                Password = login_password,
-                CreatedAt = DateTime.Now,
-            };
         }
 
         private void UploadButton_Click(object sender, RoutedEventArgs e)
