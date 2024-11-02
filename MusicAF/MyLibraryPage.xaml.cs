@@ -23,14 +23,27 @@ namespace MusicAF
     /// </summary>
     public sealed partial class MyLibraryPage : Page
     {
+        private string currentUserEmail;
+        private FirestoreService _firestoreService;
+
         public MyLibraryPage()
         {
             this.InitializeComponent();
+            _firestoreService = FirestoreService.Instance;
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            if (e.Parameter is string userEmail)
+            {
+                currentUserEmail = userEmail;
+            }
         }
 
         private async void UploadMusicButton_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new UploadMusicDialog(App.MainWindow); 
+            var dialog = new UploadMusicDialog(App.MainWindow, currentUserEmail);
             dialog.XamlRoot = this.XamlRoot;
             await dialog.ShowAsync();
         }

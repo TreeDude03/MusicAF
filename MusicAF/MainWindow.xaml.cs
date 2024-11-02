@@ -12,24 +12,78 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using Windows.System;
+using System.Threading.Tasks;
+using Microsoft.UI;
 
 namespace MusicAF
 {
-    /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainWindow : Window
     {
-        public MainWindow()
+        private User currentUser;
+        private FirestoreService _firestoreService;
+        //
+        private string currentUserEmail;
+
+        public MainWindow(string userEmail)
         {
-            this.InitializeComponent();
-            MainFrame.Navigate(typeof(MyLibraryPage));
+            try
+            {
+                currentUserEmail = userEmail;
+                _firestoreService = FirestoreService.Instance;
+                this.InitializeComponent();
+
+                // Set a default window size
+                this.SetWindowSize(1200, 800);
+
+                // Navigate to the library page
+                MainFrame.Navigate(typeof(MyLibraryPage), currentUserEmail);
+            }
+            catch (Exception ex)
+            {
+                // Handle any initialization errors
+                ShowErrorDialog($"Error initializing main window: {ex.Message}");
+            }
         }
 
+        private void SetWindowSize(int width, int height)
+        {
+            var windowId = Win32Interop.GetWindowIdFromWindow(
+                WinRT.Interop.WindowNative.GetWindowHandle(this));
+            var appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(windowId);
+            if (appWindow is not null)
+            {
+                appWindow.Resize(new Windows.Graphics.SizeInt32 { Width = width, Height = height });
+            }
+        }
 
-       
+        private async void ShowErrorDialog(string message)
+        {
+            ContentDialog errorDialog = new ContentDialog
+            {
+                Title = "Error",
+                Content = message,
+                CloseButtonText = "OK",
+                XamlRoot = Content.XamlRoot
+            };
+            await errorDialog.ShowAsync();
+        }
+
+        public async Task setUpUser(string userEmail)
+        {
+            string login_email = await _firestoreService.GetFieldFromDocumentAsync<string>("users", userEmail, "Email");
+            string login_password = await _firestoreService.GetFieldFromDocumentAsync<string>("users", userEmail, "Password");
+            string datecreated = await _firestoreService.GetFieldFromDocumentAsync<string>("users", userEmail, "CreatedAt");
+            currentUser = new User()
+            {
+                Email = login_email,
+                Password = login_password,
+                CreatedAt = DateTime.Now,
+            };
+        }
+
+        private void UploadButton_Click(object sender, RoutedEventArgs e)
+        {
+        }
     }
 }

@@ -8,6 +8,11 @@
     DefaultButton="Primary">
 
     <StackPanel  x:Name="DialogContent" Width="400">
+        <TextBlock x:Name="MessageTextBlock" 
+           TextWrapping="Wrap"
+           HorizontalAlignment="Center" 
+           Margin="0,10"
+           Visibility="{x:Bind MessageTextBlock.Text, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}"/>
         <!-- Screen 1: File Selection -->
         <Grid x:Name="FileSelectionScreen" Visibility="Visible">
             <StackPanel HorizontalAlignment="Center" Spacing="20">
@@ -73,16 +78,31 @@
 
         <!-- Screen 3: File Details -->
         <Grid x:Name="FileDetailsScreen" Visibility="Collapsed">
-            <StackPanel Spacing="15">
+            <StackPanel Spacing="5">
                 <TextBlock Text="File Details" 
-                         FontSize="20" 
-                         HorizontalAlignment="Center"/>
+                 FontSize="20" 
+                 HorizontalAlignment="Center"/>
 
                 <StackPanel Background="#171221" Padding="15">
-                    <TextBox Header="Title" PlaceholderText="Enter song title"/>
-                    <TextBox Header="Artist" PlaceholderText="Enter artist name" Margin="0,10"/>
-                    <TextBox Header="Album" PlaceholderText="Enter album name" Margin="0,10"/>
-                    <ComboBox Header="Genre" PlaceholderText="Select genre" Width="200" Margin="0,10">
+                    <TextBox x:Name="TitleTextBox" 
+                    Header="Title *" 
+                    PlaceholderText="Enter song title"/>
+
+                    <TextBox x:Name="ArtistTextBox" 
+                    Header="Artist *" 
+                    PlaceholderText="Enter artist name" 
+                    Margin="0,10"/>
+
+                    <TextBox x:Name="AlbumTextBox" 
+                    Header="Album" 
+                    PlaceholderText="Enter album name" 
+                    Margin="0,10"/>
+
+                    <ComboBox x:Name="GenreComboBox" 
+                     Header="Genre *" 
+                     PlaceholderText="Select genre" 
+                     Width="200" 
+                     Margin="0,10">
                         <ComboBoxItem Content="Rock"/>
                         <ComboBoxItem Content="Pop"/>
                         <ComboBoxItem Content="Jazz"/>
@@ -90,16 +110,40 @@
                         <ComboBoxItem Content="Electronic"/>
                         <ComboBoxItem Content="Other"/>
                     </ComboBox>
+
+                    <CheckBox x:Name="PrivacyCheckBox" 
+                     Content="Make this track private" 
+                     Margin="0,10"/>
+
+                    <CheckBox x:Name="DownloadCheckBox" 
+                     Content="Allow downloads" 
+                     Margin="0,10"/>
+
+                    <TextBox x:Name="PriceTextBox" 
+                    Header="Download Price ($)" 
+                    PlaceholderText="0.00"
+                    InputScope="Number"
+                    Margin="0,10"/>
+
+                    <Button Content="Upload" 
+Style="{StaticResource AccentButtonStyle}"
+HorizontalAlignment="Left"
+Click="FinalizeUpload_Click"/>
+
+                    <CheckBox x:Name="RightsConfirmationCheckBox"
+                Content="I confirm I have the rights to upload this music *" 
+                IsChecked="True"
+                Margin="0,10"/>
+
+                    <TextBlock Text="* Required fields" 
+                Foreground="Gray" 
+                FontSize="12" 
+                Margin="0,0,0,10"/>
                 </StackPanel>
 
-                <CheckBox Content="I confirm I have the rights to upload this music" 
-                         IsChecked="False"
-                         Margin="0,10"/>
+                
 
-                <Button Content="Upload" 
-                        Style="{StaticResource AccentButtonStyle}"
-                        HorizontalAlignment="Left"
-                        Click="FinalizeUpload_Click"/>
+               
             </StackPanel>
         </Grid>
     </StackPanel>
