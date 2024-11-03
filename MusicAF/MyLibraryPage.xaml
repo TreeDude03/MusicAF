@@ -8,39 +8,55 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="White">
-        <!-- Left Sidebar -->
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Navigation Pane -->
-        <StackPanel Grid.Column="0" Background="#231C2C" Width="250" Padding="10">
-            <TextBlock Text="MusicAF" FontSize="24" FontWeight="Bold" Foreground="White" Margin="10"/>
-            <TextBox PlaceholderText="Search Tracks..." Margin="10"/>
-            <TextBlock Text="For You" FontSize="16" Foreground="White" Margin="10,20,0,5"/>
-            <TextBlock Text="Saved" FontSize="16" Foreground="White" Margin="10,5,0,5"/>
-            <TextBlock Text="My Library" FontSize="16" Foreground="White" Margin="10,5,0,5"/>
-
-            <TextBlock Text="Settings" FontSize="16" Foreground="White" Margin="10,50,0,5"/>
-        </StackPanel>
-
-        <!-- Main Content -->
-        <!-- Main Content -->
-        <Grid Grid.Column="1" Padding="20">
+        <!-- Left Navigation Panel -->
+        <Grid Grid.Column="0" Background="#171221">
+            <!-- Logo and Brand -->
             <StackPanel>
-                <TextBlock Text="My Library" FontSize="36" FontWeight="Bold" Foreground="Black"  Margin="10" />
+                <StackPanel Orientation="Horizontal" Margin="10,0,0,0" 
+            VerticalAlignment="Center">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;" 
+               Foreground="White" FontSize="16"/>
+                    <TextBlock Text="MusicAF" Margin="10,0,0,0" 
+                Foreground="White" FontSize="16"/>
+                </StackPanel>
 
-                <!-- TabView for Released and Upcoming -->
-                <TabView>
-                    <!-- Released Tab -->
-                    <TabViewItem Header="Demo">
-                        <StackPanel Padding="10">
-                            <!-- Search and Upload Buttons -->
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
-                                <Button Content="+ Upload music" Background="#05c3e2" Foreground="White" Width="150" Margin="10,0,0,0" Click="UploadMusicButton_Click"/>
-                            </StackPanel>
+                <Grid Margin="0,20,0,0" Background="#171221">
+                    <StackPanel>
+                        <!-- Search Box -->
+                        <Grid Margin="10,10,10,20">
+                            <TextBox PlaceholderText="Search..." 
+             Background="#25202f" BorderThickness="0"/>
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE721;" 
+             Foreground="Gray" HorizontalAlignment="Right" 
+             VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        </Grid>
+                        <!-- Navigation Menu -->
+                        <StackPanel Margin="10,0,10,0" Spacing="5">
+                            <!-- For You -->
+                            <Grid Height="35">
+                                <StackPanel Orientation="Horizontal">
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE93C;" 
+                             Foreground="#808080"/>
+                                    <TextBlock Text="For you" Margin="10,5,0,0" 
+                              Foreground="#808080"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- Library -->
+                            <Grid Height="35">
+                                <StackPanel Orientation="Horizontal">
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8F1;" 
+                             Foreground="#808080"/>
+                                    <TextBlock Text="Library" Margin="10,5,0,0" 
+                              Foreground="#808080"/>
+                                </StackPanel>
+                            </Grid>
 
                             <!-- Saved -->
                             <Grid Height="35">

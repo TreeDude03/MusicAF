@@ -16,6 +16,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
+
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
@@ -40,16 +41,46 @@ namespace MusicAF
             MainWindow.Activate();
         }
 
-        /// <summary>
-        /// Invoked when the application is launched.
-        /// </summary>
-        /// <param name="args">Details about the launch request and process.</param>
-        protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+        public static void NavigateToMainWindow(string userEmail)
         {
-            m_window = new MainWindow();
-            m_window.Activate();
+            try
+            {
+                CurrentUserEmail = userEmail;
+                // Create and show the new window first
+                var newWindow = new MainWindow(userEmail);
+                newWindow.Activate();
+
+                // Store the reference to the old window
+                var oldWindow = MainWindow;
+
+                // Update the MainWindow reference
+                MainWindow = newWindow;
+
+                // Close the old window after the new one is shown
+                oldWindow?.Close();
+            }
+            catch (Exception ex)
+            {
+                // In case of any errors, show a dialog
+                ShowErrorDialog($"Error navigating to main window: {ex.Message}");
+            }
         }
 
-        private Window m_window;
+        private static async void ShowErrorDialog(string message)
+        {
+            ContentDialog errorDialog = new ContentDialog
+            {
+                Title = "Error",
+                Content = message,
+                CloseButtonText = "OK"
+            };
+
+            // Use current window's XamlRoot if available
+            if (MainWindow != null)
+            {
+                errorDialog.XamlRoot = MainWindow.Content.XamlRoot;
+                await errorDialog.ShowAsync();
+            }
+        }
     }
 }

@@ -1,0 +1,16 @@
+{
+  "type": "service_account",
+  "scopes": [
+    "https://www.googleapis.com/auth/drive.file"
+  ],
+  "project_id": "musicaf-f6fb8",
+  "private_key_id": "90ac0543a9f27c2d6f84eb10847da7ca4adb954e",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDOfG7MmneF1pDj\n62GwF87KmDKVKCIGwp1KVwfvcCTlzDOtdsmOiMxwGcFJYTupxYVDXxrF7TuMY50k\nxx1ZLaJDVl+3kBdXRKCr9TcJGnfAMJFK3EEIwtcQBMFxSIY0RbboyhbVUwRNuRMh\n4FFgYbRUBfUMhryTWQlaxIIQrrsxk+XeHHoLAT3hPxpBFgxAlj3kAp0MtoB4aww6\nLNem91fCQua6luxwJHzXhb3lZJ4upO353wBuZ9jbYSgRDd8f+QmnLxUbMCezRjZs\ninhEMVzcahD303rkMgmX99xfuxazmXEYWbyMqieOy4JRFb4VAAWtg6gYOaomQuDo\nemwnsDY3AgMBAAECggEAJzY3HlC5IOfxxO6WsweaZBvKA0xHRexgTVVAswYjY6ZH\nLApSVWiCFkm1zHcUCvXxDC272llmRQ9HsMvFNYG2fj4hWC0bWZ21O2KKTIbDtfIj\nLUmtafoCOE8G4znoDnYsuYFjG6izuQTL7tN38KstQQWOlw3hMsQmRB/sKTndX5kE\nf0H6yPXmSsZWCTyMw81zZ5LYtCRqrNsIwMjcam8oUysGPhSmyeJAn4SCzO5ASvjU\nPa1TzP6+duF3z12V1YujNm84XqVuiFyBqmnSz6tmMl5n/V4B6Z6jPQBUpLixNwvf\nYkocQAl+WvxTZ/DDjA2iVVRyBpZEW+fZOvvBFTwoXQKBgQD06W8kaikorZXq+txv\n0qB3yAa67JpTWI3mrSlcDHT4NTm1Ija/f5yE3jeVOx1EsMxk66zVSjWCQCiz5s0a\nzx1MMA3feQv8FxkvGRgneu6AgRoc7M586UcYwbvVeFKohfk+Y4QlJsUXAfw+BNA2\n3iVoqoSZGGZ0183kV2PkpGguxQKBgQDX1aNOToU5El2/zkLI/ItvQ3ua5JGSOqlu\nqMJ/w0mDaE/U9R3E3dUa1Xr+hOHIO/LHJRlSH+WKz0Nh9DqXgywho2MEFXA+X7Xj\ncZy5w4HzY6QTb+IMeqordSTnVrQeKuNhTb08b5P9z71aUpU/CfzdOyKy0238ZZqY\nb95HufigywKBgAkcXfwWzu0qd/dD2ct3JG0QTd/KSXtsQesg6fb4p6lMIZdxbGP3\nVVVEBwFQL6iMgy4F7moI1rC/vkPjBCJJLifVac60bBO2sEMmRdXCJvk01EnbLVtM\nOk7bdidc0IZgZYNCpHnVVWOjuUR9XVmNLgsUvNYNKFKUbJ5f+eFZlF6ZAoGAZ1dY\nKL851HixwIuuuHMLBAwIm8JC3QQPafeNoQTNJwkD6FAwn7kjNwTuLf1L6caiWK2v\nsP2qt0rD1ZvNjgv1Tmnfl+333zWObkdQpjUw/GtB/Th9wEHfRo2BTO7bsPISCt3g\n9JXsAwO7gwq1gQh0NS0CUSMgr0+qtMAjaq5ll/8CgYBJwvdIR79laOEeORG26ys7\nIqsVxAz5Xax7VcQkqvlhLquminLyPUOP/rQKYwGCB+P5dJaPI2ILM3sc1bDQXNKm\nT5AxmGNcMlRu5F75Y/JAIK3WwGsxIjo4XgYMtQFqJoNq2FEhgvJ2KTglUWzVvSbY\nybYask+WaaPgEFNDf/hbaQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firestore-service-account@musicaf-f6fb8.iam.gserviceaccount.com",
+  "client_id": "110889594574668090843",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firestore-service-account%40musicaf-f6fb8.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
