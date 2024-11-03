@@ -110,25 +110,29 @@ namespace MusicAF
         // Login Logic
         private async Task LoginUserAsync(string email, string encryptedPassword)
         {
-            string login_email = await _firestoreService.GetFieldFromDocumentAsync<string>("users", email, "Email");
-            string login_password = await _firestoreService.GetFieldFromDocumentAsync<string>("users", email, "Password");
-            if (login_email == null)
+            try
             {
-                MessageTextBlock.Text = "User does not exist.";
+                string login_email = await _firestoreService.GetFieldFromDocumentAsync<string>("users", email, "Email");
+                string login_password = await _firestoreService.GetFieldFromDocumentAsync<string>("users", email, "Password");
+
+                if (login_email == null)
+                {
+                    MessageTextBlock.Text = "User does not exist.";
                 EmailTextBox_Login.Text = "";
                 PasswordBox_Login.Password = "";
-                return;
-            }
-            if (login_password == encryptedPassword)
-            {
-                MessageTextBlock.Text = "Login successful!";
+                    return;
+                }
+
+                if (login_password == encryptedPassword)
+                {
+                    MessageTextBlock.Text = "Login successful!";
                 Window window = new MainWindow(email);
                 window.Activate();
                 this.Close();
-            }
-            else
-            {
-                MessageTextBlock.Text = "Incorrect password.";
+                }
+                else
+                {
+                    MessageTextBlock.Text = "Incorrect password.";
                 PasswordBox_Login.Password = "";
             }
         }

@@ -27,25 +27,60 @@ namespace MusicAF
     /// </summary>
     public partial class App : Application
     {
-        /// <summary>
-        /// Initializes the singleton application object.  This is the first line of authored code
-        /// executed, and as such is the logical equivalent of main() or WinMain().
-        /// </summary>
-        public App()
-        {
-            this.InitializeComponent();
-        }
+        public static Window MainWindow { get; private set; }
+        public static string CurrentUserEmail { get; private set; }
 
-        /// <summary>
-        /// Invoked when the application is launched.
-        /// </summary>
-        /// <param name="args">Details about the launch request and process.</param>
+        [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
+        [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
+        static extern bool AllocConsole();
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-            m_window = new LogInWindow();
-            m_window.Activate();
+
+            AllocConsole();
+            MainWindow = new LogInWindow();
+            MainWindow.Activate();
         }
 
-        private Window m_window;
+        public static void NavigateToMainWindow(string userEmail)
+        {
+            try
+            {
+                CurrentUserEmail = userEmail;
+                // Create and show the new window first
+                var newWindow = new MainWindow(userEmail);
+                newWindow.Activate();
+
+                // Store the reference to the old window
+                var oldWindow = MainWindow;
+
+                // Update the MainWindow reference
+                MainWindow = newWindow;
+
+                // Close the old window after the new one is shown
+                oldWindow?.Close();
+            }
+            catch (Exception ex)
+            {
+                // In case of any errors, show a dialog
+                ShowErrorDialog($"Error navigating to main window: {ex.Message}");
+            }
+        }
+
+        private static async void ShowErrorDialog(string message)
+        {
+            ContentDialog errorDialog = new ContentDialog
+            {
+                Title = "Error",
+                Content = message,
+                CloseButtonText = "OK"
+            };
+
+            // Use current window's XamlRoot if available
+            if (MainWindow != null)
+            {
+                errorDialog.XamlRoot = MainWindow.Content.XamlRoot;
+                await errorDialog.ShowAsync();
+            }
+        }
     }
 }

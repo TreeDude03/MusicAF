@@ -16,6 +16,11 @@
   <ItemGroup>
     <None Remove="LogInWindow.xaml" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="MyLibraryPage.xaml" />
+    <None Remove="NowPlayingPage.xaml" />
+    <None Remove="UploadMusicDialog.xaml" />
+  </ItemGroup>
 
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -29,6 +34,7 @@
 
   <ItemGroup>
     <PackageReference Include="FirebaseAdmin" Version="3.0.1" />
+    <PackageReference Include="Google.Apis.Drive.v3" Version="1.68.0.3574" />
     <PackageReference Include="Google.Cloud.Firestore" Version="3.9.0" />
     <PackageReference Include="Google.Cloud.Storage.V1" Version="4.10.0" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.756" />
