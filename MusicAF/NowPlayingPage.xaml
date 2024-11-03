@@ -65,60 +65,54 @@
                 <!-- Navigation Menu -->
                 <StackPanel Margin="10,0,10,0" Spacing="5">
                     <!-- For You -->
-                    <Grid Height="35">
-                        <StackPanel Orientation="Horizontal">
-                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE93C;" 
-                                     Foreground="#808080"/>
-                            <TextBlock Text="For you" Margin="10,5,0,0" 
-                                      Foreground="#808080"/>
-                        </StackPanel>
-                    </Grid>
+                    <Button Click="ForYouButton_Click" Background="Transparent" BorderThickness="0">
+                        <Grid Height="35">
+                            <StackPanel Orientation="Horizontal">
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE93C;" Foreground="#808080"/>
+                                <TextBlock Text="For you" Margin="10,5,0,0" Foreground="#808080"/>
+                            </StackPanel>
+                        </Grid>
+                    </Button>
 
                     <!-- Library -->
-                    <Grid Height="35" Tapped="Library_Tapped">
-                        <StackPanel Orientation="Horizontal">
-                            <FontIcon FontFamily="Segoe MDL2 Assets" 
-                 Glyph="&#xE8F1;" 
-                 Foreground="#808080"/>
-                            <TextBlock Text="Library" 
-                  Margin="10,5,0,0" 
-                  Foreground="#808080"/>
-                        </StackPanel>
-                    </Grid>
+                    <Button Click="LibraryButton_Click" Background="Transparent" BorderThickness="0">
+                        <Grid Height="35">
+                            <StackPanel Orientation="Horizontal">
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8F1;" Foreground="#808080"/>
+                                <TextBlock Text="Library" Margin="10,5,0,0" Foreground="#808080"/>
+                            </StackPanel>
+                        </Grid>
+                    </Button>
 
                     <!-- Saved -->
-                    <Grid Height="35">
-                        <StackPanel Orientation="Horizontal">
-                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8F1;" 
-                  Foreground="#808080"/>
-                            <TextBlock Text="Saved" Margin="10,5,0,0" 
-                   Foreground="#808080"/>
-                        </StackPanel>
-                    </Grid>
-
+                    <Button  Background="Transparent" BorderThickness="0">
+                        <Grid Height="35">
+                            <StackPanel Orientation="Horizontal">
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8F1;" Foreground="#808080"/>
+                                <TextBlock Text="Saved" Margin="10,5,0,0" Foreground="#808080"/>
+                            </StackPanel>
+                        </Grid>
+                    </Button>
 
                     <!-- Playlists -->
-                    <Grid Height="35">
-                        <StackPanel Orientation="Horizontal">
-                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE90B;" 
-                                     Foreground="#808080"/>
-                            <TextBlock Text="Playlists" Margin="10,5,0,0" 
-                                      Foreground="#808080"/>
- 
-                        </StackPanel>
-                    </Grid>
+                    <Button Background="Transparent" BorderThickness="0">
+                        <Grid Height="35">
+                            <StackPanel Orientation="Horizontal">
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE90B;" Foreground="#808080"/>
+                                <TextBlock Text="Playlists" Margin="10,5,0,0" Foreground="#808080"/>
+                            </StackPanel>
+                        </Grid>
+                    </Button>
                 </StackPanel>
 
-              
-            
                 <!-- Settings at Bottom -->
                 <StackPanel VerticalAlignment="Bottom" Margin="10" Height="35">
-                    <StackPanel Orientation="Horizontal">
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE713;" 
-                                 Foreground="#808080"/>
-                        <TextBlock Text="Settings" Margin="10,0,0,0" 
-                                  Foreground="#808080"/>
-                    </StackPanel>
+                    <Button  Background="Transparent" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE713;" Foreground="#808080"/>
+                            <TextBlock Text="Settings" Margin="10,0,0,0" Foreground="#808080"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </StackPanel>
         </Grid>
@@ -238,8 +232,6 @@
                             Value="100"
                             ValueChanged="VolumeSlider_ValueChanged"/>
                 </StackPanel>
-
-      
             </Grid>
         </Grid>
     </Grid>

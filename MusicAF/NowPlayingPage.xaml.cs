@@ -387,7 +387,7 @@ namespace MusicAF
             }
         }
 
-
+       
         private void ProgressSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
             if (mediaPlayer?.PlaybackSession != null &&
@@ -428,6 +428,14 @@ namespace MusicAF
                 Debug.WriteLine($"Error navigating to library: {ex.Message}");
                 ShowErrorDialogAsync($"Error navigating to library: {ex.Message}").ConfigureAwait(false);
             }
+        }
+        private void ForYouButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(ForYouPage), currentUserEmail);
+        }
+        private void LibraryButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(MyLibraryPage), currentUserEmail);
         }
     }
 }
