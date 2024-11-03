@@ -26,13 +26,18 @@ namespace MusicAF
     /// </summary>
     public partial class App : Application
     {
-        /// <summary>
-        /// Initializes the singleton application object.  This is the first line of authored code
-        /// executed, and as such is the logical equivalent of main() or WinMain().
-        /// </summary>
-        public App()
+        public static Window MainWindow { get; private set; }
+        public static string CurrentUserEmail { get; private set; }
+
+        [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
+        [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
+        static extern bool AllocConsole();
+        protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-            this.InitializeComponent();
+
+            AllocConsole();
+            MainWindow = new LogInWindow();
+            MainWindow.Activate();
         }
 
         /// <summary>
