@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace MusicAF
 {
-    public class FirestoreService
+    public class FirestoreService : GoogleService
     {
         // Change to public property with private setter
         public FirestoreDb FirestoreDb { get; private set; }
@@ -22,9 +22,9 @@ namespace MusicAF
             InitializeFirestore();
         }
 
-        private void InitializeFirestore()
+        private async void InitializeFirestore()
         {
-            GoogleCredential credential = GoogleCredential.FromFile("C:\\Users\\ACER\\source\\repos\\MusicAF\\MusicAF\\Assets\\config.json");
+            GoogleCredential credential = await GetGoogleCredentialAsync();
             FirestoreClientBuilder clientBuilder = new FirestoreClientBuilder
             {
                 Credential = credential
@@ -109,6 +109,11 @@ namespace MusicAF
         {
             DocumentSnapshot snapshot = await GetDocumentAsync<DocumentSnapshot>(collectionName, documentId);
 
+            if (snapshot == null)
+            {
+                return default;
+            }
+
             if (snapshot.Exists)
             {
                 if (snapshot.TryGetValue(fieldName, out T fieldValue))
@@ -137,7 +142,6 @@ namespace MusicAF
 
         // Add more Firestore interaction methods as needed...
     }
-
 
     public static class FirebaseConfig
     {

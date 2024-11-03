@@ -123,7 +123,7 @@
                 </Button>
 
 
-                <TextBlock Grid.Column="1" Text="My Library" 
+                <TextBlock Grid.Column="1" Text="My Library" Foreground="White"
                           FontSize="32" FontWeight="SemiBold"/>
 
 

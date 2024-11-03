@@ -8,10 +8,11 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net.Http;
+using System.Net;
 
 namespace MusicAF
 {
-    public class GoogleDriveService
+    public class GoogleDriveService : GoogleService
     {
         private DriveService _driveService;
         private static GoogleDriveService _instance;
@@ -23,11 +24,12 @@ namespace MusicAF
             Initialize();
         }
 
-        private void Initialize()
+        private async void Initialize()
         {
             try
             {
-                _credential = GoogleCredential.FromFile("C:\\Users\\ACER\\source\\repos\\MusicAF\\MusicAF\\Assets\\config.json")
+                _credential = await GetGoogleCredentialAsync();
+                _credential
                     .CreateScoped(new[]
                     {
                         DriveService.ScopeConstants.DriveFile,
