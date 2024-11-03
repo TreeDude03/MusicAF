@@ -387,7 +387,7 @@ namespace MusicAF
             }
         }
 
-       
+
         private void ProgressSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
             if (mediaPlayer?.PlaybackSession != null &&
