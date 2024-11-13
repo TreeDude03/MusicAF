@@ -274,14 +274,5 @@ namespace MusicAF.AppPages
                 TracksListView.Visibility = Visibility.Collapsed;
             });
         }
-
-        private void ForYouButton_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(ForYouPage), currentUserEmail);
-        }
-        private void LibraryButton_Click(object sender, RoutedEventArgs e)
-        {
-            //do nothing
-        }
     }
 }

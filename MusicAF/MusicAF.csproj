@@ -24,7 +24,6 @@
     <Page Remove="Windows\**" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="ForYouPage.xaml" />
     <None Remove="LogInWindow.xaml" />
   </ItemGroup>
   <ItemGroup>
@@ -61,11 +60,6 @@
   -->
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="ForYouPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="LogInWindow.xaml">

@@ -27,11 +27,8 @@ namespace MusicAF.ThirdPartyServices
         {
             try
             {
-
-                // Get the path to the Assets folder
-                string assetsPath = Path.Combine(AppContext.BaseDirectory, "Assets");
-                string configPath = Path.Combine(assetsPath, "config.json");
-                _credential = GoogleCredential.FromFile(configPath)
+                _credential = await GetGoogleCredentialAsync();
+                _credential
                     .CreateScoped(new[]
                     {
                         DriveService.ScopeConstants.DriveFile,
