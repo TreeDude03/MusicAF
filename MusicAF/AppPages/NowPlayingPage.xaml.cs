@@ -439,6 +439,14 @@ namespace MusicAF.AppPages
         {
             Frame.Navigate(typeof(MyLibraryPage), currentUserEmail);
         }
+        private void ForYouButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(ForYouPage), currentUserEmail);
+        }
+        private void LibraryButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(MyLibraryPage), currentUserEmail);
+        }
     }
 }
 

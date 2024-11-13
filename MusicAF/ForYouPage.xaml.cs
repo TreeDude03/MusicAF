@@ -8,13 +8,10 @@ using System.Threading.Tasks;
 using Google.Cloud.Firestore;
 using System.Linq;
 using System.Diagnostics;
-using MusicAF.ThirdPartyServices;
-using MusicAF.Models;
-using MusicAF.AppDialogs;
 
-namespace MusicAF.AppPages
+namespace MusicAF
 {
-    public sealed partial class MyLibraryPage : Page
+    public sealed partial class ForYouPage : Page
     {
         private string currentUserEmail;
         private readonly FirestoreService _firestoreService;
@@ -31,19 +28,19 @@ namespace MusicAF.AppPages
             }
         }
 
-        public MyLibraryPage()
+        public ForYouPage()
         {
             try
             {
-                Console.WriteLine("Initializing MyLibraryPage");
+                Console.WriteLine("Initializing ForYouPage");
                 this.InitializeComponent();
                 _firestoreService = FirestoreService.Instance;
                 Tracks = new ObservableCollection<Track>();
-                Console.WriteLine("MyLibraryPage initialized successfully");
+                Console.WriteLine("ForYouPage initialized successfully");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error initializing MyLibraryPage: {ex}");
+                Console.WriteLine($"Error initializing ForYouPage: {ex}");
                 throw;
             }
         }
@@ -74,18 +71,16 @@ namespace MusicAF.AppPages
             isLoading = true;
             try
             {
-                Console.WriteLine($"Loading tracks for user: {currentUserEmail}");
+                Console.WriteLine($"Loading recommended tracks for user: {currentUserEmail}");
                 await ShowLoadingStateAsync(true);
 
-                // Clear existing tracks
                 DispatcherQueue.TryEnqueue(() =>
                 {
                     Tracks.Clear();
                 });
 
                 var tracksRef = _firestoreService.FirestoreDb.Collection("tracks");
-                var query = tracksRef.WhereEqualTo("Uploader", currentUserEmail);
-                var querySnapshot = await query.GetSnapshotAsync();
+                var querySnapshot = await tracksRef.GetSnapshotAsync();
 
                 Console.WriteLine($"Found {querySnapshot.Documents.Count} tracks");
 
@@ -244,7 +239,7 @@ namespace MusicAF.AppPages
             try
             {
                 base.OnNavigatedTo(e);
-                Console.WriteLine("Navigation to MyLibraryPage");
+                Console.WriteLine("Navigation to ForYouPage");
 
                 if (e.Parameter is string userEmail)
                 {
@@ -277,11 +272,11 @@ namespace MusicAF.AppPages
 
         private void ForYouButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(ForYouPage), currentUserEmail);
+            //
         }
         private void LibraryButton_Click(object sender, RoutedEventArgs e)
         {
-            //do nothing
+            Frame.Navigate(typeof(MyLibraryPage), currentUserEmail);
         }
     }
 }
