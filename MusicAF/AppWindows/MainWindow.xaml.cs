@@ -13,14 +13,19 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.System;
+using Windows.Graphics;
 using System.Threading.Tasks;
 using Microsoft.UI;
+using MusicAF.ThirdPartyServices;
+using MusicAF.AppPages;
+using MusicAF.AppDialogs;
+using MusicAF.Models;
 
-namespace MusicAF
+namespace MusicAF.AppWindows
 {
     public sealed partial class MainWindow : Window
     {
-        private User currentUser;
+        private Models.User currentUser;
         private FirestoreService _firestoreService;
         //
         private string currentUserEmail;
@@ -74,7 +79,7 @@ namespace MusicAF
             string login_email = await _firestoreService.GetFieldFromDocumentAsync<string>("users", userEmail, "Email");
             string login_password = await _firestoreService.GetFieldFromDocumentAsync<string>("users", userEmail, "Password");
             string datecreated = await _firestoreService.GetFieldFromDocumentAsync<string>("users", userEmail, "CreatedAt");
-            currentUser = new User()
+            currentUser = new Models.User()
             {
                 Email = login_email,
                 Password = login_password,
@@ -82,8 +87,13 @@ namespace MusicAF
             };
         }
 
-        private void UploadButton_Click(object sender, RoutedEventArgs e)
+        private void ForYouButton_Click(object sender, RoutedEventArgs e)
         {
+            MainFrame.Navigate(typeof(ForYouPage), currentUserEmail);
+        }
+        private void LibraryButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(typeof(MyLibraryPage), currentUserEmail);
         }
     }
 }

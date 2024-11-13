@@ -2,7 +2,7 @@
 using System;
 using Google.Cloud.Firestore;
 
-namespace MusicAF
+namespace MusicAF.Models
 {
     [FirestoreData]
     public class Track
@@ -81,6 +81,6 @@ namespace MusicAF
         [FirestoreProperty]
         public string MimeType { get; set; }
 
-       
+
     }
 }

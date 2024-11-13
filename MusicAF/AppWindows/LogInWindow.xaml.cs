@@ -11,8 +11,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Windows.UI.ViewManagement;
+using MusicAF.ThirdPartyServices;
+using MusicAF.Helpers;
 
-namespace MusicAF
+namespace MusicAF.AppWindows
 {
     public sealed partial class LogInWindow : Window
     {

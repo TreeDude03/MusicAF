@@ -8,11 +8,10 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net.Http;
-using System.Net;
 
-namespace MusicAF
+namespace MusicAF.ThirdPartyServices
 {
-    public class GoogleDriveService : GoogleService
+    public class GoogleDriveService
     {
         private DriveService _driveService;
         private static GoogleDriveService _instance;
@@ -24,12 +23,15 @@ namespace MusicAF
             Initialize();
         }
 
-        private async void Initialize()
+        private void Initialize()
         {
             try
             {
-                _credential = await GetGoogleCredentialAsync();
-                _credential
+
+                // Get the path to the Assets folder
+                string assetsPath = Path.Combine(AppContext.BaseDirectory, "Assets");
+                string configPath = Path.Combine(assetsPath, "config.json");
+                _credential = GoogleCredential.FromFile(configPath)
                     .CreateScoped(new[]
                     {
                         DriveService.ScopeConstants.DriveFile,
@@ -64,7 +66,7 @@ namespace MusicAF
                 request.Fields = "id, webViewLink";
 
                 // Create upload progress event handler
-                request.ProgressChanged += (IUploadProgress progress) =>
+                request.ProgressChanged += (progress) =>
                 {
                     switch (progress.Status)
                     {

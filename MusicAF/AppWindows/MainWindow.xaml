@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="MusicAF.AppWindows.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MusicAF"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Music AF">
+    
+    <!--MAIN WINDOW BAO GỒM NAVIGATION VÀ MAIN FRAME, CÁC XỬ LÝ VỀ NAVIGATION NÊN NẰM Ở MAINWINDOW-->
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Navigation Panel -->
+        <Grid Grid.Column="0" Background="#171221">
+            <!-- Logo and Brand -->
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="10,0,0,0" VerticalAlignment="Center">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;" Foreground="White" FontSize="16"/>
+                    <TextBlock Text="MusicAF" Margin="10,0,0,0" Foreground="White" FontSize="16"/>
+                </StackPanel>
+
+                <Grid Margin="0,20,0,0" Background="#171221">
+                    <StackPanel>
+                        <!-- Search Box -->
+                        <Grid Margin="10,10,10,20">
+                            <TextBox PlaceholderText="Search..."  Background="#25202f" BorderThickness="0"/>
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE721;" Foreground="Gray" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        </Grid>
+                        <!-- Navigation Menu -->
+                        <StackPanel Margin="10,0,10,0" Spacing="5">
+                            <!-- For You -->
+                            <Button Click="ForYouButton_Click" Background="Transparent" BorderThickness="0">
+                                <Grid Height="35">
+                                    <StackPanel Orientation="Horizontal">
+                                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE93C;" Foreground="#808080"/>
+                                        <TextBlock Text="For you" Margin="10,5,0,0" Foreground="#808080"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Button>
+
+                            <!-- Library -->
+                            <Button Click="LibraryButton_Click" Background="Transparent" BorderThickness="0">
+                                <Grid Height="35">
+                                    <StackPanel Orientation="Horizontal">
+                                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8F1;" Foreground="#808080"/>
+                                        <TextBlock Text="Library" Margin="10,5,0,0" Foreground="#808080"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Button>
+
+                            <!-- Saved -->
+                            <Button Background="Transparent" BorderThickness="0">
+                                <Grid Height="35">
+                                    <StackPanel Orientation="Horizontal">
+                                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8F1;" Foreground="#808080"/>
+                                        <TextBlock Text="Saved" Margin="10,5,0,0" Foreground="#808080"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Button>
+
+                            <!-- Playlists -->
+                            <Button Background="Transparent" BorderThickness="0">
+                                <Grid Height="35">
+                                    <StackPanel Orientation="Horizontal">
+                                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE90B;" Foreground="#808080"/>
+                                        <TextBlock Text="Playlists" Margin="10,5,0,0" Foreground="#808080"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Button>
+                        </StackPanel>
+
+                        <!-- Settings at Bottom -->
+                        <StackPanel VerticalAlignment="Bottom" Margin="10" Height="35">
+                            <Button Background="Transparent" BorderThickness="0">
+                                <StackPanel Orientation="Horizontal">
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE713;" Foreground="#808080"/>
+                                    <TextBlock Text="Settings" Margin="10,0,0,0" Foreground="#808080"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+
+            </StackPanel>
+        </Grid>
+
+        <!-- Main Content Area -->
+        <Grid Grid.Column="1" Background="#1a1625" Padding="40,20">
+            <Frame x:Name="MainFrame" />
+        </Grid>
+    </Grid>
+</Window>

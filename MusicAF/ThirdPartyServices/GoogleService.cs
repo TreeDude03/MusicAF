@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace MusicAF
+namespace MusicAF.ThirdPartyServices
 {
     public class GoogleService
     {

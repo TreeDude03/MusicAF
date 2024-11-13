@@ -16,8 +16,10 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Storage.Streams;
 using Windows.Storage;
 using Microsoft.UI.Xaml.Input;
+using MusicAF.ThirdPartyServices;
+using MusicAF.Models;
 
-namespace MusicAF
+namespace MusicAF.AppPages
 {
 
     public sealed partial class NowPlayingPage : Page
@@ -428,6 +430,14 @@ namespace MusicAF
                 Debug.WriteLine($"Error navigating to library: {ex.Message}");
                 ShowErrorDialogAsync($"Error navigating to library: {ex.Message}").ConfigureAwait(false);
             }
+        }
+        private void ForYouButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(ForYouPage), currentUserEmail);
+        }
+        private void LibraryButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(MyLibraryPage), currentUserEmail);
         }
     }
 }

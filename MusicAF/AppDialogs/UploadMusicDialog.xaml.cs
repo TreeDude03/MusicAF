@@ -9,8 +9,10 @@ using System.Diagnostics;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI;
 using System.IO;
+using MusicAF.ThirdPartyServices;
+using MusicAF.Models;
 
-namespace MusicAF
+namespace MusicAF.AppDialogs
 {
     public sealed partial class UploadMusicDialog : ContentDialog
     {

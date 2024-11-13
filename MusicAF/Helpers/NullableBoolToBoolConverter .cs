@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml.Data;
 using System;
 
-namespace MusicAF
+namespace MusicAF.Helpers
 {
     public class NullableBoolToBoolConverter : IValueConverter
     {

@@ -15,6 +15,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using MusicAF.AppWindows;
 
 
 // To learn more about WinUI, the WinUI project structure,

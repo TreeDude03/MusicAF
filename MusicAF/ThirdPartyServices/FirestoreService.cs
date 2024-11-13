@@ -6,7 +6,7 @@ using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Firestore.V1;
 using System.Diagnostics;
 
-namespace MusicAF
+namespace MusicAF.ThirdPartyServices
 {
     public class FirestoreService : GoogleService
     {
@@ -121,7 +121,7 @@ namespace MusicAF
                     return fieldValue;
                 }
             }
-            return default(T);
+            return default;
         }
 
         // Example method: Delete document from Firestore
