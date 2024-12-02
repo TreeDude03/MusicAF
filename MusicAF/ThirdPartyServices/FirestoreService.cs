@@ -24,15 +24,29 @@ namespace MusicAF.ThirdPartyServices
 
         private async void InitializeFirestore()
         {
-            GoogleCredential credential = await GetGoogleCredentialAsync();
-            FirestoreClientBuilder clientBuilder = new FirestoreClientBuilder
+            try
             {
-                Credential = credential
-            };
+                // Obtain Google Credential
+                GoogleCredential credential = await GetGoogleCredentialAsync();
 
-            FirestoreClient firestoreClient = clientBuilder.Build();
-            string projectId = FirebaseConfig.ProjectId;
-            FirestoreDb = FirestoreDb.Create(projectId, firestoreClient);
+                // Use the credential to initialize the Firestore client
+                FirestoreClientBuilder clientBuilder = new FirestoreClientBuilder
+                {
+                    Credential = credential
+                };
+
+                FirestoreClient firestoreClient = clientBuilder.Build();
+                string projectId = FirebaseConfig.ProjectId;
+                FirestoreDb = FirestoreDb.Create(projectId, firestoreClient);
+
+                Debug.WriteLine("Firestore initialized successfully");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error initializing Firestore: {ex.Message}");
+                Debug.WriteLine($"Stack trace: {ex.StackTrace}");
+                throw;
+            }
         }
 
         //Add document to Firestore

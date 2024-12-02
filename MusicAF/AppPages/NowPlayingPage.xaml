@@ -8,29 +8,24 @@
     mc:Ignorable="d">
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="220"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Column="1" Grid.Row="1" Background="#1a1625">
+        <Grid Grid.Row="1" Background="#1a1625">
             <!-- Album Art and Info -->
-            <Grid Margin="0,20,0,0">
+            <Grid Margin="20,20,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <!-- Album Art -->
-                <Image Grid.Row="0" Source="/Assets/albumCover.jpg" 
-                    Width="400" Height="400" 
+                <Image Grid.Row="0" Source="/Assets/musicIcon.png" 
+                    Width="256" Height="256" 
                     HorizontalAlignment="Center" 
-                    Margin="0,0,0,20"/>
+                    Margin="40,0,0,20"/>
 
                 <!-- Track Info -->
                 <StackPanel Grid.Row="1" HorizontalAlignment="Center">
@@ -41,70 +36,5 @@
             </Grid>
         </Grid>
 
-        <!-- Playback Control Bar -->
-        <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Background="#251f2e">
-            <!-- Progress Bar -->
-            <Slider x:Name="ProgressSlider"
-                Background="#3f3647" 
-                Foreground="#6b5f7b" 
-                BorderThickness="0"
-                ValueChanged="ProgressSlider_ValueChanged"
-                Maximum="100"
-                Value="0"/>
-
-            <!-- Controls -->
-            <Grid Margin="10,15,10,10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-
-                <!-- Time -->
-                <TextBlock x:Name="CurrentTimeText"
-                    Grid.Column="0" 
-                    Text="00:00" 
-                    Foreground="#808080" 
-                    VerticalAlignment="Center"/>
-
-                <!-- Playback Controls -->
-                <StackPanel Grid.Column="1" 
-                    Orientation="Horizontal" 
-                    HorizontalAlignment="Center" 
-                    Spacing="20">
-                    <Button Background="Transparent" BorderThickness="0">
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE892;" Foreground="#808080"/>
-                    </Button>
-                    <Grid>
-                        <Button x:Name="PlayPauseButton" Background="Transparent" BorderThickness="0" Click="PlayPauseButton_Click">
-                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE769;" Foreground="White"/>
-                        </Button>
-                        <ProgressRing x:Name="LoadingProgressRing"
-                            IsActive="False"
-                            Width="20" 
-                            Height="20"
-                            Foreground="White"/>
-                    </Grid>
-                    <Button Background="Transparent" BorderThickness="0">
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE893;" Foreground="#808080"/>
-                    </Button>
-                </StackPanel>
-
-                <!-- Volume -->
-                <StackPanel Grid.Column="2"
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center">
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE767;" Margin="0,0,8,0"/>
-                    <Slider x:Name="VolumeSlider"
-                        Width="100"
-                        Minimum="0"
-                        Maximum="100"
-                        Value="100"
-                        ValueChanged="VolumeSlider_ValueChanged"/>
-                </StackPanel>
-            </Grid>
-        </Grid>
     </Grid>
 </Page>

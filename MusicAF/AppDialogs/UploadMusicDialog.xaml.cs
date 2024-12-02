@@ -11,6 +11,10 @@ using Microsoft.UI;
 using System.IO;
 using MusicAF.ThirdPartyServices;
 using MusicAF.Models;
+using WinRT.Interop;
+using Windows.Foundation;
+using System.Runtime.InteropServices;
+using Windows.UI.Xaml.Interop;
 
 namespace MusicAF.AppDialogs
 {
@@ -23,7 +27,6 @@ namespace MusicAF.AppDialogs
         private bool isUploading = false;
         private TaskCompletionSource<bool> uploadCompletionSource;
         private ContentDialog _currentDialog = null;
-
 
         public UploadMusicDialog(Window window, string userEmail)
         {
@@ -61,16 +64,23 @@ namespace MusicAF.AppDialogs
         {
             try
             {
-                var picker = new FileOpenPicker();
+                var window = new Microsoft.UI.Xaml.Window();
+                // ...
+                var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
+                var picker = new Windows.Storage.Pickers.FileOpenPicker();
                 picker.FileTypeFilter.Add(".mp3");
                 picker.FileTypeFilter.Add(".wav");
                 picker.FileTypeFilter.Add(".m4a");
-
-                var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(_window);
                 WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
-
                 var file = await picker.PickSingleFileAsync();
 
+                
+
+                // Get the window handle and initialize the picker with it
+                //var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(_window);
+                //WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
+
+                //var file = await picker.PickSingleFileAsync();
                 if (file != null)
                 {
                     selectedFile = file;
@@ -158,6 +168,9 @@ namespace MusicAF.AppDialogs
                     var driveService = GoogleDriveService.Instance;
                     var (fileId, webViewLink) = await driveService.UploadFileAsync(selectedFile.Path, fileName);
 
+                    // Get the artist name based on the current user's email from Firestore
+                    string artistName = await _firestoreService.GetFieldFromDocumentAsync<string>("users", _currentUserEmail, "Name");
+
                     // Get file properties
                     var fileProperties = await selectedFile.GetBasicPropertiesAsync();
 
@@ -166,7 +179,7 @@ namespace MusicAF.AppDialogs
                     {
                         SongId = Guid.NewGuid().ToString(),
                         Title = TitleTextBox?.Text ?? "",
-                        Artist = ArtistTextBox?.Text ?? "",
+                        Artist = artistName,
                         Album = AlbumTextBox?.Text ?? "",
                         Genre = GenreComboBox?.SelectedItem is ComboBoxItem genreItem ?
                                 genreItem.Content?.ToString() : "Other",
@@ -234,11 +247,6 @@ namespace MusicAF.AppDialogs
             if (string.IsNullOrWhiteSpace(TitleTextBox?.Text))
             {
                 error.AppendLine("Title is required");
-            }
-
-            if (string.IsNullOrWhiteSpace(ArtistTextBox?.Text))
-            {
-                error.AppendLine("Artist is required");
             }
 
             if (GenreComboBox?.SelectedItem == null)

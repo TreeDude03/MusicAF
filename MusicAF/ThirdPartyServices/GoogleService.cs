@@ -13,14 +13,25 @@ namespace MusicAF.ThirdPartyServices
     {
         public async Task<GoogleCredential> GetGoogleCredentialAsync()
         {
-            // Access the file using ms-appx:
-            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/config.json"));
-
-            // Read the file content
-            using (Stream stream = await file.OpenStreamForReadAsync())
+            try
             {
-                // Create credential from the stream
-                return GoogleCredential.FromStream(stream);
+                // Access the file using ms-appx:
+                StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/config.json"));
+
+                // Read the file content
+                using (Stream stream = await file.OpenStreamForReadAsync())
+                {
+                    // Create credential from the stream
+                    return GoogleCredential.FromStream(stream);
+                }
+            }
+            catch (FileNotFoundException ex)
+            {
+                throw new InvalidOperationException("Google Cloud config.json file is missing. Ensure it is placed in the Assets folder.", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Failed to load Google Cloud credentials.", ex);
             }
         }
     }

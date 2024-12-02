@@ -135,10 +135,11 @@
                                 VerticalAlignment="Center">
                                 <Button.Tag>
                                     <local:Track 
-                                        Title="{x:Bind Title}"
-                                        Artist="{x:Bind Artist}"
-                                        Album="{x:Bind Album}"
-                                        DriveFileId="{x:Bind DriveFileId}"/>
+    SongId="{x:Bind SongId}"
+    Title="{x:Bind Title}"
+    Artist="{x:Bind Artist}"
+    Album="{x:Bind Album}"
+    DriveFileId="{x:Bind DriveFileId}"/>
                                 </Button.Tag>
                                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE768;" FontSize="16" Foreground="#808080"/>
                             </Button>

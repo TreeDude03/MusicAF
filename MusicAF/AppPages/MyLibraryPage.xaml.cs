@@ -11,12 +11,14 @@ using System.Diagnostics;
 using MusicAF.ThirdPartyServices;
 using MusicAF.Models;
 using MusicAF.AppDialogs;
+using MusicAF.AppWindows;
 
 namespace MusicAF.AppPages
 {
     public sealed partial class MyLibraryPage : Page
     {
         private string currentUserEmail;
+        private readonly Window _window;
         private readonly FirestoreService _firestoreService;
         private bool isLoading;
 
@@ -179,11 +181,15 @@ namespace MusicAF.AppPages
             {
                 if (sender is Button button && button.Tag is Track track)
                 {
-                    // Create instance of NowPlayingPage
                     var nowPlayingPage = new NowPlayingPage();
 
-                    // Navigate to NowPlayingPage
                     Frame.Navigate(typeof(NowPlayingPage), track);
+
+                    // Play the selected track
+                    App.PlaybackService.SetTrackList(Tracks.ToList(), track);
+                    App.PlaybackService.PlayTrack(track);
+
+                    Debug.WriteLine($"Play button clicked for: {track.Title}");
 
                     // Update button visual state
                     UpdatePlayButtonState(button, true);

@@ -96,10 +96,6 @@
                                 Header="Title *" 
                                 PlaceholderText="Enter song title"/>
 
-                        <TextBox x:Name="ArtistTextBox" 
-                                Header="Artist *" 
-                                PlaceholderText="Enter artist name" 
-                                Margin="0,10,0,0"/>
 
                         <TextBox x:Name="AlbumTextBox" 
                                 Header="Album" 

@@ -142,6 +142,7 @@ namespace MusicAF.AppPages
                         Console.WriteLine($"Error updating UI visibility: {ex}");
                     }
                 });
+
             }
             catch (Exception ex)
             {
@@ -182,6 +183,11 @@ namespace MusicAF.AppPages
 
                     // Navigate to NowPlayingPage
                     Frame.Navigate(typeof(NowPlayingPage), track);
+
+                    App.PlaybackService.SetTrackList(Tracks.ToList(), track);
+                    App.PlaybackService.PlayTrack(track);
+
+                    Debug.WriteLine($"Play button clicked for: {track.Title}");
 
                     // Update button visual state
                     UpdatePlayButtonState(button, true);

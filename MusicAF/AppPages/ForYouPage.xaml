@@ -23,12 +23,6 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Background="Transparent" BorderThickness="0" Margin="-10,0,0,0">
-                <StackPanel Orientation="Horizontal">
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72B;" Foreground="#808080"/>
-                </StackPanel>
-            </Button>
-
             <TextBlock Grid.Column="1" Text="For You" Foreground="White"
           FontSize="32" FontWeight="SemiBold"/>
             <!-- Upload Button -->
@@ -135,6 +129,7 @@
                                 VerticalAlignment="Center">
                                 <Button.Tag>
                                     <local:Track 
+                                        SongId="{x:Bind SongId}"
                                         Title="{x:Bind Title}"
                                         Artist="{x:Bind Artist}"
                                         Album="{x:Bind Album}"

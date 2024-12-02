@@ -61,6 +61,17 @@ namespace MusicAF.Models
 
         [FirestoreProperty]
         public string DriveWebViewLink { get; set; }
+        public override bool Equals(object obj)
+        {
+            if (obj is not Track other) return false;
+            return this.SongId == other.SongId; // Compare by unique identifier
+        }
+
+        public override int GetHashCode()
+        {
+            return SongId?.GetHashCode() ?? 0; // Use SongId for hashing
+        }
+
     }
 
     [FirestoreData]

@@ -11,7 +11,7 @@ using System.Net.Http;
 
 namespace MusicAF.ThirdPartyServices
 {
-    public class GoogleDriveService
+    public class GoogleDriveService : GoogleService
     {
         private DriveService _driveService;
         private static GoogleDriveService _instance;
@@ -20,20 +20,33 @@ namespace MusicAF.ThirdPartyServices
 
         private GoogleDriveService()
         {
-            Initialize();
+            _ = Initialize();
         }
 
-        private void Initialize()
+        private async Task Initialize()
         {
-            try
-            {
-                _credential = await GetGoogleCredentialAsync();
-                _credential
-                    .CreateScoped(new[]
-                    {
+            try { 
+            //{
+            //    _credential = await GetGoogleCredentialAsync();
+            //    _credential
+            //        .CreateScoped(new[]
+            //        {
+            //            DriveService.ScopeConstants.DriveFile,
+            //            DriveService.ScopeConstants.DriveReadonly
+            //        });
+
+            //    _driveService = new DriveService(new BaseClientService.Initializer()
+            //    {
+            //        HttpClientInitializer = _credential,
+            //        ApplicationName = "MusicAF"
+            //    });
+
+                _credential = GoogleCredential.FromFile("C:\\Users\\ACER\\source\\repos\\MusicAF\\MusicAF\\Assets\\config.json")
+                   .CreateScoped(new[]
+                   {
                         DriveService.ScopeConstants.DriveFile,
                         DriveService.ScopeConstants.DriveReadonly
-                    });
+                   });
 
                 _driveService = new DriveService(new BaseClientService.Initializer()
                 {

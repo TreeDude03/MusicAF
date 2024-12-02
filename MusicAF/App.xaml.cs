@@ -16,6 +16,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using MusicAF.AppWindows;
+using MusicAF.Helpers;
 
 
 // To learn more about WinUI, the WinUI project structure,
@@ -28,12 +29,18 @@ namespace MusicAF
     /// </summary>
     public partial class App : Application
     {
+        public static PlaybackService PlaybackService { get; } = new PlaybackService();
         public static Window MainWindow { get; private set; }
         public static string CurrentUserEmail { get; private set; }
 
         [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
         [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
         static extern bool AllocConsole();
+        public App()
+        {
+            this.InitializeComponent();
+        }
+
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
 
