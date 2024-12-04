@@ -9,6 +9,9 @@
     mc:Ignorable="d">
 
     <Grid>
+
+        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -23,8 +26,16 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="1" Text="For You" Foreground="White"
-          FontSize="32" FontWeight="SemiBold"/>
+            <TextBlock Grid.Column="0" Text="For You" Foreground="White"
+            FontSize="32" FontWeight="SemiBold"/>
+
+            <ProgressRing Grid.Column="1" x:Name="DownloadProgressRing" 
+                 IsActive="False" 
+                 Visibility="Collapsed" 
+                 HorizontalAlignment="Center" 
+                 VerticalAlignment="Center" 
+                 Width="50" 
+                 Height="50" Margin="0,10,0,10"/>
             <!-- Upload Button -->
             <Button Grid.Column="2" Background="#25202f" Foreground="White" Padding="15,8" Click="UploadMusicButton_Click">
                 <StackPanel Orientation="Horizontal">
@@ -62,7 +73,7 @@
                     <Grid Padding="16,8" Background="#211d2d" BorderThickness="0,0,0,1" BorderBrush="#333">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="48"/>
-                            <!-- Play button width -->
+                            <!-- Play button -->
                             <ColumnDefinition Width="*"/>
                             <!-- Title -->
                             <ColumnDefinition Width="200"/>
@@ -71,12 +82,16 @@
                             <!-- Album -->
                             <ColumnDefinition Width="150"/>
                             <!-- Upload Date -->
+                            <ColumnDefinition Width="100"/>
+                            <!-- Download Button -->
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="1" Text="TITLE"  Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
                         <TextBlock Grid.Column="2" Text="ARTIST" Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
                         <TextBlock Grid.Column="3" Text="ALBUM" Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
                         <TextBlock Grid.Column="4" Text="UPLOAD DATE" Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
+                        <TextBlock Grid.Column="5" Text="DOWNLOAD" Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
+
                     </Grid>
                 </ListView.Header>
 
@@ -116,6 +131,7 @@
                                 <ColumnDefinition Width="200"/>
                                 <ColumnDefinition Width="200"/>
                                 <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="100"/>
                             </Grid.ColumnDefinitions>
 
                             <!-- Play Button -->
@@ -147,6 +163,27 @@
                             <TextBlock Grid.Column="3" Text="{x:Bind Album}"  Foreground="#808080" VerticalAlignment="Center" Margin="8,0" TextTrimming="CharacterEllipsis"/>
                             <!-- Upload Date -->
                             <TextBlock Grid.Column="4" Text="{x:Bind UploadDate}" Foreground="#808080" VerticalAlignment="Center" Margin="8,0"/>
+
+                            <Button Grid.Column="5"
+                                Background="Transparent"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Visibility="{x:Bind CanDownload, Converter={StaticResource BoolToVisibilityConverter}}"
+                                Click="DownloadButton_Click">
+                                <Button.Content>
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE896;" Foreground="White" FontSize="16"/>
+                                    <!-- &#xE896; is the Unicode for the download icon -->
+                                </Button.Content>
+                                <Button.Tag>
+                                        <local:Track 
+                                               SongId="{x:Bind SongId}"
+                                              Title="{x:Bind Title}"
+                                              Artist="{x:Bind Artist}"
+                                              Album="{x:Bind Album}"
+                                              DriveFileId="{x:Bind DriveFileId}"
+                                              FileDetails= "{x:Bind FileDetails}" />
+                                </Button.Tag>
+                            </Button>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
