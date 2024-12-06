@@ -15,6 +15,12 @@ namespace MusicAF.Helpers
         private List<Track> _currentTrackList;
         private int _currentTrackIndex;
 
+        public Track CurrentTrack
+        {
+            get => _currentTrack;
+            private set => _currentTrack = value;
+        }
+
         public void SetTrackList(List<Track> trackList, Track track)
         {
             Console.WriteLine(trackList.Count);

@@ -181,10 +181,11 @@ namespace MusicAF.AppPages
             {
                 if (sender is Button button && button.Tag is Track track)
                 {
+                    // Create instance of NowPlayingPage
                     var nowPlayingPage = new NowPlayingPage();
 
+                    // Navigate to NowPlayingPage
                     Frame.Navigate(typeof(NowPlayingPage), track);
-
                     // Play the selected track
                     App.PlaybackService.SetTrackList(Tracks.ToList(), track);
                     App.PlaybackService.PlayTrack(track);

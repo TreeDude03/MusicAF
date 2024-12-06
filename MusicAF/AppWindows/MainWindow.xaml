@@ -149,19 +149,40 @@
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE893;" Foreground="#808080"/>
                     </Button>
                 </StackPanel>
+                
 
                 <!-- Volume -->
                 <StackPanel Grid.Column="2"
-                Orientation="Horizontal"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center">
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE767;" Margin="0,0,8,0"/>
+            Orientation="Horizontal"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center">
+                    <!-- Now Playing Button -->
+                    <Button Background="Transparent"
+            Width="40"
+            Height="40"
+            Click="NowPlayingButton_Click"
+            VerticalAlignment="Center"
+            Margin="10,0,0,0">
+                        <FontIcon Foreground="Green" 
+                  Glyph="&#xE768;" 
+                  FontFamily="Segoe MDL2 Assets" />
+                    </Button>
+
+                    <!-- Volume Icon -->
+                    <FontIcon FontFamily="Segoe MDL2 Assets" 
+              Glyph="&#xE767;" 
+              Margin="0,0,8,0" 
+              VerticalAlignment="Center"/>
+
+                    <!-- Volume Slider -->
                     <Slider x:Name="VolumeSlider"
-                    Width="100"
-                    Minimum="0"
-                    Maximum="100"
-                    Value="100"
-                    ValueChanged="VolumeSlider_ValueChanged"/>
+            Margin="8,0,0,0"
+            Width="100"
+            Minimum="0"
+            Maximum="100"
+            Value="100"
+            VerticalAlignment="Center"
+            ValueChanged="VolumeSlider_ValueChanged"/>
                 </StackPanel>
             </Grid>
         </Grid>

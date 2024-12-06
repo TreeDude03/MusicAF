@@ -80,7 +80,7 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="1" Text="TITLE"  Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
-                        <TextBlock Grid.Column="2" Text="ARTIST" Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
+                        <TextBlock Grid.Column="2" Text="GENRE" Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
                         <TextBlock Grid.Column="3" Text="ALBUM" Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
                         <TextBlock Grid.Column="4" Text="UPLOAD DATE" Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
                     </Grid>
@@ -137,7 +137,7 @@
                                     <local:Track 
     SongId="{x:Bind SongId}"
     Title="{x:Bind Title}"
-    Artist="{x:Bind Artist}"
+    Genre="{x:Bind Genre}"
     Album="{x:Bind Album}"
     DriveFileId="{x:Bind DriveFileId}"/>
                                 </Button.Tag>
@@ -148,7 +148,7 @@
                                 <TextBlock Text="{x:Bind Title}" Foreground="White" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
                             </StackPanel>
                             <!-- Artist -->
-                            <TextBlock Grid.Column="2" Text="{x:Bind Artist}" Foreground="#808080" VerticalAlignment="Center" Margin="8,0" TextTrimming="CharacterEllipsis"/>
+                            <TextBlock Grid.Column="2" Text="{x:Bind Genre}" Foreground="#808080" VerticalAlignment="Center" Margin="8,0" TextTrimming="CharacterEllipsis"/>
                             <!-- Album -->
                             <TextBlock Grid.Column="3" Text="{x:Bind Album}"  Foreground="#808080" VerticalAlignment="Center" Margin="8,0" TextTrimming="CharacterEllipsis"/>
                             <!-- Upload Date -->

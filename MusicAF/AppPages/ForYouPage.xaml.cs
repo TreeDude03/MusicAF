@@ -13,6 +13,7 @@ using MusicAF.AppDialogs;
 using MusicAF.Models;
 using Windows.Storage;
 using System.IO;
+using Microsoft.UI.Xaml.Media;
 
 namespace MusicAF.AppPages
 {
@@ -21,6 +22,8 @@ namespace MusicAF.AppPages
         private string currentUserEmail;
         private readonly FirestoreService _firestoreService;
         private bool isLoading;
+        private Track _currentlyPlayingTrack;
+
 
         private ObservableCollection<Track> _tracks;
         public ObservableCollection<Track> Tracks
@@ -185,14 +188,13 @@ namespace MusicAF.AppPages
 
                     // Navigate to NowPlayingPage
                     Frame.Navigate(typeof(NowPlayingPage), track);
-
                     App.PlaybackService.SetTrackList(Tracks.ToList(), track);
                     App.PlaybackService.PlayTrack(track);
 
                     Debug.WriteLine($"Play button clicked for: {track.Title}");
 
                     // Update button visual state
-                    UpdatePlayButtonState(button, true);
+                    UpdatePlayButtonState(button, true, track);
                 }
             }
             catch (Exception ex)
@@ -202,13 +204,43 @@ namespace MusicAF.AppPages
             }
         }
 
-        private void UpdatePlayButtonState(Button button, bool isPlaying)
+        private void UpdatePlayButtonState(Button button, bool isPlaying, Track selectedTrack)
         {
+            if (_currentlyPlayingTrack != null && _currentlyPlayingTrack != selectedTrack)
+            {
+                _currentlyPlayingTrack = selectedTrack;
+                ResetAllPlayButtons();
+            }
+            _currentlyPlayingTrack = selectedTrack;
             if (button.Content is FontIcon icon)
             {
                 icon.Glyph = isPlaying ? "\uE769" : "\uE768"; // Pause : Play
             }
+
         }
+
+        private void ResetAllPlayButtons()
+        {
+            // Iterate through all items in the ListView
+            foreach (var item in TracksListView.Items)
+            {
+                // Get the container for the current item
+                var container = TracksListView.ContainerFromItem(item) as ListViewItem;
+
+                if (container != null)
+                {
+                    // Assuming the Button is directly part of the container's visual structure
+                    var button = container.ContentTemplateRoot as Button;
+
+                    if (button != null && button.Content is FontIcon icon)
+                    {
+                        // Reset the glyph to "Play" (&#xE768;)
+                        icon.Glyph = "\uE768";
+                    }
+                }
+            }
+        }
+
 
         private async void UploadMusicButton_Click(object sender, RoutedEventArgs e)
         {
@@ -373,6 +405,15 @@ namespace MusicAF.AppPages
             // Implement the download logic
             Debug.WriteLine($"Downloading track: {track.Title}");
             return Task.CompletedTask;
+        }
+
+        private void ArtistButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Content is TextBlock textBlock)
+            {
+                string artistName = textBlock.Text;
+                Frame.Navigate(typeof(ArtistPage), artistName);
+            }
         }
     }
 }
