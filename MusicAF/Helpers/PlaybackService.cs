@@ -15,6 +15,8 @@ namespace MusicAF.Helpers
         private List<Track> _currentTrackList;
         private int _currentTrackIndex;
 
+ 
+
         public Track CurrentTrack
         {
             get => _currentTrack;

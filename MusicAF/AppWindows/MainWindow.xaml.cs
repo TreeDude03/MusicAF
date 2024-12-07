@@ -41,6 +41,9 @@ namespace MusicAF.AppWindows
         private string currentAccessToken;
         private System.Net.Http.HttpClient httpClient;
 
+        private string _currentTrackName;
+        private string _currentTrackArtist;
+
         public MainWindow(string userEmail)
         {
             try
@@ -50,6 +53,7 @@ namespace MusicAF.AppWindows
                 this.InitializeComponent();
                 InitializeMediaPlayer();
                 InitializeProgressTimer();
+                SetCurrentTrack();
 
                 App.PlaybackService.TrackChanged += OnTrackChanged;
                 _driveService = GoogleDriveService.Instance;
@@ -67,6 +71,25 @@ namespace MusicAF.AppWindows
                 // Handle any initialization errors
                 ShowErrorDialog($"Error initializing main window: {ex.Message}");
             }
+        }
+
+        // Method to set the current track name and update the UI
+        private void SetCurrentTrack()
+        {
+             if (currentTrack == null)
+            {
+                _currentTrackName = "";
+                _currentTrackArtist = "";
+            }
+            else
+            {
+                _currentTrackName = currentTrack.Title;
+                _currentTrackArtist = currentTrack.Artist;
+            }
+
+            // Update the UI
+            TrackNameTextBlock.Text = _currentTrackName;
+            ArtistNameTextBlock.Text = _currentTrackArtist;
         }
 
         private void SetWindowSize(int width, int height)
@@ -131,6 +154,8 @@ namespace MusicAF.AppWindows
                 
                 currentTrack = track;
                 _ = PlayTrack();
+
+                SetCurrentTrack();
 
                 // Add your playback logic here
                 Debug.WriteLine($"Now playing: {track.Title} by {track.Artist}");

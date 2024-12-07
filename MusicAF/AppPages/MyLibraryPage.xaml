@@ -138,6 +138,7 @@
     SongId="{x:Bind SongId}"
     Title="{x:Bind Title}"
     Genre="{x:Bind Genre}"
+     Artist="{x:Bind Artist}"                                   
     Album="{x:Bind Album}"
     DriveFileId="{x:Bind DriveFileId}"/>
                                 </Button.Tag>

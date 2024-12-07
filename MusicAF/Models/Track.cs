@@ -63,6 +63,8 @@ namespace MusicAF.Models
         public string DriveWebViewLink { get; set; }
 
         public bool CanDownload => AllowDownload && DownloadPrice == 0;
+
+
         public override bool Equals(object obj)
         {
             if (obj is not Track other) return false;

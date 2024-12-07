@@ -100,19 +100,45 @@
                 <Frame x:Name="MainFrame" />
             </Grid>
 
+
         <!-- Playback Control Bar -->
-        <Grid Grid.ColumnSpan="2" Grid.Row="1"  Background="#251f2e"  Height="80">
+        <Grid Grid.ColumnSpan="2" Grid.Row="1"  Background="#251f2e"  Height="90">
             <!-- Progress Bar -->
-            <Slider x:Name="ProgressSlider"
-            Background="#3f3647" 
-            Foreground="#6b5f7b" 
-            BorderThickness="0"
-            ValueChanged="ProgressSlider_ValueChanged"
-            Maximum="100"
-            Value="0"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="24"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0"  Background="Transparent" Margin="10,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- TextBlock for current time -->
+                    <ColumnDefinition Width="*" />
+                    <!-- Slider for progress bar -->
+                </Grid.ColumnDefinitions>
+
+                <!-- Current Time TextBlock -->
+                <TextBlock x:Name="CurrentTimeText"
+                   Text="00:00"
+                   Foreground="#808080"
+                   VerticalAlignment="Center"
+                   Margin="0,0,10,0" />
+                <!-- Adds spacing to the right -->
+
+                <!-- Progress Slider -->
+                <Slider x:Name="ProgressSlider"
+                  Grid.Column="1"
+                  Background="#3f3647"
+                  Foreground="#6b5f7b"
+                  BorderThickness="0"
+                  ValueChanged="ProgressSlider_ValueChanged"
+                  Maximum="100"
+                  Value="0"
+                 VerticalAlignment="Center" />
+            </Grid>
 
             <!-- Controls -->
-            <Grid Margin="10,15,10,10">
+            <Grid Grid.Row="1"  Margin="10,0,10,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -120,12 +146,20 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Time -->
-                <TextBlock x:Name="CurrentTimeText"
-                Grid.Column="0" 
-                Text="00:00" 
-                Foreground="#808080" 
-                VerticalAlignment="Center"/>
+                <!-- Left Section -->
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                    <!-- Time -->
+                
+                    <TextBlock Name="TrackNameTextBlock" 
+                       Foreground="White" 
+                       FontWeight="Bold" 
+                       FontSize="16" 
+                       Text="Track Name" />
+                    <TextBlock Name="ArtistNameTextBlock" 
+                       Foreground="Gray" 
+                       FontSize="14" 
+                       Text="Artist Name" />
+                </StackPanel>
 
                 <!-- Playback Controls -->
                 <StackPanel Grid.Column="1" 
@@ -158,11 +192,11 @@
             VerticalAlignment="Center">
                     <!-- Now Playing Button -->
                     <Button Background="Transparent"
-            Width="40"
-            Height="40"
-            Click="NowPlayingButton_Click"
-            VerticalAlignment="Center"
-            Margin="10,0,0,0">
+                        Width="40"
+                       Height="40"
+                       Click="NowPlayingButton_Click"
+                       VerticalAlignment="Center"
+                        Margin="10,0,10,0">
                         <FontIcon Foreground="Green" 
                   Glyph="&#xE768;" 
                   FontFamily="Segoe MDL2 Assets" />
