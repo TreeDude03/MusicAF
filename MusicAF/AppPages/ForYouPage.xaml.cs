@@ -11,6 +11,9 @@ using System.Diagnostics;
 using MusicAF.ThirdPartyServices;
 using MusicAF.AppDialogs;
 using MusicAF.Models;
+using Windows.Storage;
+using System.IO;
+using Microsoft.UI.Xaml.Media;
 
 namespace MusicAF.AppPages
 {
@@ -19,6 +22,8 @@ namespace MusicAF.AppPages
         private string currentUserEmail;
         private readonly FirestoreService _firestoreService;
         private bool isLoading;
+        private Track _currentlyPlayingTrack;
+
 
         private ObservableCollection<Track> _tracks;
         public ObservableCollection<Track> Tracks
@@ -190,7 +195,7 @@ namespace MusicAF.AppPages
                     Debug.WriteLine($"Play button clicked for: {track.Title}");
 
                     // Update button visual state
-                    UpdatePlayButtonState(button, true);
+                    UpdatePlayButtonState(button, true, track);
                 }
             }
             catch (Exception ex)
@@ -200,13 +205,43 @@ namespace MusicAF.AppPages
             }
         }
 
-        private void UpdatePlayButtonState(Button button, bool isPlaying)
+        private void UpdatePlayButtonState(Button button, bool isPlaying, Track selectedTrack)
         {
+            if (_currentlyPlayingTrack != null && _currentlyPlayingTrack != selectedTrack)
+            {
+                _currentlyPlayingTrack = selectedTrack;
+                ResetAllPlayButtons();
+            }
+            _currentlyPlayingTrack = selectedTrack;
             if (button.Content is FontIcon icon)
             {
                 icon.Glyph = isPlaying ? "\uE769" : "\uE768"; // Pause : Play
             }
+
         }
+
+        private void ResetAllPlayButtons()
+        {
+            // Iterate through all items in the ListView
+            foreach (var item in TracksListView.Items)
+            {
+                // Get the container for the current item
+                var container = TracksListView.ContainerFromItem(item) as ListViewItem;
+
+                if (container != null)
+                {
+                    // Assuming the Button is directly part of the container's visual structure
+                    var button = container.ContentTemplateRoot as Button;
+
+                    if (button != null && button.Content is FontIcon icon)
+                    {
+                        // Reset the glyph to "Play" (&#xE768;)
+                        icon.Glyph = "\uE768";
+                    }
+                }
+            }
+        }
+
 
         private async void UploadMusicButton_Click(object sender, RoutedEventArgs e)
         {
@@ -277,6 +312,109 @@ namespace MusicAF.AppPages
                 NoTracksMessage.Visibility = Visibility.Visible;
                 TracksListView.Visibility = Visibility.Collapsed;
             });
+        }
+
+        private async void DownloadButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Tag is Track track)
+            {
+                try
+                {
+                    Console.WriteLine("Here.");
+                    var window = new Microsoft.UI.Xaml.Window();
+                    // ...
+                    var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
+                    var folderPicker = new Windows.Storage.Pickers.FolderPicker();
+                    folderPicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.Desktop;
+                    folderPicker.FileTypeFilter.Add("*");
+                    WinRT.Interop.InitializeWithWindow.Initialize(folderPicker, hwnd);
+                    Windows.Storage.StorageFolder folder = await folderPicker.PickSingleFolderAsync();
+                    if (folder != null)
+                    {
+                        // Application now has read/write access to all contents in the picked folder
+                        // (including other sub-folder contents)
+                        Windows.Storage.AccessCache.StorageApplicationPermissions.
+                        FutureAccessList.AddOrReplace("PickedFolderToken", folder);
+
+                        // Show the loading state
+                        DownloadProgressRing.IsActive = true;
+                        DownloadProgressRing.Visibility = Visibility.Visible;
+
+                        // Retrieve the audio file using DriveFileId
+                        var fileStream = await RetrieveAudioFileAsync(track.DriveFileId);
+
+                        // Create a file in the selected folder
+                        var newFile = await folder.CreateFileAsync(track.FileDetails.FileName, CreationCollisionOption.ReplaceExisting);
+
+                        // Save the file
+                        using (var fileOutputStream = await newFile.OpenStreamForWriteAsync())
+                        {
+                            await fileStream.CopyToAsync(fileOutputStream);
+                        }
+
+                        Console.WriteLine($"File downloaded successfully: {newFile.Path}");
+                        DownloadProgressRing.IsActive = false;
+                        DownloadProgressRing.Visibility = Visibility.Collapsed;
+                        await ShowDownloadSuccessMessage(newFile.Path);
+                        
+                    }
+                    else
+                    {
+                        Console.WriteLine("No folder selected.");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error downloading file: {ex.Message}");
+                }
+            }
+        }
+
+        private async Task ShowDownloadSuccessMessage(string filePath)
+        {
+            var dialog = new ContentDialog
+            {
+                Title = "Download Complete",
+                Content = $"Your file has been successfully downloaded to:\n{filePath}",
+                CloseButtonText = "OK",
+                XamlRoot = this.Content.XamlRoot // Ensure XamlRoot is set for the current page
+            };
+
+            await dialog.ShowAsync();
+        }
+
+
+        private async Task<Stream> RetrieveAudioFileAsync(string driveFileId)
+        {
+            try
+            {
+                // Assume you have a GoogleDriveService to handle file downloads
+                var driveService = GoogleDriveService.Instance;
+                var fileStream = await driveService.DownloadFileAsync(driveFileId);
+                return fileStream;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error retrieving file from Drive: {ex.Message}");
+                throw;
+            }
+        }
+
+        private Task DownloadTrackAsync(Track track)
+        {
+            // Implement the download logic
+            Debug.WriteLine($"Downloading track: {track.Title}");
+            return Task.CompletedTask;
+        }
+
+        private void ArtistButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Content is TextBlock textBlock)
+            {
+                string artistName = textBlock.Text;
+                Frame.Navigate(typeof(ArtistPage), artistName);
+            }
         }
     }
 }

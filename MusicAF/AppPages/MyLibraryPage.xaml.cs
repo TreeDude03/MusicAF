@@ -181,6 +181,7 @@ namespace MusicAF.AppPages
             {
                 if (sender is Button button && button.Tag is Track track)
                 {
+                    // Create instance of NowPlayingPage
                     var nowPlayingPage = new NowPlayingPage();
 
                     Frame.Navigate(typeof(NowPlayingPage), (_track: track, _email:  currentUserEmail));

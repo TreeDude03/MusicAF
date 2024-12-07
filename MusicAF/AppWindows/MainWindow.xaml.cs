@@ -474,6 +474,17 @@ namespace MusicAF.AppWindows
             }
         }
 
-    
+        private void NowPlayingButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainFrame != null && App.PlaybackService.CurrentTrack != null)
+            {
+                MainFrame.Navigate(typeof(NowPlayingPage), App.PlaybackService.CurrentTrack);
+            }
+            else
+            {
+                ShowErrorDialog("No track is currently playing or the frame is not initialized.");
+            }
+        }
+
     }
 }

@@ -174,6 +174,24 @@ namespace MusicAF.ThirdPartyServices
                 throw;
             }
         }
+        public async Task<Stream> DownloadFileAsync(string fileId)
+        {
+            try
+            {
+                // Use Google Drive API to fetch the file
+                var request = _driveService.Files.Get(fileId);
+                var stream = new MemoryStream();
+                await request.DownloadAsync(stream);
+                stream.Position = 0; // Reset stream position
+                return stream;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Google Drive download error: {ex.Message}");
+                throw;
+            }
+        }
+
 
         public async Task<string> GetAccessTokenAsync()
         {

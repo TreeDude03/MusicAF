@@ -13,6 +13,7 @@
             </ResourceDictionary.MergedDictionaries>
             <local:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter"/>
             <local:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+            <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             <!-- Other app resources here -->
         </ResourceDictionary>
     </Application.Resources>
