@@ -413,7 +413,7 @@ namespace MusicAF.AppPages
             if (sender is Button button && button.Content is TextBlock textBlock)
             {
                 string artistName = textBlock.Text;
-                Frame.Navigate(typeof(ArtistPage), artistName);
+                //Frame.Navigate(typeof(ArtistPage), artistName);
             }
         }
     }
