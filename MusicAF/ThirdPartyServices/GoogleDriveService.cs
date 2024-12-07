@@ -25,34 +25,33 @@ namespace MusicAF.ThirdPartyServices
 
         private async Task Initialize()
         {
-            try { 
-            //{
-            //    _credential = await GetGoogleCredentialAsync();
-            //    _credential
-            //        .CreateScoped(new[]
-            //        {
-            //            DriveService.ScopeConstants.DriveFile,
-            //            DriveService.ScopeConstants.DriveReadonly
-            //        });
-
-            //    _driveService = new DriveService(new BaseClientService.Initializer()
-            //    {
-            //        HttpClientInitializer = _credential,
-            //        ApplicationName = "MusicAF"
-            //    });
-
-                _credential = GoogleCredential.FromFile("C:\\Users\\ACER\\source\\repos\\MusicAF\\MusicAF\\Assets\\config.json")
-                   .CreateScoped(new[]
-                   {
+            try {
+                _credential = await GetGoogleCredentialAsync();
+                _credential = _credential
+                    .CreateScoped(new[]
+                    {
                         DriveService.ScopeConstants.DriveFile,
                         DriveService.ScopeConstants.DriveReadonly
-                   });
+                    });
 
                 _driveService = new DriveService(new BaseClientService.Initializer()
                 {
                     HttpClientInitializer = _credential,
                     ApplicationName = "MusicAF"
                 });
+
+                //_credential = GoogleCredential.FromFile("C:\\Users\\ACER\\source\\repos\\MusicAF\\MusicAF\\Assets\\config.json")
+                //   .CreateScoped(new[]
+                //   {
+                //        DriveService.ScopeConstants.DriveFile,
+                //        DriveService.ScopeConstants.DriveReadonly
+                //   });
+
+                //_driveService = new DriveService(new BaseClientService.Initializer()
+                //{
+                //    HttpClientInitializer = _credential,
+                //    ApplicationName = "MusicAF"
+                //});
             }
             catch (Exception ex)
             {

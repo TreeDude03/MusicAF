@@ -24,6 +24,7 @@
     <Page Remove="Windows\**" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="AppPages\CommentPage.xaml" />
     <None Remove="LogInWindow.xaml" />
   </ItemGroup>
   <ItemGroup>
@@ -83,5 +84,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppDialogs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="AppPages\CommentPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 </Project>

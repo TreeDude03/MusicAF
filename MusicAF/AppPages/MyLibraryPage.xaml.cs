@@ -183,7 +183,7 @@ namespace MusicAF.AppPages
                 {
                     var nowPlayingPage = new NowPlayingPage();
 
-                    Frame.Navigate(typeof(NowPlayingPage), track);
+                    Frame.Navigate(typeof(NowPlayingPage), (_track: track, _email:  currentUserEmail));
 
                     // Play the selected track
                     App.PlaybackService.SetTrackList(Tracks.ToList(), track);

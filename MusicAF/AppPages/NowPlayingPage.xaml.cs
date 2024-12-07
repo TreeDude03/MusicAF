@@ -31,6 +31,8 @@ namespace MusicAF.AppPages
         private DispatcherTimer _progressTimer;
         private string currentAccessToken;
         private System.Net.Http.HttpClient httpClient;
+        //
+        private string listenerEmail;
 
         public NowPlayingPage()
         {
@@ -44,11 +46,13 @@ namespace MusicAF.AppPages
         {
             base.OnNavigatedTo(e);
 
-            if (e.Parameter is Track track)
+            if (e.Parameter is ValueTuple<Track, string> parameters)
             {
-                currentTrack = track;
+                currentTrack = parameters.Item1;
                 // Store the user email from the track
-                currentUserEmail = track.Uploader;
+                currentUserEmail = currentTrack.Uploader;
+                //
+                listenerEmail = parameters.Item2;
                 UpdateUI();
             }
         }
@@ -122,13 +126,19 @@ namespace MusicAF.AppPages
                 ShowErrorDialogAsync($"Error navigating to library: {ex.Message}").ConfigureAwait(false);
             }
         }
-        private void ForYouButton_Click(object sender, RoutedEventArgs e)
+
+        private void CommentIcon_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(ForYouPage), currentUserEmail);
-        }
-        private void LibraryButton_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(MyLibraryPage), currentUserEmail);
+            try
+            {
+                // Navigate to CommentPage with the current track details
+                Frame.Navigate(typeof(CommentPage), (_track: currentTrack, _commentUser: listenerEmail));
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error navigating to comment page: {ex.Message}");
+                ShowErrorDialogAsync($"Error navigating to comment page: {ex.Message}").ConfigureAwait(false);
+            }
         }
 
     }
