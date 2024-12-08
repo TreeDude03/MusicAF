@@ -141,6 +141,14 @@ namespace MusicAF.AppPages
             }
         }
 
+        private void BackClick(object sender, RoutedEventArgs e)
+        {
+            if (Frame.CanGoBack)
+            {
+                Frame.GoBack();
+            }
+        }
+
     }
 }
 

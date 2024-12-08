@@ -114,6 +114,11 @@ namespace MusicAF.AppWindows
             MainFrame.Navigate(typeof(MyLibraryPage),currentUserEmail);
         }
 
+        private void PlaylistButton_Click(object sender, RoutedEventArgs e)
+        {
+            //MainFrame.Navigate(typeof(MyLibraryPage), currentUserEmail);
+        }
+
         private void PrevButton_Click(object sender, RoutedEventArgs e)
         {
             App.PlaybackService.PlayPreviousTrack();
@@ -485,6 +490,17 @@ namespace MusicAF.AppWindows
                 ShowErrorDialog("No track is currently playing or the frame is not initialized.");
             }
         }
-
+        private void SearchBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                var searchText = SearchBox.Text?.Trim();
+                if (!string.IsNullOrEmpty(searchText))
+                {
+                    Debug.WriteLine($"Navigating to SearchPage with query: {searchText}");
+                    MainFrame.Navigate(typeof(SearchPage), (_email: currentUserEmail, _key: searchText));
+                }
+            }
+        }
     }
 }

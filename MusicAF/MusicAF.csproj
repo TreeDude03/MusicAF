@@ -26,6 +26,7 @@
   <ItemGroup>
     <None Remove="AppPages\CommentPage.xaml" />
     <None Remove="AppPages\ArtistPage.xaml" />
+    <None Remove="AppPages\SearchPage.xaml" />
     <None Remove="LogInWindow.xaml" />
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +86,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppDialogs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="AppPages\SearchPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="AppPages\ArtistPage.xaml">

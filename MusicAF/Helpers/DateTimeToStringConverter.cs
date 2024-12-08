@@ -9,7 +9,7 @@ namespace MusicAF.Helpers
         {
             if (value is DateTime dateTime)
             {
-                return dateTime.ToString("MMM dd, yyyy HH:mm"); // Example: Dec 07, 2024 14:30
+                return dateTime.ToString("MMM dd, yyyy"); // Example: Dec 07, 2024
             }
 
             return string.Empty;

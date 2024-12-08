@@ -34,8 +34,14 @@
                         <StackPanel>
                             <!-- Search Box -->
                             <Grid Margin="10,10,10,20">
-                                <TextBox PlaceholderText="Search..."  Background="#25202f" BorderThickness="0"/>
-                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE721;" Foreground="Gray" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBox 
+                                x:Name="SearchBox" 
+                                PlaceholderText="Search..."  
+                                Background="#25202f" 
+                                BorderThickness="0"
+                                KeyDown="SearchBox_KeyDown" 
+                                />
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE721;" Foreground="Gray" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0"/>
                             </Grid>
                             <!-- Navigation Menu -->
                             <StackPanel Margin="10,0,10,0" Spacing="5">
@@ -44,7 +50,7 @@
                                     <Grid Height="35">
                                         <StackPanel Orientation="Horizontal">
                                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE93C;" Foreground="#808080"/>
-                                            <TextBlock Text="For you" Margin="10,5,0,0" Foreground="#808080"/>
+                                            <TextBlock Text="For You" Margin="10,5,0,0" Foreground="#808080"/>
                                         </StackPanel>
                                     </Grid>
                                 </Button>
@@ -54,7 +60,7 @@
                                     <Grid Height="35">
                                         <StackPanel Orientation="Horizontal">
                                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8F1;" Foreground="#808080"/>
-                                            <TextBlock Text="Library" Margin="10,5,0,0" Foreground="#808080"/>
+                                            <TextBlock Text="My Library" Margin="10,5,0,0" Foreground="#808080"/>
                                         </StackPanel>
                                     </Grid>
                                 </Button>
@@ -64,17 +70,17 @@
                                     <Grid Height="35">
                                         <StackPanel Orientation="Horizontal">
                                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8F1;" Foreground="#808080"/>
-                                            <TextBlock Text="Saved" Margin="10,5,0,0" Foreground="#808080"/>
+                                            <TextBlock Text="Liked" Margin="10,5,0,0" Foreground="#808080"/>
                                         </StackPanel>
                                     </Grid>
                                 </Button>
 
                                 <!-- Playlists -->
-                                <Button Background="Transparent" BorderThickness="0">
+                                <Button Click="PlaylistButton_Click" Background="Transparent" BorderThickness="0">
                                     <Grid Height="35">
                                         <StackPanel Orientation="Horizontal">
                                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE90B;" Foreground="#808080"/>
-                                            <TextBlock Text="Playlists" Margin="10,5,0,0" Foreground="#808080"/>
+                                            <TextBlock Text="Playlists For You" Margin="10,5,0,0" Foreground="#808080"/>
                                         </StackPanel>
                                     </Grid>
                                 </Button>

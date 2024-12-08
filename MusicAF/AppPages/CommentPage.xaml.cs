@@ -94,11 +94,11 @@ namespace MusicAF.AppPages
                 // Add comment to Firestore
                 var trackId = currentTrack.SongId;
                 var commentData = new Dictionary<string, object>
-        {
-            { "User", newComment.User },
-            { "Content", newComment.Content },
-            { "Timestamp", newComment.DatePosted }
-        };
+                {
+                    { "User", newComment.User },
+                    { "Content", newComment.Content },
+                    { "Timestamp", newComment.DatePosted }
+                };
 
                 await firestoreService.AddDocumentAsync($"Comments/{trackId}/List", Guid.NewGuid().ToString(), commentData);
 

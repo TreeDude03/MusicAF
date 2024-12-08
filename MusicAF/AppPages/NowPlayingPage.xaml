@@ -13,6 +13,14 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <StackPanel Grid.Row="0" HorizontalAlignment="Left">
+            <Button Grid.Column="0" Background="Transparent" BorderThickness="0" Margin="-10,0,0,0" Click="BackClick">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72B;" Foreground="#808080"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
         <Grid Grid.Row="1" Background="#1a1625">
             <!-- Album Art and Info -->
             <Grid Margin="20,20,0,0">
@@ -29,12 +37,12 @@
 
                 <!-- Track Info -->
                 <StackPanel Grid.Row="1" HorizontalAlignment="Center">
-                    <TextBlock x:Name="TrackTitleText" Text="Track Title" FontSize="24" TextAlignment="Center" Margin="0,0,0,10"/>
-                    <TextBlock x:Name="ArtistText" Text="Artist" FontSize="18" TextAlignment="Center" Margin="0,0,0,5"/>
-                    <TextBlock x:Name="AlbumText" Text="Album" FontSize="16" TextAlignment="Center" Opacity="0.7"/>
+                    <TextBlock x:Name="TrackTitleText" Text="Track Title" Foreground="#909090" FontSize="24" TextAlignment="Center" Margin="0,0,0,10"/>
+                    <TextBlock x:Name="ArtistText" Text="Artist" Foreground="#909090" FontSize="18" TextAlignment="Center" Margin="0,0,0,5"/>
+                    <TextBlock x:Name="AlbumText" Text="Album" Foreground="#909090" FontSize="16" TextAlignment="Center" Opacity="0.7"/>
                 </StackPanel>
 
-                <!-- Comment Icon -->
+                <!-- Comments and Love Icon -->
                 <StackPanel Grid.Row="1" Orientation="Vertical">
                     <Button VerticalAlignment="Bottom" HorizontalAlignment="Right" 
                         Width="50" Height="50" Margin="10" Background="Transparent" Click="CommentIcon_Click">

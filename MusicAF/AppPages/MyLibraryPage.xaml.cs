@@ -281,5 +281,13 @@ namespace MusicAF.AppPages
                 TracksListView.Visibility = Visibility.Collapsed;
             });
         }
+
+        private void BackClick(object sender, RoutedEventArgs e)
+        {
+            if (Frame.CanGoBack)
+            {
+                Frame.GoBack();
+            }
+        }
     }
 }

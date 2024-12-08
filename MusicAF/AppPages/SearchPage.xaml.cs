@@ -18,9 +18,10 @@ using System.Collections.Generic;
 
 namespace MusicAF.AppPages
 {
-    public partial class ForYouPage : Page
+    public sealed partial class SearchPage : Page
     {
         private string currentUserEmail;
+        private string searchText;
         private readonly FirestoreService _firestoreService;
         private bool isLoading;
         private Track _currentlyPlayingTrack;
@@ -37,15 +38,15 @@ namespace MusicAF.AppPages
             }
         }
 
-        public ForYouPage()
+        public SearchPage()
         {
             try
             {
-                Console.WriteLine("Initializing ForYouPage");
+                Console.WriteLine("Initializing SearchPage");
                 this.InitializeComponent();
                 _firestoreService = FirestoreService.Instance;
                 Tracks = new ObservableCollection<Track>();
-                Console.WriteLine("ForYouPage initialized successfully");
+                Console.WriteLine("SearchPage initialized successfully");
             }
             catch (Exception ex)
             {
@@ -73,25 +74,84 @@ namespace MusicAF.AppPages
             }
         }
 
-        private async Task LoadTracksAsync()
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            try
+            {
+                base.OnNavigatedTo(e);
+                Console.WriteLine("Navigation to ForYouPage");
+
+                if (e.Parameter is ValueTuple<string, string> parameters)
+                {
+                    currentUserEmail = parameters.Item1;
+                    String keyword = parameters.Item2;
+                    SearchFor.Text = $"Search Result For {keyword}";
+                    await LoadSearchResultsAsync(keyword);
+                }
+                else
+                {
+                    Console.WriteLine($"Invalid navigation parameter");
+                    ShowNoTracksMessage("Invalid user session. Please log in again.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in OnNavigatedTo: {ex}");
+                ShowNoTracksMessage("An error occurred while loading the library.");
+            }
+        }
+
+        private async Task<ObservableCollection<Track>> SearchTracksAsync(string keyword)
+        {
+            var searchedTracks = new ObservableCollection<Track>();
+            try
+            {
+                if (string.IsNullOrEmpty(keyword)) return searchedTracks;
+                Console.WriteLine($"Searching tracks for keyword: {keyword}");
+
+                // Query tracks based on the keyword
+                var tracksRef = _firestoreService.FirestoreDb.Collection("tracks");
+                var querySnapshot = await tracksRef.WhereGreaterThanOrEqualTo("Title", keyword)
+                                                    .WhereLessThan("Title", keyword + "\uf8ff")
+                                                    .GetSnapshotAsync();
+
+                foreach (var doc in querySnapshot.Documents)
+                {
+                    var track = doc.ConvertTo<Track>();
+                    if (track != null && !searchedTracks.Contains(track) && !track.IsPrivate)
+                    {
+                        searchedTracks.Add(track);
+                    }
+                }
+
+                Console.WriteLine($"Tracks found: {searchedTracks.Count}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in SearchTracksAsync: {ex.Message}");
+            }
+
+            return searchedTracks;
+        }
+
+        private async Task LoadSearchResultsAsync(string keyword)
         {
             if (isLoading) return;
 
             isLoading = true;
             try
             {
-                Console.WriteLine($"Loading recommended tracks for user: {currentUserEmail}");
                 await ShowLoadingStateAsync(true);
 
                 DispatcherQueue.TryEnqueue(() => { Tracks.Clear(); });
 
-                // Get recommended tracks
-                var recommendedTracks = await GetRecommendedTracksAsync(currentUserEmail);
+                // Get search results
+                var searchResults = await SearchTracksAsync(keyword);
 
                 // Update UI
                 DispatcherQueue.TryEnqueue(() =>
                 {
-                    foreach (var track in recommendedTracks)
+                    foreach (var track in searchResults)
                     {
                         Tracks.Add(track);
                     }
@@ -102,8 +162,8 @@ namespace MusicAF.AppPages
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error in LoadTracksAsync: {ex.Message}");
-                await ShowErrorDialog("Failed to load tracks: " + ex.Message);
+                Console.WriteLine($"Error in LoadSearchResultsAsync: {ex.Message}");
+                await ShowErrorDialog("Failed to load search results: " + ex.Message);
             }
             finally
             {
@@ -135,7 +195,7 @@ namespace MusicAF.AppPages
                 if (sender is Button button && button.Tag is Track track)
                 {
                     // Record keywords when a track is played
-                    await _firestoreService.RecordKeywordsAsync(currentUserEmail,  track);
+                    await _firestoreService.RecordKeywordsAsync(currentUserEmail, track);
                     // Create instance of NowPlayingPage
                     var nowPlayingPage = new NowPlayingPage();
 
@@ -214,37 +274,11 @@ namespace MusicAF.AppPages
             }
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            try
-            {
-                base.OnNavigatedTo(e);
-                Console.WriteLine("Navigation to ForYouPage");
-
-                if (e.Parameter is string userEmail)
-                {
-                    currentUserEmail = userEmail;
-                    Console.WriteLine($"User email received: {userEmail}");
-                    _ = LoadTracksAsync();
-                }
-                else
-                {
-                    Console.WriteLine($"Invalid navigation parameter");
-                    ShowNoTracksMessage("Invalid user session. Please log in again.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error in OnNavigatedTo: {ex}");
-                ShowNoTracksMessage("An error occurred while loading the library.");
-            }
-        }
-
         private void ShowNoTracksMessage(string message = null)
         {
             DispatcherQueue.TryEnqueue(() =>
             {
-                NoTracksMessage.Text = message ?? "No tracks found. Click the 'Upload music' button to add some tracks.";
+                NoTracksMessage.Text = message ?? "No tracks found";
                 NoTracksMessage.Visibility = Visibility.Visible;
                 TracksListView.Visibility = Visibility.Collapsed;
             });
@@ -292,7 +326,7 @@ namespace MusicAF.AppPages
                         DownloadProgressRing.IsActive = false;
                         DownloadProgressRing.Visibility = Visibility.Collapsed;
                         await ShowDownloadSuccessMessage(newFile.Path);
-                        
+
                     }
                     else
                     {
@@ -351,61 +385,6 @@ namespace MusicAF.AppPages
                 string artistName = textBlock.Text;
                 Frame.Navigate(typeof(ArtistPage), artistName);
             }
-        }
-
-        private async Task<ObservableCollection<Track>> GetRecommendedTracksAsync(string email)
-        {
-            var recommendedTracks = new ObservableCollection<Track>();
-            try
-            {
-                var statDocRef = _firestoreService.FirestoreDb.Collection("StatRecords").Document(email);
-                var statSnapshot = await statDocRef.GetSnapshotAsync();
-
-                List<string> keywords = new List<string>();
-                if (statSnapshot.Exists && statSnapshot.TryGetValue("List", out List<object> keywordList))
-                {
-                    keywords = keywordList.Select(k => k.ToString()).ToList();
-                }
-
-                // Query tracks based on keywords
-                var tracksRef = _firestoreService.FirestoreDb.Collection("tracks");
-                foreach (var keyword in keywords)
-                {
-                    var querySnapshot = await tracksRef.WhereEqualTo("Genre", keyword).GetSnapshotAsync();
-
-                    foreach (var doc in querySnapshot.Documents)
-                    {
-                        var track = doc.ConvertTo<Track>();
-                        if (track != null && !recommendedTracks.Contains(track) && !track.IsPrivate)
-                        {
-                            recommendedTracks.Add(track);
-                            if (recommendedTracks.Count >= 50) break;
-                        }
-                    }
-
-                    if (recommendedTracks.Count >= 50) break;
-                }
-                if (recommendedTracks.Count < 50)
-                {
-                    var allTracksSnapshot = await tracksRef.GetSnapshotAsync();
-                    var additionalTracks = allTracksSnapshot.Documents
-                        .Select(doc => doc.ConvertTo<Track>())
-                        .Where(t => t != null && !recommendedTracks.Contains(t) && !t.IsPrivate)
-                        .Take(50 - recommendedTracks.Count);
-                    foreach (var track in additionalTracks)
-                    {
-                        recommendedTracks.Add(track);
-                    }
-                }
-
-                Console.WriteLine($"Recommended tracks loaded: {recommendedTracks.Count}");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error loading recommended tracks: {ex.Message}");
-            }
-
-            return recommendedTracks;
         }
 
         private void BackClick(object sender, RoutedEventArgs e)

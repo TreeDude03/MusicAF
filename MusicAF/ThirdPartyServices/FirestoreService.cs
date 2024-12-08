@@ -5,6 +5,8 @@ using System;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Firestore.V1;
 using System.Diagnostics;
+using MusicAF.Models;
+using System.Linq;
 
 namespace MusicAF.ThirdPartyServices
 {
@@ -154,7 +156,45 @@ namespace MusicAF.ThirdPartyServices
             }
         }
 
-        // Add more Firestore interaction methods as needed...
+        //
+        public async Task RecordKeywordsAsync(string email, Track track)
+        {
+            try
+            {
+                if (track == null || string.IsNullOrEmpty(email)) return;
+                var keywords = new List<string> { track.Genre ?? "Unknown Genre", track.Artist ?? "Unknown Artist" };
+
+                var statDocRef = FirestoreDb.Collection("StatRecords").Document(email);
+                var statSnapshot = await statDocRef.GetSnapshotAsync();
+
+                if (statSnapshot.Exists)
+                {
+                    // Get existing list of keywords
+                    var data = statSnapshot.ToDictionary();
+                    var keywordList = data.ContainsKey("List") ? data["List"] as List<object> : new List<object>();
+
+                    // Convert to list of strings and trim to max 50 keywords
+                    var currentKeywords = keywordList.Select(k => k.ToString()).ToList();
+
+                    foreach (var keyword in keywords)
+                    {
+                        currentKeywords.Insert(0, keyword);
+                    }
+                    if (currentKeywords.Count > 50)
+                        currentKeywords = currentKeywords.Take(50).ToList();
+                    await statDocRef.UpdateAsync("List", currentKeywords);
+                }
+                else
+                {
+                    await statDocRef.SetAsync(new { List = keywords });
+                }
+                Console.WriteLine("Keywords recorded successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error recording keywords: {ex.Message}");
+            }
+        }
     }
 
     public static class FirebaseConfig
