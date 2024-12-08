@@ -14,7 +14,7 @@ Những công việc đã hoàn thành trong milestone 1:
 - Màn hình xem danh sách nhạc chung: 2h
 - Chức năng phát nhạc: 2h
 
-Những công việc đã hoàn thành trong milestone 2:
+Những công việc đã hoàn thành trong milestone 2: (branch milestone2)
 - Chỉnh sửa chức năng phát nhạc thành phát nhạc trong nên, không chỉ ở NowPlayingPage: 2h
 - Chỉnh sửa thuật toán đề xuất qua StatsRecord, lưu lại những từ khóa của người dùng đã nghe: 2h
 - Chức năng xem các bài hát của người dùng khác trong trang cá nhân của họ: 2h
