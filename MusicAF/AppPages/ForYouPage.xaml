@@ -161,6 +161,7 @@
                             <TextBlock Grid.Column="4" Text="{x:Bind Genre}"  Foreground="#808080" VerticalAlignment="Center" Margin="8,0" TextTrimming="CharacterEllipsis"/>
                             <!-- Upload Date -->
                             <TextBlock Grid.Column="5" Text="{x:Bind UploadDate}" Foreground="#808080" VerticalAlignment="Center" Margin="8,0"/>
+
                             <Button Grid.Column="6"
                                 Background="Transparent"
                                 VerticalAlignment="Center"
@@ -171,8 +172,8 @@
                                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE896;" Foreground="White" FontSize="16"/>
                                 </Button.Content>
                                 <Button.Tag>
-                                        <local:Track 
-                                               SongId="{x:Bind SongId}"
+                                    <local:Track 
+                                              SongId="{x:Bind SongId}"
                                               Title="{x:Bind Title}"
                                               Artist="{x:Bind Artist}"
                                               Album="{x:Bind Album}"

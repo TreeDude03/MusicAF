@@ -12,12 +12,15 @@ using MusicAF.ThirdPartyServices;
 using MusicAF.Models;
 using MusicAF.AppDialogs;
 using MusicAF.AppWindows;
+using System.Collections.Generic;
 
 namespace MusicAF.AppPages
 {
-    public sealed partial class MyLibraryPage : Page
+    public sealed partial class SinglePlaylistPage : Page
     {
         private string currentUserEmail;
+        private string playlistId;
+        private string playlistName;
         private readonly Window _window;
         private readonly FirestoreService _firestoreService;
         private bool isLoading;
@@ -33,19 +36,19 @@ namespace MusicAF.AppPages
             }
         }
 
-        public MyLibraryPage()
+        public SinglePlaylistPage()
         {
             try
             {
-                Console.WriteLine("Initializing MyLibraryPage");
+                Console.WriteLine("Initializing SinglePlaylistPage");
                 this.InitializeComponent();
                 _firestoreService = FirestoreService.Instance;
                 Tracks = new ObservableCollection<Track>();
-                Console.WriteLine("MyLibraryPage initialized successfully");
+                Console.WriteLine("SinglePlaylistPage initialized successfully");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error initializing MyLibraryPage: {ex}");
+                Console.WriteLine($"Error initializing SinglePlaylistPage: {ex}");
                 throw;
             }
         }
@@ -76,7 +79,6 @@ namespace MusicAF.AppPages
             isLoading = true;
             try
             {
-                Console.WriteLine($"Loading tracks for user: {currentUserEmail}");
                 await ShowLoadingStateAsync(true);
 
                 // Clear existing tracks
@@ -85,65 +87,65 @@ namespace MusicAF.AppPages
                     Tracks.Clear();
                 });
 
-                var tracksRef = _firestoreService.FirestoreDb.Collection("tracks");
-                var query = tracksRef.WhereEqualTo("Uploader", currentUserEmail);
-                var querySnapshot = await query.GetSnapshotAsync();
+                // Step 1: Fetch track IDs from the playlist document
+                var playlistRef = _firestoreService.FirestoreDb.Collection("playlists").Document(playlistId);
+                var playlistDoc = await playlistRef.GetSnapshotAsync();
 
-                Console.WriteLine($"Found {querySnapshot.Documents.Count} tracks");
+                if (!playlistDoc.Exists)
+                {
+                    Console.WriteLine($"Playlist with ID {playlistId} not found.");
+                    ShowNoTracksMessage("Playlist not found.");
+                    return;
+                }
 
-                foreach (var doc in querySnapshot.Documents)
+                if (!playlistDoc.ContainsField("TrackIds"))
+                {
+                    Console.WriteLine("No TrackIds field in playlist document.");
+                    ShowNoTracksMessage("No tracks found in this playlist.");
+                    return;
+                }
+
+                var trackIds = playlistDoc.GetValue<List<string>>("TrackIds");
+
+                foreach (var trackId in trackIds)
                 {
                     try
                     {
-                        var track = doc.ConvertTo<Track>();
-                        if (track != null)
-                        {
-                            Console.WriteLine($"Processing track: {track.Title}");
+                        var trackRef = _firestoreService.FirestoreDb.Collection("tracks").Document(trackId);
+                        var trackDoc = await trackRef.GetSnapshotAsync();
 
-                            // Ensure all required properties are populated
-                            track.Title = track.Title ?? "Untitled";
-                            track.Artist = track.Artist ?? "Unknown Artist";
-                            track.Album = track.Album ?? "Unknown Album";
-                            track.Genre = track.Genre ?? "Unknown Genre";
+                        if (trackDoc.Exists)
+                        {
+                            var track = trackDoc.ConvertTo<Track>();
 
                             DispatcherQueue.TryEnqueue(() =>
                             {
-                                try
-                                {
-                                    Tracks.Add(track);
-                                    Console.WriteLine($"Added track to UI: {track.Title}");
-                                }
-                                catch (Exception ex)
-                                {
-                                    Console.WriteLine($"Error adding track to collection: {ex}");
-                                }
+                                Tracks.Add(track);
                             });
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Error converting document: {ex}");
-                    }
-                }
-
-                DispatcherQueue.TryEnqueue(() =>
-                {
-                    try
-                    {
-                        if (Tracks.Count > 0)
-                        {
-                            NoTracksMessage.Visibility = Visibility.Collapsed;
-                            TracksListView.Visibility = Visibility.Visible;
                         }
                         else
                         {
-                            NoTracksMessage.Visibility = Visibility.Visible;
-                            TracksListView.Visibility = Visibility.Collapsed;
+                            Console.WriteLine($"Track with ID {trackId} does not exist.");
                         }
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"Error updating UI visibility: {ex}");
+                        Console.WriteLine($"Error fetching track with ID {trackId}: {ex}");
+                    }
+                }
+
+                // Update UI based on whether tracks were found
+                DispatcherQueue.TryEnqueue(() =>
+                {
+                    if (Tracks.Count > 0)
+                    {
+                        NoTracksMessage.Visibility = Visibility.Collapsed;
+                        TracksListView.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        NoTracksMessage.Visibility = Visibility.Visible;
+                        TracksListView.Visibility = Visibility.Collapsed;
                     }
                 });
             }
@@ -184,7 +186,7 @@ namespace MusicAF.AppPages
                     // Create instance of NowPlayingPage
                     var nowPlayingPage = new NowPlayingPage();
 
-                    Frame.Navigate(typeof(NowPlayingPage), (_track: track, _email:  currentUserEmail));
+                    Frame.Navigate(typeof(NowPlayingPage), (_track: track, _email: currentUserEmail));
 
                     // Play the selected track
                     App.PlaybackService.SetTrackList(Tracks.ToList(), track);
@@ -211,11 +213,11 @@ namespace MusicAF.AppPages
             }
         }
 
-        private async void UploadMusicButton_Click(object sender, RoutedEventArgs e)
+        private async void AddToPlaylistButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                var dialog = new UploadMusicDialog(App.MainWindow, currentUserEmail);
+                var dialog = new AddToPlaylistDialog(playlistId);
                 dialog.XamlRoot = this.XamlRoot;
                 await dialog.ShowAsync();
                 await LoadTracksAsync();
@@ -251,13 +253,16 @@ namespace MusicAF.AppPages
             try
             {
                 base.OnNavigatedTo(e);
-                Console.WriteLine("Navigation to MyLibraryPage");
+                Console.WriteLine("Navigation to SinglePlaylistPage");
 
-                if (e.Parameter is string userEmail)
+                if (e.Parameter is ValueTuple<string, string, string> parameters)
                 {
-                    currentUserEmail = userEmail;
-                    Console.WriteLine($"User email received: {userEmail}");
+                    playlistId = parameters.Item2;
+                    currentUserEmail = parameters.Item1;
+                    playlistName = parameters.Item3;
+                    PageName.Text = playlistName;
                     _ = LoadTracksAsync();
+                    
                 }
                 else
                 {
@@ -270,16 +275,26 @@ namespace MusicAF.AppPages
                 Console.WriteLine($"Error in OnNavigatedTo: {ex}");
                 ShowNoTracksMessage("An error occurred while loading the library.");
             }
+
         }
 
         private void ShowNoTracksMessage(string message = null)
         {
             DispatcherQueue.TryEnqueue(() =>
             {
-                NoTracksMessage.Text = message ?? "No tracks found. Click the 'Upload music' button to add some tracks.";
+                NoTracksMessage.Text = message ?? "No tracks found";
                 NoTracksMessage.Visibility = Visibility.Visible;
                 TracksListView.Visibility = Visibility.Collapsed;
             });
+        }
+
+        private void ArtistButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Content is TextBlock textBlock)
+            {
+                string artistName = textBlock.Text;
+                Frame.Navigate(typeof(ArtistPage), artistName);
+            }
         }
 
         private void BackClick(object sender, RoutedEventArgs e)
