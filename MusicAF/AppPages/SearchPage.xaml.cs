@@ -111,11 +111,27 @@ namespace MusicAF.AppPages
 
                 // Query tracks based on the keyword
                 var tracksRef = _firestoreService.FirestoreDb.Collection("tracks");
-                var querySnapshot = await tracksRef.WhereGreaterThanOrEqualTo("Title", keyword)
-                                                    .WhereLessThan("Title", keyword + "\uf8ff")
-                                                    .GetSnapshotAsync();
 
-                foreach (var doc in querySnapshot.Documents)
+                // Query for Title
+                var titleQuery = await tracksRef.WhereGreaterThanOrEqualTo("Title", keyword)
+                                                .WhereLessThan("Title", keyword + "\uf8ff")
+                                                .GetSnapshotAsync();
+
+                // Query for Genre
+                var genreQuery = await tracksRef.WhereGreaterThanOrEqualTo("Genre", keyword)
+                                                .WhereLessThan("Genre", keyword + "\uf8ff")
+                                                .GetSnapshotAsync();
+
+                // Query for Artist
+                var artistQuery = await tracksRef.WhereGreaterThanOrEqualTo("Artist", keyword)
+                                                 .WhereLessThan("Artist", keyword + "\uf8ff")
+                                                 .GetSnapshotAsync();
+
+                // Combine results
+                var allResults = titleQuery.Documents.Concat(genreQuery.Documents).Concat(artistQuery.Documents);
+
+                // Process results
+                foreach (var doc in allResults)
                 {
                     var track = doc.ConvertTo<Track>();
                     if (track != null && !searchedTracks.Contains(track) && !track.IsPrivate)

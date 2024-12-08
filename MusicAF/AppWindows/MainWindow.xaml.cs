@@ -41,6 +41,11 @@ namespace MusicAF.AppWindows
         private string currentAccessToken;
         private System.Net.Http.HttpClient httpClient;
 
+        private string _currentTrackName;
+        private string _currentTrackArtist;
+
+        private DispatcherTimer adTimer;
+
         public MainWindow(string userEmail)
         {
             try
@@ -50,6 +55,8 @@ namespace MusicAF.AppWindows
                 this.InitializeComponent();
                 InitializeMediaPlayer();
                 InitializeProgressTimer();
+
+                SetCurrentTrack();
 
                 App.PlaybackService.TrackChanged += OnTrackChanged;
                 _driveService = GoogleDriveService.Instance;
@@ -69,6 +76,23 @@ namespace MusicAF.AppWindows
             }
         }
 
+        private void SetCurrentTrack()
+        {
+            if (currentTrack == null)
+            {
+                _currentTrackName = "";
+                _currentTrackArtist = "";
+            }
+            else
+            {
+                _currentTrackName = currentTrack.Title;
+                _currentTrackArtist = currentTrack.Artist;
+            }
+            // Update the UI
+            TrackNameTextBlock.Text = _currentTrackName;
+            ArtistNameTextBlock.Text = _currentTrackArtist;
+        }
+
         private void SetWindowSize(int width, int height)
         {
             var windowId = Win32Interop.GetWindowIdFromWindow(
@@ -78,6 +102,7 @@ namespace MusicAF.AppWindows
             {
                 appWindow.Resize(new Windows.Graphics.SizeInt32 { Width = width, Height = height });
             }
+
         }
 
         private async void ShowErrorDialog(string message)
@@ -116,7 +141,7 @@ namespace MusicAF.AppWindows
 
         private void PlaylistButton_Click(object sender, RoutedEventArgs e)
         {
-            //MainFrame.Navigate(typeof(MyLibraryPage), currentUserEmail);
+            MainFrame.Navigate(typeof(PlaylistPage), currentUserEmail);
         }
 
         private void PrevButton_Click(object sender, RoutedEventArgs e)
@@ -136,6 +161,8 @@ namespace MusicAF.AppWindows
                 
                 currentTrack = track;
                 _ = PlayTrack();
+
+                SetCurrentTrack();
 
                 // Add your playback logic here
                 Debug.WriteLine($"Now playing: {track.Title} by {track.Artist}");
@@ -481,14 +508,14 @@ namespace MusicAF.AppWindows
 
         private void NowPlayingButton_Click(object sender, RoutedEventArgs e)
         {
-            if (MainFrame != null && App.PlaybackService.CurrentTrack != null)
-            {
-                MainFrame.Navigate(typeof(NowPlayingPage), App.PlaybackService.CurrentTrack);
-            }
-            else
-            {
-                ShowErrorDialog("No track is currently playing or the frame is not initialized.");
-            }
+            //if (MainFrame != null && App.PlaybackService.CurrentTrack != null)
+            //{
+            //    MainFrame.Navigate(typeof(NowPlayingPage), App.PlaybackService.CurrentTrack);
+            //}
+            //else
+            //{
+            //    ShowErrorDialog("No track is currently playing or the frame is not initialized.");
+            //}
         }
         private void SearchBox_KeyDown(object sender, KeyRoutedEventArgs e)
         {
@@ -502,5 +529,37 @@ namespace MusicAF.AppWindows
                 }
             }
         }
+
+        private void StartAdTimer()
+        {
+            // Timer to display ad every 1 hour
+            adTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromHours(1) // Set interval to 1 hour
+            };
+            adTimer.Tick += AdTimer_Tick;
+            adTimer.Start();
+
+            // Show the ad initially when the app starts
+            ShowAdPopup();
+        }
+
+        private void AdTimer_Tick(object sender, object e)
+        {
+            ShowAdPopup();
+        }
+
+        private void ShowAdPopup()
+        {
+            // Display the popup
+            AdPopup.IsOpen = true;
+        }
+
+        private void CloseAdButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Close the advertisement popup
+            AdPopup.IsOpen = false;
+        }
+
     }
 }

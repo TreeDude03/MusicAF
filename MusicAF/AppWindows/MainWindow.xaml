@@ -23,17 +23,17 @@
 
         <!-- Left Navigation Panel -->
         <Grid Grid.Column="0"  Grid.Row="0" Background="#171221">
-                <!-- Logo and Brand -->
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="10,0,0,0" VerticalAlignment="Center">
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;" Foreground="White" FontSize="16"/>
-                        <TextBlock Text="MusicAF" Margin="10,0,0,0" Foreground="White" FontSize="16"/>
-                    </StackPanel>
+            <!-- Logo and Brand -->
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="10,0,0,0" VerticalAlignment="Center">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;" Foreground="White" FontSize="16"/>
+                    <TextBlock Text="MusicAF" Margin="10,0,0,0" Foreground="White" FontSize="16"/>
+                </StackPanel>
 
-                    <Grid Margin="0,20,0,0" Background="#171221">
-                        <StackPanel>
-                            <!-- Search Box -->
-                            <Grid Margin="10,10,10,20">
+                <Grid Margin="0,20,0,0" Background="#171221">
+                    <StackPanel>
+                        <!-- Search Box -->
+                        <Grid Margin="10,10,10,20">
                             <TextBox 
                                 x:Name="SearchBox" 
                                 PlaceholderText="Search..."  
@@ -42,96 +42,124 @@
                                 KeyDown="SearchBox_KeyDown" 
                                 />
                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE721;" Foreground="Gray" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                            </Grid>
-                            <!-- Navigation Menu -->
-                            <StackPanel Margin="10,0,10,0" Spacing="5">
-                                <!-- For You -->
-                                <Button Click="ForYouButton_Click" Background="Transparent" BorderThickness="0">
-                                    <Grid Height="35">
-                                        <StackPanel Orientation="Horizontal">
-                                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE93C;" Foreground="#808080"/>
-                                            <TextBlock Text="For You" Margin="10,5,0,0" Foreground="#808080"/>
-                                        </StackPanel>
-                                    </Grid>
-                                </Button>
-
-                                <!-- Library -->
-                                <Button Click="LibraryButton_Click" Background="Transparent" BorderThickness="0">
-                                    <Grid Height="35">
-                                        <StackPanel Orientation="Horizontal">
-                                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8F1;" Foreground="#808080"/>
-                                            <TextBlock Text="My Library" Margin="10,5,0,0" Foreground="#808080"/>
-                                        </StackPanel>
-                                    </Grid>
-                                </Button>
-
-                                <!-- Saved -->
-                                <Button Background="Transparent" BorderThickness="0">
-                                    <Grid Height="35">
-                                        <StackPanel Orientation="Horizontal">
-                                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8F1;" Foreground="#808080"/>
-                                            <TextBlock Text="Liked" Margin="10,5,0,0" Foreground="#808080"/>
-                                        </StackPanel>
-                                    </Grid>
-                                </Button>
-
-                                <!-- Playlists -->
-                                <Button Click="PlaylistButton_Click" Background="Transparent" BorderThickness="0">
-                                    <Grid Height="35">
-                                        <StackPanel Orientation="Horizontal">
-                                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE90B;" Foreground="#808080"/>
-                                            <TextBlock Text="Playlists For You" Margin="10,5,0,0" Foreground="#808080"/>
-                                        </StackPanel>
-                                    </Grid>
-                                </Button>
-                            </StackPanel>
-
-                            <!-- Settings at Bottom -->
-                            <StackPanel VerticalAlignment="Bottom" Margin="10" Height="35">
-                                <Button Background="Transparent" BorderThickness="0">
+                        </Grid>
+                        <!-- Navigation Menu -->
+                        <StackPanel Margin="10,0,10,0" Spacing="5">
+                            <!-- For You -->
+                            <Button Click="ForYouButton_Click" Background="Transparent" BorderThickness="0">
+                                <Grid Height="35">
                                     <StackPanel Orientation="Horizontal">
-                                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE713;" Foreground="#808080"/>
-                                        <TextBlock Text="Settings" Margin="10,0,0,0" Foreground="#808080"/>
+                                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE93C;" Foreground="#808080"/>
+                                        <TextBlock Text="For You" Margin="10,5,0,0" Foreground="#808080"/>
                                     </StackPanel>
-                                </Button>
-                            </StackPanel>
+                                </Grid>
+                            </Button>
+
+                            <!-- Library -->
+                            <Button Click="LibraryButton_Click" Background="Transparent" BorderThickness="0">
+                                <Grid Height="35">
+                                    <StackPanel Orientation="Horizontal">
+                                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8F1;" Foreground="#808080"/>
+                                        <TextBlock Text="My Library" Margin="10,5,0,0" Foreground="#808080"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Button>
+
+                            <!-- Saved -->
+                            <Button Background="Transparent" BorderThickness="0">
+                                <Grid Height="35">
+                                    <StackPanel Orientation="Horizontal">
+                                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8F1;" Foreground="#808080"/>
+                                        <TextBlock Text="Liked" Margin="10,5,0,0" Foreground="#808080"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Button>
+
+                            <!-- Playlists -->
+                            <Button Click="PlaylistButton_Click" Background="Transparent" BorderThickness="0">
+                                <Grid Height="35">
+                                    <StackPanel Orientation="Horizontal">
+                                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE90B;" Foreground="#808080"/>
+                                        <TextBlock Text="Playlists" Margin="10,5,0,0" Foreground="#808080"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Button>
                         </StackPanel>
-                    </Grid>
 
-                </StackPanel>
-            </Grid>
+                        <!-- Settings at Bottom -->
+                        <StackPanel VerticalAlignment="Bottom" Margin="10" Height="35">
+                            <Button Background="Transparent" BorderThickness="0">
+                                <StackPanel Orientation="Horizontal">
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE713;" Foreground="#808080"/>
+                                    <TextBlock Text="Settings" Margin="10,0,0,0" Foreground="#808080"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
 
-            <!-- Main Content Area -->
+            </StackPanel>
+        </Grid>
+
+        <!-- Main Content Area -->
         <Grid Grid.Column="1"  Grid.Row="0" Background="#1a1625" Padding="40,20">
-                <Frame x:Name="MainFrame" />
-            </Grid>
+            <Frame x:Name="MainFrame" />
+        </Grid>
 
         <!-- Playback Control Bar -->
-        <Grid Grid.ColumnSpan="2" Grid.Row="1"  Background="#251f2e"  Height="80">
+        <Grid Grid.ColumnSpan="2" Grid.Row="1"  Background="#251f2e"  Height="90">
             <!-- Progress Bar -->
-            <Slider x:Name="ProgressSlider"
-            Background="#3f3647" 
-            Foreground="#6b5f7b" 
-            BorderThickness="0"
-            ValueChanged="ProgressSlider_ValueChanged"
-            Maximum="100"
-            Value="0"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0"  Background="Transparent" Margin="10,0,10,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- TextBlock for current time -->
+                    <ColumnDefinition Width="*" />
+                    <!-- Slider for progress bar -->
+                </Grid.ColumnDefinitions>
+                <!-- Current Time TextBlock -->
+                <TextBlock x:Name="CurrentTimeText"
+                   Text="00:00"
+                   Foreground="#808080"
+                   VerticalAlignment="Center"
+                   Margin="0,0,10,0" />
+                <!-- Adds spacing to the right -->
+                <!-- Progress Slider -->
+                <Slider x:Name="ProgressSlider"
+                  Grid.Column="1"
+                  Background="#3f3647"
+                  Foreground="#6b5f7b"
+                  BorderThickness="0"
+                  ValueChanged="ProgressSlider_ValueChanged"
+                  Maximum="100"
+                  Value="0"
+                 VerticalAlignment="Center" />
+            </Grid>
 
             <!-- Controls -->
-            <Grid Margin="10,15,10,10">
+            <Grid Grid.Row="1"  Margin="10,0,10,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Time -->
-                <TextBlock x:Name="CurrentTimeText"
-                Grid.Column="0" 
-                Text="00:00" 
-                Foreground="#808080" 
-                VerticalAlignment="Center"/>
+                <!-- Left Section -->
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                    <!-- Time -->
+                    <TextBlock Name="TrackNameTextBlock" 
+                       Foreground="White" 
+                       FontWeight="Bold" 
+                       FontSize="16" 
+                       Text="Track Name" />
+                    <TextBlock Name="ArtistNameTextBlock" 
+                       Foreground="Gray" 
+                       FontSize="14" 
+                       Text="Artist Name" />
+                </StackPanel>
 
                 <!-- Playback Controls -->
                 <StackPanel Grid.Column="1" 
@@ -155,42 +183,60 @@
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE893;" Foreground="#808080"/>
                     </Button>
                 </StackPanel>
-                
+
 
                 <!-- Volume -->
                 <StackPanel Grid.Column="2"
-            Orientation="Horizontal"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center">
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center">
                     <!-- Now Playing Button -->
                     <Button Background="Transparent"
-            Width="40"
-            Height="40"
-            Click="NowPlayingButton_Click"
-            VerticalAlignment="Center"
-            Margin="10,0,0,0">
+                        Width="50"
+                        Height="50"
+                        Click="NowPlayingButton_Click"
+                        VerticalAlignment="Center"
+                        Margin="10,0,10,0">
                         <FontIcon Foreground="Green" 
-                  Glyph="&#xE768;" 
-                  FontFamily="Segoe MDL2 Assets" />
+                            Glyph="&#xE768;" 
+                            FontFamily="Segoe MDL2 Assets" />
                     </Button>
 
                     <!-- Volume Icon -->
                     <FontIcon FontFamily="Segoe MDL2 Assets" 
-              Glyph="&#xE767;" 
-              Margin="0,0,8,0" 
-              VerticalAlignment="Center"/>
+                        Glyph="&#xE767;" 
+                        Margin="0,0,8,0" 
+                        VerticalAlignment="Center"/>
 
                     <!-- Volume Slider -->
                     <Slider x:Name="VolumeSlider"
-            Margin="8,0,0,0"
-            Width="100"
-            Minimum="0"
-            Maximum="100"
-            Value="100"
-            VerticalAlignment="Center"
-            ValueChanged="VolumeSlider_ValueChanged"/>
+                        Margin="8,0,0,0"
+                        Width="100"
+                        Minimum="0"
+                        Maximum="100"
+                        Value="100"
+                        VerticalAlignment="Center"
+                        ValueChanged="VolumeSlider_ValueChanged"/>
                 </StackPanel>
             </Grid>
         </Grid>
-     </Grid>
+        <Popup x:Name="AdPopup" IsOpen="False" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid Width="400" Height="300" Background="White" BorderBrush="Black" BorderThickness="1">
+                <!-- Advertisement Image -->
+                <Image Source="ms-appx:///Assets/AdImage.png" 
+                       Stretch="Fill" 
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" />
+
+                <!-- Close Button -->
+                <Button Content="X" 
+                        Width="30" 
+                        Height="30" 
+                        VerticalAlignment="Top" 
+                        HorizontalAlignment="Right" 
+                        Margin="10"
+                        Click="CloseAdButton_Click" />
+            </Grid>
+        </Popup>
+    </Grid>
 </Window>

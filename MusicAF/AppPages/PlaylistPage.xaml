@@ -1,12 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Page
-    x:Class="MusicAF.AppPages.MyLibraryPage"
+    x:Class="MusicAF.AppPages.PlaylistPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:MusicAF.Models"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    xmlns:local="using:MusicAF.AppPages">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -29,13 +25,13 @@
                 </StackPanel>
             </Button>
 
-            <TextBlock Grid.Column="1" Text="My Library" Foreground="White"
-          FontSize="32" FontWeight="SemiBold"/>
+            <TextBlock Grid.Column="1" Text="My Playlist" Foreground="White"
+      FontSize="32" FontWeight="SemiBold"/>
             <!-- Upload Button -->
-            <Button Grid.Column="2" Background="#25202f" Foreground="White" Padding="15,8" Click="UploadMusicButton_Click">
+            <Button Grid.Column="2" Background="#25202f" Foreground="White" Padding="15,8" Click="AddPlaylistButton_Click">
                 <StackPanel Orientation="Horizontal">
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE710;"/>
-                    <TextBlock Text="Upload Music" Margin="8,0,0,0"/>
+                    <TextBlock Text="Add Your Own Playlist" Margin="8,0,0,0"/>
                 </StackPanel>
             </Button>
         </Grid>
@@ -43,25 +39,25 @@
         <Grid Grid.Row="1" Padding="32,24">
             <!-- Loading Progress Ring -->
             <ProgressRing x:Name="LoadingProgressRing" IsActive="False" Width="40" 
-            Height="40"
-            Foreground="White"/>
+                Height="40"
+                Foreground="White"/>
 
-            <!-- No Tracks Message -->
-            <TextBlock x:Name="NoTracksMessage"
-            Text="No tracks found. Click the 'Upload Music' button to add some tracks."
-            Foreground="#808080"
-            TextAlignment="Center"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Center"
-            TextWrapping="Wrap"
-            Visibility="Collapsed"/>
+            <!-- No Playlists Message -->
+            <TextBlock x:Name="NoPlaylistsMessage"
+                Text="No playlist found. Add some for yourself"
+                Foreground="#808080"
+                TextAlignment="Center"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                TextWrapping="Wrap"
+                Visibility="Collapsed"/>
 
-            <!-- Tracks List -->
-            <ListView x:Name="TracksListView"
-            ItemsSource="{x:Bind Tracks, Mode=OneWay}"
-            SelectionMode="None"
-            Background="Transparent"
-            Padding="0,8">
+            <!-- Playlists List -->
+            <ListView x:Name="PlaylistsListView"
+        ItemsSource="{x:Bind Playlists, Mode=OneWay}"
+        SelectionMode="None"
+        Background="Transparent"
+        Padding="0,8">
 
                 <!-- List Header -->
                 <ListView.Header>
@@ -72,17 +68,10 @@
                             <ColumnDefinition Width="*"/>
                             <!-- Title -->
                             <ColumnDefinition Width="200"/>
-                            <!-- Artist -->
-                            <ColumnDefinition Width="200"/>
-                            <!-- Album -->
-                            <ColumnDefinition Width="150"/>
-                            <!-- Upload Date -->
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="1" Text="TITLE"  Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
-                        <TextBlock Grid.Column="2" Text="GENRE" Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
-                        <TextBlock Grid.Column="3" Text="ALBUM" Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
-                        <TextBlock Grid.Column="4" Text="UPLOAD DATE" Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
+                        <TextBlock Grid.Column="1" Text="PLAYLIST"  Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
+                        <TextBlock Grid.Column="2" Text="CREATED DATE" Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
                     </Grid>
                 </ListView.Header>
 
@@ -114,45 +103,41 @@
                 </ListView.ItemContainerStyle>
 
                 <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="local:Track">
+                    <DataTemplate x:DataType="local:Playlist">
                         <Grid Height="72" Padding="16,8" Background="Transparent">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="48"/>
+                                <!-- Play button width -->
                                 <ColumnDefinition Width="*"/>
+                                <!-- Title -->
                                 <ColumnDefinition Width="200"/>
-                                <ColumnDefinition Width="200"/>
-                                <ColumnDefinition Width="150"/>
                             </Grid.ColumnDefinitions>
 
-                            <!-- Play Button -->
+                            <!-- Go To Button -->
                             <Button Grid.Column="0"
-                                Width="36"
-                                Height="36"
-                                Background="Transparent"
-                                BorderThickness="0"
-                                Padding="0"
-                                Click="PlayButton_Click"
-                                VerticalAlignment="Center">
+                            Width="36"
+                            Height="36"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Padding="0"
+                            Click="PlaylistGoTo_Click"
+                            VerticalAlignment="Center">
                                 <Button.Tag>
-                                    <local:Track 
-                                    SongId="{x:Bind SongId}"
-                                    Title="{x:Bind Title}"
-                                    Genre="{x:Bind Genre}"
-                                    Album="{x:Bind Album}"
-                                    DriveFileId="{x:Bind DriveFileId}"/>
+                                    <local:Playlist 
+                                        Id="{x:Bind Id}"
+                                        Name="{x:Bind Name}"
+                                        Owner="{x:Bind Owner}"
+                                        CreatedAt="{x:Bind CreatedAt}"
+                                    />
                                 </Button.Tag>
-                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE768;" FontSize="16" Foreground="#808080"/>
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7B3;" FontSize="16" Foreground="#808080"/>
                             </Button>
                             <!-- Title -->
                             <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="8,0">
-                                <TextBlock Text="{x:Bind Title}" Foreground="White" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                                <TextBlock Text="{x:Bind Name}" Foreground="White" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
                             </StackPanel>
-                            <!-- Artist -->
-                            <TextBlock Grid.Column="2" Text="{x:Bind Genre}" Foreground="#909090" VerticalAlignment="Center" Margin="8,0" TextTrimming="CharacterEllipsis"/>
-                            <!-- Album -->
-                            <TextBlock Grid.Column="3" Text="{x:Bind Album}"  Foreground="#909090" VerticalAlignment="Center" Margin="8,0" TextTrimming="CharacterEllipsis"/>
                             <!-- Upload Date -->
-                            <TextBlock Grid.Column="4" Text="{x:Bind UploadDate}" Foreground="#909090" VerticalAlignment="Center" Margin="8,0"/>
+                            <TextBlock Grid.Column="2" Text="{x:Bind CreatedAt}" Foreground="#909090" VerticalAlignment="Center" Margin="8,0"/>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

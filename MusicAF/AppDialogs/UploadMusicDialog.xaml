@@ -16,6 +16,7 @@
            HorizontalAlignment="Center" 
            Margin="0,10"
            Visibility="{x:Bind MessageTextBlock.Text, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}"/>
+        
         <!-- Screen 1: File Selection -->
         <Grid x:Name="FileSelectionScreen" Visibility="Visible">
             <StackPanel HorizontalAlignment="Center" Spacing="20">
@@ -86,24 +87,21 @@
                          HorizontalScrollBarVisibility="Disabled">
                 <StackPanel Padding="0,0,10,20">
                     <!-- Added right padding for scrollbar -->
-                    <TextBlock Text="File Details" 
+                    <TextBlock Text="File Details" Foreground="#909090"
                              FontSize="20" 
                              HorizontalAlignment="Center"
                              Margin="0,0,0,20"/>
 
-                    <StackPanel Background="#171221" Padding="10">
-                        <TextBox x:Name="TitleTextBox" 
-                                Header="Title *" 
+                    <StackPanel Background="#405050" Padding="10">
+                        <TextBox x:Name="TitleTextBox" Foreground="#909090"
                                 PlaceholderText="Enter song title"/>
 
 
-                        <TextBox x:Name="AlbumTextBox" 
-                                Header="Album" 
+                        <TextBox x:Name="AlbumTextBox" Foreground="#909090"
                                 PlaceholderText="Enter album name" 
                                 Margin="0,10,0,0"/>
 
                         <ComboBox x:Name="GenreComboBox" 
-                                 Header="Genre *" 
                                  PlaceholderText="Select genre" 
                                  Margin="0,10,0,0">
                             <ComboBoxItem Content="Rock"/>
@@ -114,27 +112,27 @@
                             <ComboBoxItem Content="Other"/>
                         </ComboBox>
 
-                        <CheckBox x:Name="PrivacyCheckBox" 
+                        <CheckBox x:Name="PrivacyCheckBox" Foreground="#909090"
                                  Content="Make this track private" 
                                  Margin="0,10,0,0"/>
 
-                        <CheckBox x:Name="DownloadCheckBox" 
+                        <CheckBox x:Name="DownloadCheckBox" Foreground="#909090"
                                  Content="Allow downloads" 
                                  Margin="0,10,0,0"/>
 
-                        <TextBox x:Name="PriceTextBox" 
+                        <TextBox x:Name="PriceTextBox" Foreground="#909090"
                                 Header="Download Price ($)" 
                                 PlaceholderText="0.00"
                                 InputScope="Number"
                                 Margin="0,10,0,0"/>
 
-                        <CheckBox x:Name="RightsConfirmationCheckBox"
+                        <CheckBox x:Name="RightsConfirmationCheckBox" Foreground="#909090"
                                  Content="I confirm I have the rights to upload this music *" 
                                  IsChecked="False"
                                  Margin="0,10,0,0"/>
 
                         <TextBlock Text="* Required fields" 
-                                  Foreground="Gray" 
+                                  Foreground="#909090"
                                   FontSize="12" 
                                   Margin="0,10,0,0"/>
 
@@ -143,8 +141,8 @@
                                 HorizontalAlignment="Left"
                                 Margin="0,10,0,0"
                                 Click="FinalizeUpload_Click"/>
-
-
+                    </StackPanel>
+                    <StackPanel Height="100">
                     </StackPanel>
                 </StackPanel>
             </ScrollViewer>
