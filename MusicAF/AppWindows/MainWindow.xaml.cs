@@ -139,6 +139,11 @@ namespace MusicAF.AppWindows
             MainFrame.Navigate(typeof(MyLibraryPage),currentUserEmail);
         }
 
+        private void NavigateToLikedPage_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(typeof(LikedPage), currentUserEmail); // Pass the current user email as a parameter
+        }
+
         private void PlaylistButton_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(typeof(PlaylistPage), currentUserEmail);

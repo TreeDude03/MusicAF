@@ -66,7 +66,7 @@
                             </Button>
 
                             <!-- Saved -->
-                            <Button Background="Transparent" BorderThickness="0">
+                            <Button  Click="NavigateToLikedPage_Click" Background="Transparent" BorderThickness="0">
                                 <Grid Height="35">
                                     <StackPanel Orientation="Horizontal">
                                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8F1;" Foreground="#808080"/>
