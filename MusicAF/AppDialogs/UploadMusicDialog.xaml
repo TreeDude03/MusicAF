@@ -28,10 +28,6 @@
                          HorizontalAlignment="Center" 
                          Foreground="Gray"/>
 
-                <ComboBox Header="Privacy" Width="200" SelectedIndex="0">
-                    <ComboBoxItem Content="Private"/>
-                    <ComboBoxItem Content="Public"/>
-                </ComboBox>
 
                 <Button Content="Select Files" 
                         Style="{StaticResource AccentButtonStyle}"

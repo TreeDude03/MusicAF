@@ -55,8 +55,10 @@
             HorizontalAlignment="Center"
             TextWrapping="Wrap"
             Visibility="Collapsed"/>
-
-            <!-- Tracks List -->
+            <ScrollViewer MaxHeight="700"
+             VerticalScrollBarVisibility="Auto" 
+             HorizontalScrollBarVisibility="Disabled">
+                <!-- Tracks List -->
             <ListView x:Name="TracksListView"
             ItemsSource="{x:Bind Tracks, Mode=OneWay}"
             SelectionMode="None"
@@ -157,6 +159,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            </ScrollView>
         </Grid>
     </Grid>
 </Page>
