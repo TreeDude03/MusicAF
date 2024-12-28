@@ -48,8 +48,8 @@
                         Width="50" Height="50" Margin="10" Background="Transparent" Click="CommentIcon_Click">
                         <FontIcon Glyph="&#xE90A;" FontFamily="Segoe MDL2 Assets" FontSize="24" Foreground="White"/>
                     </Button>
-                    <Button VerticalAlignment="Bottom" HorizontalAlignment="Right" 
-                        Width="50" Height="50" Margin="10" Background="Transparent">
+                    <Button x:Name="LikeButton" VerticalAlignment="Bottom" HorizontalAlignment="Right" 
+                        Width="50" Height="50" Margin="10" Background="Transparent" Click="LikeButton_Click">
                         <FontIcon Glyph="&#xEB51;" FontFamily="Segoe MDL2 Assets" FontSize="24" Foreground="White"/>
                     </Button>
                 </StackPanel>

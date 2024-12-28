@@ -55,6 +55,7 @@
             HorizontalAlignment="Center"
             TextWrapping="Wrap"
             Visibility="Collapsed"/>
+            
             <ScrollViewer MaxHeight="700"
              VerticalScrollBarVisibility="Auto" 
              HorizontalScrollBarVisibility="Disabled">
@@ -159,7 +160,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            </ScrollView>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </Page>

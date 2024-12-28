@@ -508,14 +508,19 @@ namespace MusicAF.AppWindows
 
         private void NowPlayingButton_Click(object sender, RoutedEventArgs e)
         {
-            //if (MainFrame != null && App.PlaybackService.CurrentTrack != null)
-            //{
-            //    MainFrame.Navigate(typeof(NowPlayingPage), App.PlaybackService.CurrentTrack);
-            //}
-            //else
-            //{
-            //    ShowErrorDialog("No track is currently playing or the frame is not initialized.");
-            //}
+
+            Console.WriteLine(currentTrack.Title);
+            if (MainFrame != null && App.PlaybackService.CurrentTrack != null)
+            {
+                var nowPlayingPage = new NowPlayingPage();
+
+                // Navigate to NowPlayingPage
+                MainFrame.Navigate(typeof(NowPlayingPage), (_track: App.PlaybackService.CurrentTrack, _email: currentUserEmail));
+            }
+            else
+            {
+                ShowErrorDialog("No track is currently playing or the frame is not initialized.");
+            }
         }
         private void SearchBox_KeyDown(object sender, KeyRoutedEventArgs e)
         {

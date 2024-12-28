@@ -18,6 +18,8 @@ using Windows.Storage;
 using Microsoft.UI.Xaml.Input;
 using MusicAF.ThirdPartyServices;
 using MusicAF.Models;
+using System.Collections.Generic;
+using Microsoft.UI.Xaml.Media;
 
 namespace MusicAF.AppPages
 {
@@ -31,18 +33,21 @@ namespace MusicAF.AppPages
         private DispatcherTimer _progressTimer;
         private string currentAccessToken;
         private System.Net.Http.HttpClient httpClient;
+        private FirestoreService _firestoreService;
+
         //
         private string listenerEmail;
 
         public NowPlayingPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+            _firestoreService = FirestoreService.Instance;
             App.PlaybackService.TrackChanged += OnTrackChanged;
             _driveService = GoogleDriveService.Instance;
             httpClient = new System.Net.Http.HttpClient();
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
@@ -53,10 +58,32 @@ namespace MusicAF.AppPages
                 currentUserEmail = currentTrack.Uploader;
                 //
                 listenerEmail = parameters.Item2;
+
+                var favoritesRef = _firestoreService.FirestoreDb.Collection("favorites").Document(listenerEmail);
+                var favoritesDoc = await favoritesRef.GetSnapshotAsync();
+
+                if (favoritesDoc.Exists)
+                {
+                    var favoriteTracks = favoritesDoc.GetValue<List<string>>("TrackIds");
+                    if (favoriteTracks != null && favoriteTracks.Contains(currentTrack.SongId))
+                    {
+                        SetLikeButtonState(liked: true);
+                    }
+                }
                 UpdateUI();
             }
         }
+        private void SetLikeButtonState(bool liked)
+        {
+            var likeButton = LikeButton; // Assuming LikeButton is the name of your Button
+            if (likeButton?.Content is FontIcon icon)
+            {
+                icon.Foreground = liked ? new SolidColorBrush(Microsoft.UI.Colors.Red) : new SolidColorBrush(Microsoft.UI.Colors.Transparent);
+                likeButton.Background = liked ? new SolidColorBrush(Microsoft.UI.Colors.Red) : new SolidColorBrush(Microsoft.UI.Colors.Transparent);
+            }
 
+            likeButton.IsEnabled = !liked; // Disable the button if already liked
+        }
         private void UpdateUI()
         {
             if (TrackTitleText != null)
@@ -146,6 +173,49 @@ namespace MusicAF.AppPages
             if (Frame.CanGoBack)
             {
                 Frame.GoBack();
+            }
+        }
+
+        private async void LikeButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                try
+                {
+                    Console.WriteLine($"Starting document upload to {listenerEmail}");
+                    string record = await _firestoreService.GetFieldFromDocumentAsync<string>("favorites", listenerEmail, "UserId");
+                    if (record == null)
+                    {
+                        await _firestoreService.AddDocumentAsync("favorites", listenerEmail , new { UserId = listenerEmail, TrackIds = new List<string>() });
+
+                    }
+
+                    // Increment Likes for the track
+                    var trackRef = _firestoreService.FirestoreDb.Collection("tracks").Document(currentTrack.SongId);
+                    await _firestoreService.IncrementFieldAsync(trackRef, "Likes", 1);
+
+                    // Add trackId to the user's Favorites
+                    var userId = listenerEmail; // Assuming userId or email is stored globally
+                    var favoritesRef = _firestoreService.FirestoreDb.Collection("favorites").Document(userId);
+                    var favoritesDoc = await favoritesRef.GetSnapshotAsync();
+
+                    if (favoritesDoc.Exists)
+                    {
+                        var favoriteTracks = favoritesDoc.GetValue<List<string>>("TrackIds");
+                        if (!favoriteTracks.Contains(currentTrack.SongId))
+                        {
+                            favoriteTracks.Add(currentTrack.SongId);
+                            await favoritesRef.UpdateAsync("TrackIds", favoriteTracks);
+
+                            SetLikeButtonState(liked: true);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Handle errors
+                    Debug.WriteLine($"Error liking track: {ex.Message}");
+                }
             }
         }
 

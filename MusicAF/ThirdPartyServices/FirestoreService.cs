@@ -56,23 +56,39 @@ namespace MusicAF.ThirdPartyServices
         {
             try
             {
-                Debug.WriteLine($"Starting document upload to {collection}/{documentId}");
+                Console.WriteLine($"Starting document upload to {collection}/{documentId}");
 
                 if (FirestoreDb == null)
                 {
-                    Debug.WriteLine("Error: FirestoreDb is null");
+                    Console.WriteLine("Error: FirestoreDb is null");
                     throw new InvalidOperationException("Firestore database is not initialized");
                 }
 
                 DocumentReference docRef = FirestoreDb.Collection(collection).Document(documentId);
                 await docRef.SetAsync(data);
-                Debug.WriteLine("Document added successfully");
+                Console.WriteLine("Document added successfully");
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error adding document: {ex.Message}");
-                Debug.WriteLine($"Stack trace: {ex.StackTrace}");
+                Console.WriteLine($"Error adding document: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 throw;
+            }
+        }
+
+        public async Task IncrementFieldAsync(DocumentReference documentRef, string fieldName, int incrementBy)
+        {
+            try
+            {
+                var updates = new Dictionary<string, object>
+            {
+                { fieldName, FieldValue.Increment(incrementBy) }
+            };
+                await documentRef.UpdateAsync(updates);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Failed to increment field '{fieldName}': {ex.Message}", ex);
             }
         }
 

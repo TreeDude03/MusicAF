@@ -13,6 +13,8 @@ using System.Windows.Input;
 using Windows.UI.ViewManagement;
 using MusicAF.ThirdPartyServices;
 using MusicAF.Helpers;
+using MusicAF.Models;
+using System.Collections.Generic;
 
 namespace MusicAF.AppWindows
 {
@@ -100,7 +102,10 @@ namespace MusicAF.AppWindows
                 ConfirmPasswordBox_Signup.Password = "";
                 return;
             }
+
+            await _firestoreService.AddDocumentAsync("favorites", email, new {UserId=email, TrackIds=new List<string>() });
             await _firestoreService.AddDocumentAsync("users", email, new { Email = email, Name = name, Password = encryptedPassword, CreatedAt = DateTime.UtcNow});
+            
             MessageTextBlock.Text = "User signed up successfully. Please login";
             //
             SignupPanel.Visibility = Visibility.Collapsed;
