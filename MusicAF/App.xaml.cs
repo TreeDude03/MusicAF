@@ -74,6 +74,11 @@ namespace MusicAF
             }
         }
 
+        public static void LogOut()
+        {
+            CurrentUserEmail = null;
+        }
+
         private static async void ShowErrorDialog(string message)
         {
             ContentDialog errorDialog = new ContentDialog

@@ -228,7 +228,7 @@ namespace MusicAF.AppWindows
 
         private void MediaPlayer_MediaEnded(MediaPlayer sender, object args)
         {
-            Debug.WriteLine("Media playback ended");
+            Console.WriteLine("Media playback ended");
             DispatcherQueue.TryEnqueue(() =>
             {
                 _progressTimer.Stop();
@@ -238,6 +238,7 @@ namespace MusicAF.AppWindows
                 if (CurrentTimeText != null)
                     CurrentTimeText.Text = "00:00";
             });
+            App.PlaybackService.PlayNextTrack();
         }
 
         private void InitializeProgressTimer()
@@ -494,7 +495,6 @@ namespace MusicAF.AppWindows
             }
         }
 
-
         private void ProgressSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
             if (mediaPlayer?.PlaybackSession != null &&
@@ -528,6 +528,32 @@ namespace MusicAF.AppWindows
             else
             {
                 ShowErrorDialog("No track is currently playing or the frame is not initialized.");
+            }
+        }
+
+        private async void LogOutButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Confirm log out with the user
+            var dialog = new ContentDialog
+            {
+                Title = "Log Out",
+                Content = "Are you sure you want to log out?",
+                PrimaryButtonText = "Yes",
+                CloseButtonText = "No",
+                XamlRoot = this.Content.XamlRoot
+            };
+
+            var result = await dialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                // Clear user session
+                currentUserEmail = null; // Assuming this holds the logged-in user's email
+                App.LogOut();                // Navigate to LogInWindow
+                var loginWindow = new LogInWindow();
+                loginWindow.Activate();
+
+                // Close the current window
+                this.Close();
             }
         }
         private void SearchBox_KeyDown(object sender, KeyRoutedEventArgs e)

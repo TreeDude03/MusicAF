@@ -94,6 +94,14 @@
                                 </StackPanel>
                             </Button>
                         </StackPanel>
+
+                        <Button Click="LogOutButton_Click" Margin="10"  VerticalAlignment="Bottom" Background="Transparent" BorderThickness="0" >
+                            <StackPanel Orientation="Horizontal">
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7E8;" Foreground="#808080"/>
+                                <!-- Glyph for "Sign Out" -->
+                                <TextBlock Text="Log Out" Margin="10,0,0,0" Foreground="#808080"/>
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
                 </Grid>
 
@@ -219,6 +227,7 @@
                 </StackPanel>
             </Grid>
         </Grid>
+        
         <Popup x:Name="AdPopup" IsOpen="False" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid Width="400" Height="300" Background="White" BorderBrush="Black" BorderThickness="1">
                 <!-- Advertisement Image -->
@@ -237,5 +246,7 @@
                         Click="CloseAdButton_Click" />
             </Grid>
         </Popup>
+
+        <!-- Log Out Button -->
     </Grid>
 </Window>
