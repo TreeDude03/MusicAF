@@ -279,6 +279,9 @@ namespace MusicAF.AppWindows
                 // Stop any currently playing track
                 StopCurrentPlayback();
 
+                // Increment Streams field in Firestore
+                var trackRef = _firestoreService.FirestoreDb.Collection("tracks").Document(currentTrack.SongId);
+                await FirestoreService.Instance.IncrementFieldAsync(trackRef, "Streams", 1);
 
                 // Get the direct download URL and access token
                 var accessToken = await _driveService.GetAccessTokenAsync();

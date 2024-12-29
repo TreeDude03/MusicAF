@@ -75,7 +75,7 @@ HorizontalScrollBarVisibility="Disabled">
                             <TextBlock Grid.Column="2" Text="ARTIST" Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
                             <TextBlock Grid.Column="3" Text="ALBUM" Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
                             <TextBlock Grid.Column="4" Text="GENRE" Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
-                            <TextBlock Grid.Column="5" Text="UPLOAD DATE" Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="5" Text="STREAMS" Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
                             <TextBlock Grid.Column="6" Text="DOWNLOAD" Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
 
                         </Grid>
@@ -137,6 +137,7 @@ HorizontalScrollBarVisibility="Disabled">
                                       Artist="{x:Bind Artist}"
                                       Album="{x:Bind Album}"
                                       Genre="{x:Bind Genre}"
+                                       Streams="{x:Bind Streams}"
                                       DriveFileId="{x:Bind DriveFileId}"/>
                                     </Button.Tag>
                                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE768;" FontSize="16" Foreground="#808080"/>
@@ -154,7 +155,7 @@ HorizontalScrollBarVisibility="Disabled">
                                 <!-- Genre -->
                                 <TextBlock Grid.Column="4" Text="{x:Bind Genre}"  Foreground="#808080" VerticalAlignment="Center" Margin="8,0" TextTrimming="CharacterEllipsis"/>
                                 <!-- Upload Date -->
-                                <TextBlock Grid.Column="5" Text="{x:Bind UploadDate}" Foreground="#808080" VerticalAlignment="Center" Margin="8,0"/>
+                                <TextBlock Grid.Column="5" Text="{x:Bind Streams}" Foreground="#808080" VerticalAlignment="Center" Margin="8,0"/>
 
                                 <Button Grid.Column="6"
                               Background="Transparent"

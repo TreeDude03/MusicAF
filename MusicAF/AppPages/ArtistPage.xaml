@@ -50,7 +50,7 @@
                     <TextBlock Grid.Column="1" Text="TITLE" Foreground="#808080" FontSize="13" FontWeight="SemiBold" />
                     <TextBlock Grid.Column="2" Text="ALBUM" Foreground="#808080" FontSize="13" FontWeight="SemiBold" />
                     <TextBlock Grid.Column="3" Text="GENRE" Foreground="#808080" FontSize="13" FontWeight="SemiBold" />
-                    <TextBlock Grid.Column="4" Text="UPLOAD DATE" Foreground="#808080" FontSize="13" FontWeight="SemiBold" />
+                    <TextBlock Grid.Column="4" Text="STREAMS" Foreground="#808080" FontSize="13" FontWeight="SemiBold" />
                     <TextBlock Grid.Column="5" Text="DOWNLOAD" Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
                 </Grid>
             </ListView.Header>
@@ -115,7 +115,7 @@
                         <TextBlock Grid.Column="1" Text="{x:Bind Title}" Foreground="White" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
                         <TextBlock Grid.Column="2" Text="{x:Bind Album}" Foreground="#808080" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
                         <TextBlock Grid.Column="3" Text="{x:Bind Genre}" Foreground="#808080" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
-                        <TextBlock Grid.Column="4" Text="{x:Bind UploadDate}" Foreground="#808080" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="4" Text="{x:Bind Streams}" Foreground="#808080" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
                         <Button Grid.Column="5"
      Background="Transparent"
      VerticalAlignment="Center"
