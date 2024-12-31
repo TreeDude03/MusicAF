@@ -78,11 +78,11 @@ namespace MusicAF.AppPages
             var likeButton = LikeButton; // Assuming LikeButton is the name of your Button
             if (likeButton?.Content is FontIcon icon)
             {
-                icon.Foreground = liked ? new SolidColorBrush(Microsoft.UI.Colors.Red) : new SolidColorBrush(Microsoft.UI.Colors.Transparent);
-                likeButton.Background = liked ? new SolidColorBrush(Microsoft.UI.Colors.Red) : new SolidColorBrush(Microsoft.UI.Colors.Transparent);
+                icon.Foreground = liked ? new SolidColorBrush(Microsoft.UI.Colors.Red) : new SolidColorBrush(Microsoft.UI.Colors.White);
+                likeButton.Foreground = liked ? new SolidColorBrush(Microsoft.UI.Colors.Red) : new SolidColorBrush(Microsoft.UI.Colors.White);
             }
 
-            likeButton.IsEnabled = !liked; // Disable the button if already liked
+            //likeButton.IsEnabled = !liked; // Disable the button if already liked
         }
         private void UpdateUI()
         {
@@ -182,42 +182,52 @@ namespace MusicAF.AppPages
             {
                 try
                 {
-                    Console.WriteLine($"Starting document upload to {listenerEmail}");
-                    string record = await _firestoreService.GetFieldFromDocumentAsync<string>("favorites", listenerEmail, "UserId");
-                    if (record == null)
-                    {
-                        await _firestoreService.AddDocumentAsync("favorites", listenerEmail , new { UserId = listenerEmail, TrackIds = new List<string>() });
-
-                    }
-
-                    // Increment Likes for the track
-                    var trackRef = _firestoreService.FirestoreDb.Collection("tracks").Document(currentTrack.SongId);
-                    await _firestoreService.IncrementFieldAsync(trackRef, "Likes", 1);
-
-                    // Add trackId to the user's Favorites
-                    var userId = listenerEmail; // Assuming userId or email is stored globally
-                    var favoritesRef = _firestoreService.FirestoreDb.Collection("favorites").Document(userId);
+                    // Check if the favorites document exists for the user
+                    var favoritesRef = _firestoreService.FirestoreDb.Collection("favorites").Document(listenerEmail);
                     var favoritesDoc = await favoritesRef.GetSnapshotAsync();
 
-                    if (favoritesDoc.Exists)
+                    if (!favoritesDoc.Exists)
                     {
-                        var favoriteTracks = favoritesDoc.GetValue<List<string>>("TrackIds");
-                        if (!favoriteTracks.Contains(currentTrack.SongId))
-                        {
-                            favoriteTracks.Add(currentTrack.SongId);
-                            await favoritesRef.UpdateAsync("TrackIds", favoriteTracks);
+                        // If the document doesn't exist, create it
+                        await _firestoreService.AddDocumentAsync("favorites", listenerEmail, new { UserId = listenerEmail, TrackIds = new List<string>() });
+                    }
 
-                            SetLikeButtonState(liked: true);
-                        }
+                    // Get the list of favorite tracks
+                    var favoriteTracks = favoritesDoc.GetValue<List<string>>("TrackIds") ?? new List<string>();
+
+                    if (favoriteTracks.Contains(currentTrack.SongId))
+                    {
+                        // If the song is already liked, unlike it
+                        favoriteTracks.Remove(currentTrack.SongId);
+                        await favoritesRef.UpdateAsync("TrackIds", favoriteTracks);
+
+                        // Decrement the Likes field in Firestore
+                        var trackRef = _firestoreService.FirestoreDb.Collection("tracks").Document(currentTrack.SongId);
+                        await _firestoreService.IncrementFieldAsync(trackRef, "Likes", -1);
+
+                        SetLikeButtonState(liked: false); // Update the button state to "unliked"
+                    }
+                    else
+                    {
+                        // If the song is not liked, like it
+                        favoriteTracks.Add(currentTrack.SongId);
+                        await favoritesRef.UpdateAsync("TrackIds", favoriteTracks);
+
+                        // Increment the Likes field in Firestore
+                        var trackRef = _firestoreService.FirestoreDb.Collection("tracks").Document(currentTrack.SongId);
+                        await _firestoreService.IncrementFieldAsync(trackRef, "Likes", 1);
+
+                        SetLikeButtonState(liked: true); // Update the button state to "liked"
                     }
                 }
                 catch (Exception ex)
                 {
-                    // Handle errors
-                    Debug.WriteLine($"Error liking track: {ex.Message}");
+                    Debug.WriteLine($"Error toggling like state for track: {ex.Message}");
+                    await ShowErrorDialogAsync($"Error toggling like state: {ex.Message}");
                 }
             }
         }
+
 
     }
 }
