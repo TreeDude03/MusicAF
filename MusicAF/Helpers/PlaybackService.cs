@@ -1,4 +1,6 @@
-﻿using MusicAF.Models;
+﻿using Google.Cloud.Firestore;
+using MusicAF.Models;
+using MusicAF.ThirdPartyServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,8 @@ namespace MusicAF.Helpers
 {
     public class PlaybackService
     {
+
+        private readonly FirestoreService _firestoreService = FirestoreService.Instance;
         public event Action<Track> TrackChanged;
         private Track _currentTrack;
 
@@ -19,6 +23,13 @@ namespace MusicAF.Helpers
         {
             get => _currentTrack;
             private set => _currentTrack = value;
+        }
+
+        public event Action TimerEnded;
+
+        public void TriggerTimerEnded()
+        {
+            TimerEnded?.Invoke();
         }
 
         public void SetTrackList(List<Track> trackList, Track track)
@@ -63,6 +74,8 @@ namespace MusicAF.Helpers
             _currentTrack = track;
             TrackChanged?.Invoke(track); // Notify listeners about the track change
         }
+
+        
         public int GetTrackIndexById(List<Track> trackList, string songId)
         {
             if (trackList == null || string.IsNullOrWhiteSpace(songId))

@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Page
-    x:Class="MusicAF.AppPages.ForYouPage"
+    x:Class="MusicAF.AppPages.LikedPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MusicAF.Models"
@@ -29,44 +28,35 @@
                 </StackPanel>
             </Button>
 
-            <TextBlock Grid.Column="1" Text="For You" Foreground="White"
-            FontSize="32" FontWeight="SemiBold"/>
+            <TextBlock Grid.Column="1" Text="Liked Tracks" Foreground="White"
+          FontSize="32" FontWeight="SemiBold"/>
 
             <ProgressRing Grid.Column="2" x:Name="DownloadProgressRing" 
-                 IsActive="False" 
-                 Visibility="Collapsed" 
-                 HorizontalAlignment="Center" 
-                 VerticalAlignment="Center" 
-                 Width="50" 
-                 Height="50" Margin="0,10,0,10"/>
+               IsActive="False" 
+               Visibility="Collapsed" 
+               HorizontalAlignment="Center" 
+               VerticalAlignment="Center" 
+               Width="50" 
+               Height="50" Margin="0,10,0,10"/>
         </Grid>
 
         <Grid Grid.Row="1" Padding="32,24">
             <!-- Loading Progress Ring -->
             <ProgressRing x:Name="LoadingProgressRing" IsActive="False" Width="40" 
-            Height="40"
-            Foreground="White"/>
+          Height="40"
+          Foreground="White"/>
 
-            <!-- No Tracks Message -->
-            <TextBlock x:Name="NoTracksMessage"
-            Text="No tracks found. Add some tracks for your own at My Library Page, won't you?"
-            Foreground="#808080"
-            TextAlignment="Center"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Center"
-            TextWrapping="Wrap"
-            Visibility="Collapsed"/>
 
             <ScrollViewer MaxHeight="700"
-  VerticalScrollBarVisibility="Auto" 
-  HorizontalScrollBarVisibility="Disabled">
+VerticalScrollBarVisibility="Auto" 
+HorizontalScrollBarVisibility="Disabled">
 
                 <!-- Tracks List -->
-                <ListView x:Name="TracksListView"
-            ItemsSource="{x:Bind Tracks, Mode=OneWay}"
-            SelectionMode="None"
-            Background="Transparent"
-            Padding="0,8">
+                <ListView x:Name="FavoritesListView"
+                      ItemsSource="{x:Bind Tracks, Mode=OneWay}"
+                      SelectionMode="None"
+                      Background="Transparent"
+                      Padding="0,8">
 
                     <!-- List Header -->
                     <ListView.Header>
@@ -133,22 +123,22 @@
 
                                 <!-- Play Button -->
                                 <Button Grid.Column="0"
-                                Width="36"
-                                Height="36"
-                                Background="Transparent"
-                                BorderThickness="0"
-                                Padding="0"
-                                Click="PlayButton_Click"
-                                VerticalAlignment="Center">
+                              Width="36"
+                              Height="36"
+                              Background="Transparent"
+                              BorderThickness="0"
+                              Padding="0"
+                              Click="PlayButton_Click"
+                              VerticalAlignment="Center">
                                     <Button.Tag>
                                         <local:Track 
-                                        SongId="{x:Bind SongId}"
-                                        Title="{x:Bind Title}"
-                                        Artist="{x:Bind Artist}"
-                                        Album="{x:Bind Album}"
-                                        Genre="{x:Bind Genre}"
-                                        Streams="{x:Bind Streams}"    
-                                        DriveFileId="{x:Bind DriveFileId}"/>
+                                      SongId="{x:Bind SongId}"
+                                      Title="{x:Bind Title}"
+                                      Artist="{x:Bind Artist}"
+                                      Album="{x:Bind Album}"
+                                      Genre="{x:Bind Genre}"
+                                       Streams="{x:Bind Streams}"
+                                      DriveFileId="{x:Bind DriveFileId}"/>
                                     </Button.Tag>
                                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE768;" FontSize="16" Foreground="#808080"/>
                                 </Button>
@@ -168,22 +158,22 @@
                                 <TextBlock Grid.Column="5" Text="{x:Bind Streams}" Foreground="#808080" VerticalAlignment="Center" Margin="8,0"/>
 
                                 <Button Grid.Column="6"
-                                Background="Transparent"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Center"
-                                Visibility="{x:Bind CanDownload, Converter={StaticResource BoolToVisibilityConverter}}"
-                                Click="DownloadButton_Click">
+                              Background="Transparent"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Center"
+                              Visibility="{x:Bind CanDownload, Converter={StaticResource BoolToVisibilityConverter}}"
+                              Click="DownloadButton_Click">
                                     <Button.Content>
                                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE896;" Foreground="White" FontSize="16"/>
                                     </Button.Content>
                                     <Button.Tag>
                                         <local:Track 
-                                              SongId="{x:Bind SongId}"
-                                              Title="{x:Bind Title}"
-                                              Artist="{x:Bind Artist}"
-                                              Album="{x:Bind Album}"
-                                              DriveFileId="{x:Bind DriveFileId}"
-                                              FileDetails= "{x:Bind FileDetails}" />
+                                            SongId="{x:Bind SongId}"
+                                            Title="{x:Bind Title}"
+                                            Artist="{x:Bind Artist}"
+                                            Album="{x:Bind Album}"
+                                            DriveFileId="{x:Bind DriveFileId}"
+                                            FileDetails= "{x:Bind FileDetails}" />
                                     </Button.Tag>
                                 </Button>
                             </Grid>
@@ -194,5 +184,5 @@
             </ScrollViewer>
         </Grid>
     </Grid>
-</Page>
 
+</Page>

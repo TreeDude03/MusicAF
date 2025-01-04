@@ -26,6 +26,7 @@ using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage.Streams;
 using Windows.Storage;
+using Windows.UI.ApplicationSettings;
 
 namespace MusicAF.AppWindows
 {
@@ -59,6 +60,7 @@ namespace MusicAF.AppWindows
                 SetCurrentTrack();
 
                 App.PlaybackService.TrackChanged += OnTrackChanged;
+                App.PlaybackService.TimerEnded += StopPlayback; // Subscribe to timer event
                 _driveService = GoogleDriveService.Instance;
                 httpClient = new System.Net.Http.HttpClient();
                 
@@ -137,6 +139,11 @@ namespace MusicAF.AppWindows
         private void LibraryButton_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(typeof(MyLibraryPage),currentUserEmail);
+        }
+
+        private void NavigateToLikedPage_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(typeof(LikedPage), currentUserEmail); // Pass the current user email as a parameter
         }
 
         private void PlaylistButton_Click(object sender, RoutedEventArgs e)
@@ -223,7 +230,7 @@ namespace MusicAF.AppWindows
 
         private void MediaPlayer_MediaEnded(MediaPlayer sender, object args)
         {
-            Debug.WriteLine("Media playback ended");
+            Console.WriteLine("Media playback ended");
             DispatcherQueue.TryEnqueue(() =>
             {
                 _progressTimer.Stop();
@@ -233,6 +240,7 @@ namespace MusicAF.AppWindows
                 if (CurrentTimeText != null)
                     CurrentTimeText.Text = "00:00";
             });
+            App.PlaybackService.PlayNextTrack();
         }
 
         private void InitializeProgressTimer()
@@ -274,6 +282,9 @@ namespace MusicAF.AppWindows
                 // Stop any currently playing track
                 StopCurrentPlayback();
 
+                // Increment Streams field in Firestore
+                var trackRef = _firestoreService.FirestoreDb.Collection("tracks").Document(currentTrack.SongId);
+                await FirestoreService.Instance.IncrementFieldAsync(trackRef, "Streams", 1);
 
                 // Get the direct download URL and access token
                 var accessToken = await _driveService.GetAccessTokenAsync();
@@ -486,7 +497,6 @@ namespace MusicAF.AppWindows
             }
         }
 
-
         private void ProgressSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
             if (mediaPlayer?.PlaybackSession != null &&
@@ -508,15 +518,53 @@ namespace MusicAF.AppWindows
 
         private void NowPlayingButton_Click(object sender, RoutedEventArgs e)
         {
-            //if (MainFrame != null && App.PlaybackService.CurrentTrack != null)
-            //{
-            //    MainFrame.Navigate(typeof(NowPlayingPage), App.PlaybackService.CurrentTrack);
-            //}
-            //else
-            //{
-            //    ShowErrorDialog("No track is currently playing or the frame is not initialized.");
-            //}
+
+            Console.WriteLine(currentTrack.Title);
+            if (MainFrame != null && App.PlaybackService.CurrentTrack != null)
+            {
+                var nowPlayingPage = new NowPlayingPage();
+
+                // Navigate to NowPlayingPage
+                MainFrame.Navigate(typeof(NowPlayingPage), (_track: App.PlaybackService.CurrentTrack, _email: currentUserEmail));
+            }
+            else
+            {
+                ShowErrorDialog("No track is currently playing or the frame is not initialized.");
+            }
         }
+
+        private async void LogOutButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Confirm log out with the user
+            var dialog = new ContentDialog
+            {
+                Title = "Log Out",
+                Content = "Are you sure you want to log out?",
+                PrimaryButtonText = "Yes",
+                CloseButtonText = "No",
+                XamlRoot = this.Content.XamlRoot
+            };
+
+            var result = await dialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                // Clear user session
+                currentUserEmail = null; // Assuming this holds the logged-in user's email
+                App.LogOut();                // Navigate to LogInWindow
+                var loginWindow = new LogInWindow();
+                loginWindow.Activate();
+
+                // Close the current window
+                this.Close();
+            }
+        }
+
+        // Add this method to the MainWindow class
+        private void NavigateToSettingsPage(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(typeof(SettingPage));
+        }
+
         private void SearchBox_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Enter)
@@ -560,6 +608,32 @@ namespace MusicAF.AppWindows
             // Close the advertisement popup
             AdPopup.IsOpen = false;
         }
+
+        public void StopPlayback()
+        {
+            try
+            {
+                // Stop the media player
+                if (mediaPlayer != null && mediaPlayer.PlaybackSession != null)
+                {
+                    UpdatePlayPauseButton(false);
+                    mediaPlayer.Pause();
+                    mediaPlayer.PlaybackSession.Position = TimeSpan.Zero; // Reset position
+                    Debug.WriteLine("Playback stopped.");
+                }
+
+                // Clear the current track
+                currentTrack = null;
+                _currentTrackName = "";
+                _currentTrackArtist = "";
+                SetCurrentTrack(); // Update UI
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error stopping playback: {ex.Message}");
+            }
+        }
+
 
     }
 }

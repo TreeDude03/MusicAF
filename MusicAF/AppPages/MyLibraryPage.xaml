@@ -55,6 +55,7 @@
             HorizontalAlignment="Center"
             TextWrapping="Wrap"
             Visibility="Collapsed"/>
+            
             <ScrollViewer MaxHeight="700"
              VerticalScrollBarVisibility="Auto" 
              HorizontalScrollBarVisibility="Disabled">
@@ -84,7 +85,7 @@
                         <TextBlock Grid.Column="1" Text="TITLE"  Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
                         <TextBlock Grid.Column="2" Text="GENRE" Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
                         <TextBlock Grid.Column="3" Text="ALBUM" Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
-                        <TextBlock Grid.Column="4" Text="UPLOAD DATE" Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
+                        <TextBlock Grid.Column="4" Text="STREAMS" Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
                     </Grid>
                 </ListView.Header>
 
@@ -141,6 +142,7 @@
                                     Title="{x:Bind Title}"
                                     Genre="{x:Bind Genre}"
                                     Album="{x:Bind Album}"
+                                    Streams="{x:Bind Streams}"
                                     DriveFileId="{x:Bind DriveFileId}"/>
                                 </Button.Tag>
                                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE768;" FontSize="16" Foreground="#808080"/>
@@ -153,13 +155,13 @@
                             <TextBlock Grid.Column="2" Text="{x:Bind Genre}" Foreground="#909090" VerticalAlignment="Center" Margin="8,0" TextTrimming="CharacterEllipsis"/>
                             <!-- Album -->
                             <TextBlock Grid.Column="3" Text="{x:Bind Album}"  Foreground="#909090" VerticalAlignment="Center" Margin="8,0" TextTrimming="CharacterEllipsis"/>
-                            <!-- Upload Date -->
-                            <TextBlock Grid.Column="4" Text="{x:Bind UploadDate}" Foreground="#909090" VerticalAlignment="Center" Margin="8,0"/>
+                            <!-- Streams -->
+                            <TextBlock Grid.Column="4" Text="{x:Bind Streams}" Foreground="#909090" VerticalAlignment="Center" Margin="8,0"/>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            </ScrollView>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </Page>

@@ -26,8 +26,7 @@
             <!-- Logo and Brand -->
             <StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="10,0,0,0" VerticalAlignment="Center">
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;" Foreground="White" FontSize="16"/>
-                    <TextBlock Text="MusicAF" Margin="10,0,0,0" Foreground="White" FontSize="16"/>
+                    <TextBlock Text="MusicAF" Margin="10,0,0,0" Foreground="White" FontSize="20"/>
                 </StackPanel>
 
                 <Grid Margin="0,20,0,0" Background="#171221">
@@ -66,7 +65,7 @@
                             </Button>
 
                             <!-- Saved -->
-                            <Button Background="Transparent" BorderThickness="0">
+                            <Button  Click="NavigateToLikedPage_Click" Background="Transparent" BorderThickness="0">
                                 <Grid Height="35">
                                     <StackPanel Orientation="Horizontal">
                                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8F1;" Foreground="#808080"/>
@@ -88,13 +87,21 @@
 
                         <!-- Settings at Bottom -->
                         <StackPanel VerticalAlignment="Bottom" Margin="10" Height="35">
-                            <Button Background="Transparent" BorderThickness="0">
+                            <Button Background="Transparent" BorderThickness="0" Click="NavigateToSettingsPage">
                                 <StackPanel Orientation="Horizontal">
                                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE713;" Foreground="#808080"/>
                                     <TextBlock Text="Settings" Margin="10,0,0,0" Foreground="#808080"/>
                                 </StackPanel>
                             </Button>
                         </StackPanel>
+
+                        <Button Click="LogOutButton_Click" Margin="10"  VerticalAlignment="Bottom" Background="Transparent" BorderThickness="0" >
+                            <StackPanel Orientation="Horizontal">
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7E8;" Foreground="#808080"/>
+                                <!-- Glyph for "Sign Out" -->
+                                <TextBlock Text="Log Out" Margin="10,0,0,0" Foreground="#808080"/>
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
                 </Grid>
 
@@ -220,6 +227,7 @@
                 </StackPanel>
             </Grid>
         </Grid>
+        
         <Popup x:Name="AdPopup" IsOpen="False" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid Width="400" Height="300" Background="White" BorderBrush="Black" BorderThickness="1">
                 <!-- Advertisement Image -->
@@ -238,5 +246,7 @@
                         Click="CloseAdButton_Click" />
             </Grid>
         </Popup>
+
+        <!-- Log Out Button -->
     </Grid>
 </Window>
