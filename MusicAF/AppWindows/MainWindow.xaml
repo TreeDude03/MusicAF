@@ -87,7 +87,7 @@
 
                         <!-- Settings at Bottom -->
                         <StackPanel VerticalAlignment="Bottom" Margin="10" Height="35">
-                            <Button Background="Transparent" BorderThickness="0">
+                            <Button Background="Transparent" BorderThickness="0" Click="NavigateToSettingsPage">
                                 <StackPanel Orientation="Horizontal">
                                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE713;" Foreground="#808080"/>
                                     <TextBlock Text="Settings" Margin="10,0,0,0" Foreground="#808080"/>

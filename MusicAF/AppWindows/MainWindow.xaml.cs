@@ -26,6 +26,7 @@ using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage.Streams;
 using Windows.Storage;
+using Windows.UI.ApplicationSettings;
 
 namespace MusicAF.AppWindows
 {
@@ -59,6 +60,7 @@ namespace MusicAF.AppWindows
                 SetCurrentTrack();
 
                 App.PlaybackService.TrackChanged += OnTrackChanged;
+                App.PlaybackService.TimerEnded += StopPlayback; // Subscribe to timer event
                 _driveService = GoogleDriveService.Instance;
                 httpClient = new System.Net.Http.HttpClient();
                 
@@ -556,6 +558,13 @@ namespace MusicAF.AppWindows
                 this.Close();
             }
         }
+
+        // Add this method to the MainWindow class
+        private void NavigateToSettingsPage(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(typeof(SettingPage));
+        }
+
         private void SearchBox_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Enter)
@@ -599,6 +608,32 @@ namespace MusicAF.AppWindows
             // Close the advertisement popup
             AdPopup.IsOpen = false;
         }
+
+        public void StopPlayback()
+        {
+            try
+            {
+                // Stop the media player
+                if (mediaPlayer != null && mediaPlayer.PlaybackSession != null)
+                {
+                    UpdatePlayPauseButton(false);
+                    mediaPlayer.Pause();
+                    mediaPlayer.PlaybackSession.Position = TimeSpan.Zero; // Reset position
+                    Debug.WriteLine("Playback stopped.");
+                }
+
+                // Clear the current track
+                currentTrack = null;
+                _currentTrackName = "";
+                _currentTrackArtist = "";
+                SetCurrentTrack(); // Update UI
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error stopping playback: {ex.Message}");
+            }
+        }
+
 
     }
 }

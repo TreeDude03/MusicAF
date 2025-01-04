@@ -25,6 +25,13 @@ namespace MusicAF.Helpers
             private set => _currentTrack = value;
         }
 
+        public event Action TimerEnded;
+
+        public void TriggerTimerEnded()
+        {
+            TimerEnded?.Invoke();
+        }
+
         public void SetTrackList(List<Track> trackList, Track track)
         {
             Console.WriteLine(trackList.Count);

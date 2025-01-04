@@ -132,6 +132,7 @@ namespace MusicAF.AppPages
 
 
         private void Library_Tapped(object sender, TappedRoutedEventArgs e)
+
         {
             try
             {
