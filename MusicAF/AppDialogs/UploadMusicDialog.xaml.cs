@@ -15,6 +15,7 @@ using WinRT.Interop;
 using Windows.Foundation;
 using System.Runtime.InteropServices;
 using Windows.UI.Xaml.Interop;
+using Microsoft.UI.Xaml.Controls.Primitives;
 
 namespace MusicAF.AppDialogs
 {
@@ -203,11 +204,26 @@ namespace MusicAF.AppDialogs
                             FileSize = fileProperties.Size,
                             MimeType = "audio/mpeg"
                         }
+
                     };
+
+                    //Check if song is already existed
+                    string filePath = selectedFile.Path;
+                    var detector = new SongDetector();
+                    //
+                    bool isExisted = await detector.DetectPlagiarismAsync(filePath);
+
+                    if (isExisted)
+                    {
+                        ShowMessage("You cannot upload what isn't yours!", true);
+                        await Task.Delay(2000);
+                        this.Hide();
+                        return;
+                    }
 
                     // Upload to Firestore
                     await _firestoreService.AddDocumentAsync("tracks", track.SongId, track);
-
+                    
                     ShowMessage("Track uploaded successfully!", false);
                     await Task.Delay(2000);
                     this.Hide();
