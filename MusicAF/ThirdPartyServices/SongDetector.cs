@@ -37,7 +37,7 @@ namespace MusicAF.ThirdPartyServices
                 {
                     // Add the API token and additional parameters
                     content.Add(new StringContent(_auddApiKey), "api_token");
-                    content.Add(new StringContent("apple_music,spotify"), "return");
+                    content.Add(new StringContent("apple_music,spotify,deezer,napster,musicbrainz"), "return");
 
                     // Add the file to the request
                     var fileContent = new StreamContent(fileStream);
@@ -66,22 +66,31 @@ namespace MusicAF.ThirdPartyServices
 
         private bool ProcessResponse(string jsonResponse)
         {
-            // Example: Deserialize and check the response
-            dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonResponse);
+            dynamic response = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonResponse);
 
-            if (result.status == "success" && result.result != null)
+            if (response != null && response.status == "success" && response.result != null)
             {
-                string detectedPlatforms = result.result.apple_music != null ? "Apple Music" : "";
-                detectedPlatforms += result.result.spotify != null ? " and Spotify" : "";
+                var data = response.result;
+                List<string> platforms = new List<string>();
 
-                return !string.IsNullOrEmpty(detectedPlatforms)
-                    ? true
-                    : false;
+                if (data.apple_music != null) platforms.Add("Apple Music");
+                if (data.spotify != null) platforms.Add("Spotify");
+                if (data.deezer != null) platforms.Add("Deezer");
+                if (data.napster != null) platforms.Add("Napster");
+                if (data.musicbrainz != null) platforms.Add("MusicBrainz");
+                string detectedPlatformStr = platforms.Count > 0 
+                    ? string.Join(", ", platforms.Take(platforms.Count - 1)) + (platforms.Count > 1 ? " and " : "") + platforms.Last() 
+                    : "";
+
+                string title = data.title;
+                string artist = data.artist;
+
+                string notify = string.IsNullOrEmpty(detectedPlatformStr)
+                    ? $"This song is not recognized in multi-platform database."
+                    : $"This song is recognized on {detectedPlatformStr}. Similar song: '{title}' by {artist}.";
+                return !string.IsNullOrEmpty(detectedPlatformStr);
             }
-            else
-            {
-                return true;
-            }
+            return true;
         }
     }
 
