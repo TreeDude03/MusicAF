@@ -1,0 +1,19 @@
+<ContentDialog
+    x:Class="MusicAF.AppDialogs.DeletePlaylistDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Delete Playlist"
+    PrimaryButtonText="Delete"
+    CloseButtonText="Cancel"
+    DefaultButton="Close">
+
+    <StackPanel>
+        <TextBlock Text="Are you sure you want to delete this playlist?" 
+                   TextWrapping="Wrap" 
+                   Margin="0,0,0,16"/>
+        <TextBlock x:Name="PlaylistNameText" 
+                   Text="" 
+                   FontWeight="SemiBold" 
+                   Foreground="#FF0000"/>
+    </StackPanel>
+</ContentDialog>

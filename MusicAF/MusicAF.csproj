@@ -25,6 +25,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="AppDialogs\AddToPlaylistDialog.xaml" />
+    <None Remove="AppDialogs\DeletePlaylistDialog.xaml" />
     <None Remove="AppDialogs\TextInputDialog.xaml" />
     <None Remove="AppPages\LikedPage.xaml" />
     <None Remove="AppPages\SettingPage.xaml" />
@@ -67,6 +68,9 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
+    <Page Update="AppDialogs\DeletePlaylistDialog.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <Page Update="LogInWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
