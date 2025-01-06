@@ -9,24 +9,21 @@ using Google.Cloud.Firestore;
 using System.Linq;
 using System.Diagnostics;
 using MusicAF.ThirdPartyServices;
-using MusicAF.AppDialogs;
 using MusicAF.Models;
 using Windows.Storage;
 using System.IO;
-using Microsoft.UI.Xaml.Media;
 using System.Collections.Generic;
 
 namespace MusicAF.AppPages
 {
-    public partial class ForYouPage : Page
+    public sealed partial class FollowingPage : Page
     {
         private string currentUserEmail;
         private readonly FirestoreService _firestoreService;
         private bool isLoading;
+        private ObservableCollection<Track> _tracks;
         private Track _currentlyPlayingTrack;
 
-
-        private ObservableCollection<Track> _tracks;
         public ObservableCollection<Track> Tracks
         {
             get => _tracks;
@@ -37,39 +34,22 @@ namespace MusicAF.AppPages
             }
         }
 
-        public ForYouPage()
+        public FollowingPage()
         {
-            try
-            {
-                Console.WriteLine("Initializing ForYouPage");
-                this.InitializeComponent();
-                _firestoreService = FirestoreService.Instance;
-                Tracks = new ObservableCollection<Track>();
-                Console.WriteLine("ForYouPage initialized successfully");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error initializing ForYouPage: {ex}");
-                throw;
-            }
+            this.InitializeComponent();
+            _firestoreService = FirestoreService.Instance;
+            Tracks = new ObservableCollection<Track>();
         }
 
         private void UpdateTracksListView()
         {
-            try
+            if (TracksListView != null)
             {
-                if (TracksListView != null)
+                DispatcherQueue.TryEnqueue(() =>
                 {
-                    DispatcherQueue.TryEnqueue(() =>
-                    {
-                        TracksListView.ItemsSource = null;
-                        TracksListView.ItemsSource = _tracks;
-                    });
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error updating TracksListView: {ex}");
+                    TracksListView.ItemsSource = null;
+                    TracksListView.ItemsSource = _tracks;
+                });
             }
         }
 
@@ -80,18 +60,16 @@ namespace MusicAF.AppPages
             isLoading = true;
             try
             {
-                Console.WriteLine($"Loading recommended tracks for user: {currentUserEmail}");
                 await ShowLoadingStateAsync(true);
-
                 DispatcherQueue.TryEnqueue(() => { Tracks.Clear(); });
 
-                // Get recommended tracks
-                var recommendedTracks = await GetRecommendedTracksAsync(currentUserEmail);
+                // Fetch followed artists' tracks
+                var followedTracks = await GetFollowedArtistsTracksAsync(currentUserEmail);
 
                 // Update UI
                 DispatcherQueue.TryEnqueue(() =>
                 {
-                    foreach (var track in recommendedTracks)
+                    foreach (var track in followedTracks)
                     {
                         Tracks.Add(track);
                     }
@@ -102,7 +80,7 @@ namespace MusicAF.AppPages
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error in LoadTracksAsync: {ex.Message}");
+                Debug.WriteLine($"Error in LoadTracksAsync: {ex.Message}");
                 await ShowErrorDialog("Failed to load tracks: " + ex.Message);
             }
             finally
@@ -116,61 +94,23 @@ namespace MusicAF.AppPages
         {
             DispatcherQueue.TryEnqueue(() =>
             {
-                try
-                {
-                    LoadingProgressRing.IsActive = isLoading;
-                    LoadingProgressRing.Visibility = isLoading ? Visibility.Visible : Visibility.Collapsed;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error updating loading state: {ex}");
-                }
+                LoadingProgressRing.IsActive = isLoading;
+                LoadingProgressRing.Visibility = isLoading ? Visibility.Visible : Visibility.Collapsed;
             });
         }
 
-        private async void PlayButton_Click(object sender, RoutedEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            try
+            base.OnNavigatedTo(e);
+            if (e.Parameter is string userEmail)
             {
-                if (sender is Button button && button.Tag is Track track)
-                {
-                    // Record keywords when a track is played
-                    await _firestoreService.RecordKeywordsAsync(currentUserEmail,  track);
-                    // Create instance of NowPlayingPage
-                    var nowPlayingPage = new NowPlayingPage();
-
-                    // Navigate to NowPlayingPage
-                    Frame.Navigate(typeof(NowPlayingPage), (_track: track, _email: currentUserEmail));
-
-                    App.PlaybackService.SetTrackList(Tracks.ToList(), track);
-                    App.PlaybackService.PlayTrack(track);
-
-                    Debug.WriteLine($"Play button clicked for: {track.Title}");
-
-                    // Update button visual state
-                    UpdatePlayButtonState(button, true, track);
-                }
+                currentUserEmail = userEmail;
+                _ = LoadTracksAsync();
             }
-            catch (Exception ex)
+            else
             {
-                Debug.WriteLine($"Error in PlayButton_Click: {ex}");
-                await ShowErrorDialog("Failed to play track");
+                ShowNoTracksMessage("Invalid user session. Please log in again.");
             }
-        }
-
-        private void UpdatePlayButtonState(Button button, bool isPlaying, Track selectedTrack)
-        {
-            if (_currentlyPlayingTrack != null && _currentlyPlayingTrack != selectedTrack)
-            {
-                _currentlyPlayingTrack = selectedTrack;
-                ResetAllPlayButtons();
-            }
-            _currentlyPlayingTrack = selectedTrack;
-            if (button.Content is FontIcon icon)
-            {
-                icon.Glyph = isPlaying ? "\uE769" : "\uE768"; // Pause : Play
-            }
-
         }
 
         private void ResetAllPlayButtons()
@@ -195,48 +135,33 @@ namespace MusicAF.AppPages
             }
         }
 
-        private async Task ShowErrorDialog(string message)
+        private async void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                var dialog = new ContentDialog
+                if (sender is Button button && button.Tag is Track track)
                 {
-                    Title = "Error",
-                    Content = message,
-                    CloseButtonText = "OK",
-                    XamlRoot = Content.XamlRoot
-                };
-                await dialog.ShowAsync();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error showing dialog: {ex}");
-            }
-        }
+                    // Record keywords when a track is played
+                    await _firestoreService.RecordKeywordsAsync(currentUserEmail, track);
+                    // Create instance of NowPlayingPage
+                    var nowPlayingPage = new NowPlayingPage();
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            try
-            {
-                base.OnNavigatedTo(e);
-                Console.WriteLine("Navigation to ForYouPage");
+                    // Navigate to NowPlayingPage
+                    Frame.Navigate(typeof(NowPlayingPage), (_track: track, _email: currentUserEmail));
 
-                if (e.Parameter is string userEmail)
-                {
-                    currentUserEmail = userEmail;
-                    Console.WriteLine($"User email received: {userEmail}");
-                    _ = LoadTracksAsync();
-                }
-                else
-                {
-                    Console.WriteLine($"Invalid navigation parameter");
-                    ShowNoTracksMessage("Invalid user session. Please log in again.");
+                    App.PlaybackService.SetTrackList(Tracks.ToList(), track);
+                    App.PlaybackService.PlayTrack(track);
+
+                    Debug.WriteLine($"Play button clicked for: {track.Title}");
+
+                    // Update button visual state
+                    UpdatePlayButtonState(button, true, track);
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error in OnNavigatedTo: {ex}");
-                ShowNoTracksMessage("An error occurred while loading the library.");
+                Debug.WriteLine($"Error in PlayButton_Click: {ex}");
+                await ShowErrorDialog("Failed to play track");
             }
         }
 
@@ -248,6 +173,107 @@ namespace MusicAF.AppPages
                 NoTracksMessage.Visibility = Visibility.Visible;
                 TracksListView.Visibility = Visibility.Collapsed;
             });
+        }
+
+        private async Task<List<Track>> GetFollowedArtistsTracksAsync(string email)
+        {
+            var followedTracks = new List<Track>();
+            try
+            {
+                // Fetch the user document
+                var userRef = _firestoreService.FirestoreDb.Collection("users").Document(email);
+                var userDoc = await userRef.GetSnapshotAsync();
+
+                if (!userDoc.Exists)
+                {
+                    Console.WriteLine("User document not found.");
+                    return followedTracks;
+                }
+
+                List<string> followedArtists;
+                try
+                {
+                    // Attempt to get the followedArtists field
+                    followedArtists = userDoc.GetValue<List<string>>("followedArtists") ?? new List<string>();
+                }
+                catch (Exception ex)
+                {
+                    // Log the error and initialize followedArtists as an empty list if an error occurs
+                    Console.WriteLine($"Error retrieving followedArtists: {ex.Message}");
+                    followedArtists = new List<string>();
+                }
+
+                Console.WriteLine($"Followed Artists: {string.Join(", ", followedArtists)}");
+
+                // Fetch tracks from followed artists
+                var tracksRef = _firestoreService.FirestoreDb.Collection("tracks");
+                foreach (var artist in followedArtists)
+                {
+                    try
+                    {
+                        var querySnapshot = await tracksRef
+                            .WhereEqualTo("Artist", artist)
+                            .OrderByDescending("UploadDate")
+                            .Limit(50)
+                            .GetSnapshotAsync();
+
+
+                        foreach (var doc in querySnapshot.Documents)
+                        {
+                            var track = doc.ConvertTo<Track>();
+                            Console.WriteLine($"Checking track: {track?.Title}, Artist: {track?.Artist}");
+                            if (track != null && !track.IsPrivate && !followedTracks.Contains(track))
+                            {
+                                followedTracks.Add(track);
+                            }
+
+                            // Break if we already have 50 tracks
+                            if (followedTracks.Count >= 50) break;
+                        }
+
+                        // Break from the outer loop if we already have 50 tracks
+                        if (followedTracks.Count >= 50) break;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error fetching tracks for artist '{artist}': {ex.Message}");
+                    }
+                }
+
+                Console.WriteLine($"Followed tracks loaded: {followedTracks.Count}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading followed artists' tracks: {ex.Message}");
+            }
+
+            return followedTracks;
+        }
+
+        private async Task ShowErrorDialog(string message)
+        {
+            var dialog = new ContentDialog
+            {
+                Title = "Error",
+                Content = message,
+                CloseButtonText = "OK",
+                XamlRoot = this.Content.XamlRoot
+            };
+            await dialog.ShowAsync();
+        }
+
+        private void UpdatePlayButtonState(Button button, bool isPlaying, Track selectedTrack)
+        {
+            if (_currentlyPlayingTrack != null && _currentlyPlayingTrack != selectedTrack)
+            {
+                _currentlyPlayingTrack = selectedTrack;
+                ResetAllPlayButtons();
+            }
+            _currentlyPlayingTrack = selectedTrack;
+            if (button.Content is FontIcon icon)
+            {
+                icon.Glyph = isPlaying ? "\uE769" : "\uE768"; // Pause : Play
+            }
         }
 
         private async void DownloadButton_Click(object sender, RoutedEventArgs e)
@@ -292,7 +318,6 @@ namespace MusicAF.AppPages
                         DownloadProgressRing.IsActive = false;
                         DownloadProgressRing.Visibility = Visibility.Collapsed;
                         await ShowDownloadSuccessMessage(newFile.Path);
-
                     }
                     else
                     {
@@ -306,7 +331,6 @@ namespace MusicAF.AppPages
                 }
             }
         }
-
         private async Task ShowDownloadSuccessMessage(string filePath)
         {
             var dialog = new ContentDialog
@@ -319,7 +343,6 @@ namespace MusicAF.AppPages
 
             await dialog.ShowAsync();
         }
-
 
         private async Task<Stream> RetrieveAudioFileAsync(string driveFileId)
         {
@@ -337,13 +360,6 @@ namespace MusicAF.AppPages
             }
         }
 
-        private Task DownloadTrackAsync(Track track)
-        {
-            // Implement the download logic
-            Debug.WriteLine($"Downloading track: {track.Title}");
-            return Task.CompletedTask;
-        }
-
         private void ArtistButton_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && button.Content is TextBlock textBlock)
@@ -351,61 +367,6 @@ namespace MusicAF.AppPages
                 string artistName = textBlock.Text;
                 Frame.Navigate(typeof(ArtistPage), (_currentUser: currentUserEmail, _artist: artistName));
             }
-        }
-
-        private async Task<ObservableCollection<Track>> GetRecommendedTracksAsync(string email)
-        {
-            var recommendedTracks = new ObservableCollection<Track>();
-            try
-            {
-                var statDocRef = _firestoreService.FirestoreDb.Collection("StatRecords").Document(email);
-                var statSnapshot = await statDocRef.GetSnapshotAsync();
-
-                List<string> keywords = new List<string>();
-                if (statSnapshot.Exists && statSnapshot.TryGetValue("List", out List<object> keywordList))
-                {
-                    keywords = keywordList.Select(k => k.ToString()).ToList();
-                }
-
-                // Query tracks based on keywords
-                var tracksRef = _firestoreService.FirestoreDb.Collection("tracks");
-                foreach (var keyword in keywords)
-                {
-                    var querySnapshot = await tracksRef.WhereEqualTo("Genre", keyword).GetSnapshotAsync();
-
-                    foreach (var doc in querySnapshot.Documents)
-                    {
-                        var track = doc.ConvertTo<Track>();
-                        if (track != null && !recommendedTracks.Contains(track) && !track.IsPrivate)
-                        {
-                            recommendedTracks.Add(track);
-                            if (recommendedTracks.Count >= 50) break;
-                        }
-                    }
-
-                    if (recommendedTracks.Count >= 50) break;
-                }
-                if (recommendedTracks.Count < 50)
-                {
-                    var allTracksSnapshot = await tracksRef.GetSnapshotAsync();
-                    var additionalTracks = allTracksSnapshot.Documents
-                        .Select(doc => doc.ConvertTo<Track>())
-                        .Where(t => t != null && !recommendedTracks.Contains(t) && !t.IsPrivate)
-                        .Take(50 - recommendedTracks.Count);
-                    foreach (var track in additionalTracks)
-                    {
-                        recommendedTracks.Add(track);
-                    }
-                }
-
-                Console.WriteLine($"Recommended tracks loaded: {recommendedTracks.Count}");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error loading recommended tracks: {ex.Message}");
-            }
-
-            return recommendedTracks;
         }
 
         private void BackClick(object sender, RoutedEventArgs e)

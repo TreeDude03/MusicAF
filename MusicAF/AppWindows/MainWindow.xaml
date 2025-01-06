@@ -53,6 +53,15 @@
                                     </StackPanel>
                                 </Grid>
                             </Button>
+                            <!-- Following -->
+                            <Button Click="FollowingButton_Click" Background="Transparent" BorderThickness="0">
+                                <Grid Height="35">
+                                    <StackPanel Orientation="Horizontal">
+                                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE734;" Foreground="#808080"/>
+                                        <TextBlock Text="Following" Margin="10,5,0,0" Foreground="#808080"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Button>
 
                             <!-- Library -->
                             <Button Click="LibraryButton_Click" Background="Transparent" BorderThickness="0">

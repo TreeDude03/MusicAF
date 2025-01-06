@@ -151,6 +151,11 @@ namespace MusicAF.AppWindows
             MainFrame.Navigate(typeof(PlaylistPage), currentUserEmail);
         }
 
+        private void FollowingButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(typeof(FollowingPage), currentUserEmail);
+        }
+
         private void PrevButton_Click(object sender, RoutedEventArgs e)
         {
             App.PlaybackService.PlayPreviousTrack();

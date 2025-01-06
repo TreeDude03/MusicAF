@@ -92,12 +92,22 @@ namespace MusicAF.AppWindows
         // Sign-Up Logic
         private async Task SignUpUserAsync(string email, string name, string encryptedPassword)
         {
-            // Check if the user already exists
+            // Check if the user email already exists
             string signup_email = await _firestoreService.GetFieldFromDocumentAsync<string>("users", email, "Email");
             if (signup_email != null)
             {
                 MessageTextBlock.Text = "User email already exists.";
                 EmailTextBox_Signup.Text = "";
+                PasswordBox_Signup.Password = "";
+                ConfirmPasswordBox_Signup.Password = "";
+                return;
+            }
+            // Check if the username already exists
+            string signup_username = await _firestoreService.GetFieldFromDocumentAsync<string>("users", name, "Name");
+            if (signup_username != null)
+            {
+                MessageTextBlock.Text = "Username taken. Please choose another";
+                NameTextBox_Signup.Text = "";
                 PasswordBox_Signup.Password = "";
                 ConfirmPasswordBox_Signup.Password = "";
                 return;

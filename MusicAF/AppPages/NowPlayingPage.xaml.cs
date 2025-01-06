@@ -20,6 +20,7 @@ using MusicAF.ThirdPartyServices;
 using MusicAF.Models;
 using System.Collections.Generic;
 using Microsoft.UI.Xaml.Media;
+using Google.Cloud.Firestore;
 
 namespace MusicAF.AppPages
 {
@@ -70,6 +71,11 @@ namespace MusicAF.AppPages
                         SetLikeButtonState(liked: true);
                     }
                 }
+
+                // When Enter, update latest track that user listens to to firestore
+                await UpdateUserLatestTrackAsync(currentUserEmail, currentTrack.SongId);
+
+
                 UpdateUI();
             }
         }
@@ -229,7 +235,24 @@ namespace MusicAF.AppPages
             }
         }
 
+        //update latest track
+        private async Task UpdateUserLatestTrackAsync(string userEmail, string latestTrackId)
+        {
+            try
+            {
+                var userRef = _firestoreService.FirestoreDb.Collection("users").Document(userEmail);
 
+                //SetAsync to update LatestTrack
+                await userRef.SetAsync(new { LatestTrack = latestTrackId }, SetOptions.MergeAll);
+
+                Debug.WriteLine($"Updated latest track for user {userEmail} to {latestTrackId}");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error updating latest track: {ex.Message}");
+                await ShowErrorDialogAsync($"Error updating latest track: {ex.Message}");
+            }
+        }
     }
 }
 

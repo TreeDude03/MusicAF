@@ -27,9 +27,11 @@
     <None Remove="AppDialogs\AddToPlaylistDialog.xaml" />
     <None Remove="AppDialogs\DeletePlaylistDialog.xaml" />
     <None Remove="AppDialogs\TextInputDialog.xaml" />
+    <None Remove="AppPages\FollowingPage.xaml" />
     <None Remove="AppPages\LikedPage.xaml" />
     <None Remove="AppPages\SettingPage.xaml" />
     <None Remove="AppPages\SinglePlaylistPage.xaml" />
+    <None Remove="AppPages\WhatTheyListenPage.xaml" />
     <None Remove="LogInWindow.xaml" />
   </ItemGroup>
   <ItemGroup>
@@ -89,6 +91,16 @@
   </ItemGroup>
   <ItemGroup>
     <PRIResource Remove="Pages\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="AppPages\WhatTheyListenPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="AppPages\FollowingPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="AppPages\SettingPage.xaml">

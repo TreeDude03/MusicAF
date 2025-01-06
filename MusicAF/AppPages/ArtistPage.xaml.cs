@@ -1,3 +1,4 @@
+using Google.Cloud.Firestore;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -26,9 +27,11 @@ namespace MusicAF.AppPages
 {
     public sealed partial class ArtistPage : Page
     {
+        private string currentUserEmail;
         private readonly FirestoreService _firestoreService;
         public ObservableCollection<Track> Tracks { get; private set; }
         private bool isLoading;
+        private bool isFollowed;
 
         public ArtistPage()
         {
@@ -41,10 +44,72 @@ namespace MusicAF.AppPages
         {
             base.OnNavigatedTo(e);
 
-            if (e.Parameter is string artistName)
+            if (e.Parameter is ValueTuple<string, string> parameters)
             {
-                ArtistNameTextBlock.Text = artistName;
-                await LoadTracksAsync(artistName);
+                currentUserEmail = parameters.Item1;
+                ArtistNameTextBlock.Text = parameters.Item2;
+                await LoadTracksAsync(ArtistNameTextBlock.Text);
+            }
+        }
+
+        // Method to check if the artist is followed
+        private async Task CheckFollowStatusAsync(string artistName)
+        {
+            var userRef = _firestoreService.FirestoreDb.Collection("users").Document(currentUserEmail);
+            var userDoc = await userRef.GetSnapshotAsync();
+
+            if (userDoc.Exists)
+            {
+                var followedArtists = userDoc.GetValue<List<string>>("followedArtists") ?? new List<string>();
+                isFollowed = followedArtists.Contains(artistName);
+            }
+
+            FollowButton.Content = isFollowed ? "Unfollow" : "Follow";
+        }
+
+        // Method to toggle follow/unfollow
+        private async void FollowButton_Click(object sender, RoutedEventArgs e)
+        {
+            var artistName = ArtistNameTextBlock.Text;
+            var userRef = _firestoreService.FirestoreDb.Collection("users").Document(currentUserEmail);
+            var userDoc = await userRef.GetSnapshotAsync();
+
+            if (userDoc.Exists)
+            {
+                List<string> followedArtists;
+
+                try
+                {
+                    // Try to get the followedArtists field
+                    followedArtists = userDoc.GetValue<List<string>>("followedArtists");
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception and initialize followedArtists as an empty list if there's an error
+                    Console.WriteLine($"Error retrieving followedArtists: {ex.Message}");
+                    followedArtists = new List<string>();
+                }
+
+                if (isFollowed)
+                {
+                    // Unfollow the artist
+                    followedArtists.Remove(artistName);
+                    await userRef.SetAsync(new { followedArtists }, SetOptions.MergeAll);
+                    isFollowed = false;
+                    FollowButton.Content = "Follow"; // Update button text
+                }
+                else
+                {
+                    // Follow the artist
+                    followedArtists.Add(artistName);
+                    await userRef.SetAsync(new { followedArtists }, SetOptions.MergeAll);
+                    isFollowed = true;
+                    FollowButton.Content = "Unfollow"; // Update button text
+                }
+            }
+            else
+            {
+                Console.WriteLine("User document does not exist."); // Log if the user document is not found
             }
         }
 
