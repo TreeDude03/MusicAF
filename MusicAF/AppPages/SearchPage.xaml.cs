@@ -127,8 +127,13 @@ namespace MusicAF.AppPages
                                                  .WhereLessThan("Artist", keyword + "\uf8ff")
                                                  .GetSnapshotAsync();
 
+                // Query for Album
+                var albumQuery = await tracksRef.WhereGreaterThanOrEqualTo("Album", keyword)
+                                                .WhereLessThan("Album", keyword + "\uf8ff")
+                                                .GetSnapshotAsync();
+
                 // Combine results
-                var allResults = titleQuery.Documents.Concat(genreQuery.Documents).Concat(artistQuery.Documents);
+                var allResults = titleQuery.Documents.Concat(genreQuery.Documents).Concat(artistQuery.Documents).Concat(albumQuery.Documents);
 
                 // Process results
                 foreach (var doc in allResults)
@@ -219,7 +224,7 @@ namespace MusicAF.AppPages
                     Frame.Navigate(typeof(NowPlayingPage), (_track: track, _email: currentUserEmail));
 
                     App.PlaybackService.SetTrackList(Tracks.ToList(), track);
-                    App.PlaybackService.PlayTrack(track);
+                    await App.PlaybackService.PlayTrack(track);
 
                     Debug.WriteLine($"Play button clicked for: {track.Title}");
 

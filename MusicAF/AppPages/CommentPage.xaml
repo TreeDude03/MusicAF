@@ -42,6 +42,7 @@
                     </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>
+            <StackPanel Height="100"></StackPanel>
         </ListView>
 
         <!-- Add Comment Section -->

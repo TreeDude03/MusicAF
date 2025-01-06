@@ -55,10 +55,8 @@
             HorizontalAlignment="Center"
             TextWrapping="Wrap"
             Visibility="Collapsed"/>
-            
-            <ScrollViewer MaxHeight="700"
-             VerticalScrollBarVisibility="Auto" 
-             HorizontalScrollBarVisibility="Disabled">
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,100" MaxHeight="480">
                 <!-- Tracks List -->
             <ListView x:Name="TracksListView"
             ItemsSource="{x:Bind Tracks, Mode=OneWay}"
@@ -116,19 +114,19 @@
                     </Style>
                 </ListView.ItemContainerStyle>
 
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="local:Track">
-                        <Grid Height="72" Padding="16,8" Background="Transparent">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="48"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="200"/>
-                                <ColumnDefinition Width="200"/>
-                                <ColumnDefinition Width="150"/>
-                            </Grid.ColumnDefinitions>
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="local:Track">
+                            <Grid Height="72" Padding="16,8" Background="Transparent">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="48"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="150"/>
+                                </Grid.ColumnDefinitions>
 
-                            <!-- Play Button -->
-                            <Button Grid.Column="0"
+                                <!-- Play Button -->
+                                <Button Grid.Column="0"
                                 Width="36"
                                 Height="36"
                                 Background="Transparent"
@@ -136,31 +134,31 @@
                                 Padding="0"
                                 Click="PlayButton_Click"
                                 VerticalAlignment="Center">
-                                <Button.Tag>
-                                    <local:Track 
+                                    <Button.Tag>
+                                        <local:Track 
                                     SongId="{x:Bind SongId}"
                                     Title="{x:Bind Title}"
                                     Genre="{x:Bind Genre}"
                                     Album="{x:Bind Album}"
                                     Streams="{x:Bind Streams}"
                                     DriveFileId="{x:Bind DriveFileId}"/>
-                                </Button.Tag>
-                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE768;" FontSize="16" Foreground="#808080"/>
-                            </Button>
-                            <!-- Title -->
-                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="8,0">
-                                <TextBlock Text="{x:Bind Title}" Foreground="White" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
-                            </StackPanel>
-                            <!-- Artist -->
-                            <TextBlock Grid.Column="2" Text="{x:Bind Genre}" Foreground="#909090" VerticalAlignment="Center" Margin="8,0" TextTrimming="CharacterEllipsis"/>
-                            <!-- Album -->
-                            <TextBlock Grid.Column="3" Text="{x:Bind Album}"  Foreground="#909090" VerticalAlignment="Center" Margin="8,0" TextTrimming="CharacterEllipsis"/>
-                            <!-- Streams -->
-                            <TextBlock Grid.Column="4" Text="{x:Bind Streams}" Foreground="#909090" VerticalAlignment="Center" Margin="8,0"/>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                                    </Button.Tag>
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE768;" FontSize="16" Foreground="#808080"/>
+                                </Button>
+                                <!-- Title -->
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="8,0">
+                                    <TextBlock Text="{x:Bind Title}" Foreground="White" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                                </StackPanel>
+                                <!-- Artist -->
+                                <TextBlock Grid.Column="2" Text="{x:Bind Genre}" Foreground="#909090" VerticalAlignment="Center" Margin="8,0" TextTrimming="CharacterEllipsis"/>
+                                <!-- Album -->
+                                <TextBlock Grid.Column="3" Text="{x:Bind Album}"  Foreground="#909090" VerticalAlignment="Center" Margin="8,0" TextTrimming="CharacterEllipsis"/>
+                                <!-- Streams -->
+                                <TextBlock Grid.Column="4" Text="{x:Bind Streams}" Foreground="#909090" VerticalAlignment="Center" Margin="8,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </ScrollViewer>
         </Grid>
     </Grid>

@@ -3,6 +3,7 @@ using MusicAF.Models;
 using MusicAF.ThirdPartyServices;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,6 @@ namespace MusicAF.Helpers
 {
     public class PlaybackService
     {
-
         private readonly FirestoreService _firestoreService = FirestoreService.Instance;
         public event Action<Track> TrackChanged;
         private Track _currentTrack;
@@ -51,26 +51,32 @@ namespace MusicAF.Helpers
             }
         }
 
-        public void PlayNextTrack()
+        public async Task PlayNextTrack()
         {
             if (_currentTrackList == null || _currentTrackList.Count == 0) return;
 
             _currentTrackIndex = (_currentTrackIndex + 1) % _currentTrackList.Count;
             Console.WriteLine(_currentTrackList[_currentTrackIndex].Title);
-            PlayTrack(_currentTrackList[_currentTrackIndex]);
+            await PlayTrack(_currentTrackList[_currentTrackIndex]);
         }
 
-        public void PlayPreviousTrack()
+        public async Task PlayPreviousTrack()
         {
             if (_currentTrackList == null || _currentTrackList.Count == 0) return;
 
             _currentTrackIndex = (_currentTrackIndex - 1 + _currentTrackList.Count) % _currentTrackList.Count;
             Console.WriteLine(_currentTrackList[_currentTrackIndex].Title);
-            PlayTrack(_currentTrackList[_currentTrackIndex]);
+            await PlayTrack(_currentTrackList[_currentTrackIndex]);
         }
 
-        public void PlayTrack(Track track)
+        public async Task PlayTrack(Track track)
         {
+            //IF track is not provate, update it as user's latest listened track
+            if (!track.IsPrivate)
+            {
+                await UpdateUserLatestTrackAsync(App.CurrentUserEmail, track.SongId);
+            }
+            //
             _currentTrack = track;
             TrackChanged?.Invoke(track); // Notify listeners about the track change
         }
@@ -101,5 +107,25 @@ namespace MusicAF.Helpers
 
 
         public Track GetCurrentTrack() => _currentTrack;
+
+
+
+        //update latest track for user
+        private async Task UpdateUserLatestTrackAsync(string userEmail, string LatestTrackId)
+        {
+            try
+            {
+                var userRef = _firestoreService.FirestoreDb.Collection("users").Document(userEmail);
+
+                // SetAsync to update LatestTrack
+                await userRef.SetAsync(new { LatestTrackId }, SetOptions.MergeAll);
+
+                Debug.WriteLine($"---Updated latest track for user {userEmail} to {LatestTrackId}");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"---TracError updating latest track: {ex.Message}");
+            }
+        }
     }
 }

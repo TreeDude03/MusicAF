@@ -57,9 +57,7 @@
             TextWrapping="Wrap"
             Visibility="Collapsed"/>
 
-            <ScrollViewer MaxHeight="700"
-  VerticalScrollBarVisibility="Auto" 
-  HorizontalScrollBarVisibility="Disabled">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,100" MaxHeight="480">
 
                 <!-- Tracks List -->
                 <ListView x:Name="TracksListView"
@@ -190,7 +188,6 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-
             </ScrollViewer>
         </Grid>
     </Grid>

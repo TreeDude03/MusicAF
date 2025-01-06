@@ -49,20 +49,39 @@ namespace MusicAF.AppPages
                 currentUserEmail = parameters.Item1;
                 ArtistNameTextBlock.Text = parameters.Item2;
                 await LoadTracksAsync(ArtistNameTextBlock.Text);
+                await CheckFollowStatusAsync(ArtistNameTextBlock.Text);
             }
         }
 
         // Method to check if the artist is followed
         private async Task CheckFollowStatusAsync(string artistName)
         {
+            // Fetch the user document
             var userRef = _firestoreService.FirestoreDb.Collection("users").Document(currentUserEmail);
             var userDoc = await userRef.GetSnapshotAsync();
 
-            if (userDoc.Exists)
+            if (!userDoc.Exists)
             {
-                var followedArtists = userDoc.GetValue<List<string>>("followedArtists") ?? new List<string>();
-                isFollowed = followedArtists.Contains(artistName);
+                Console.WriteLine("User document not found.");
+                return;
             }
+
+            List<string> followedArtists;
+            try
+            {
+                // Attempt to get the followedArtists field
+                followedArtists = userDoc.GetValue<List<string>>("followedArtists") ?? new List<string>();
+            }
+            catch (Exception ex)
+            {
+                // Log the error and initialize followedArtists as an empty list if an error occurs
+                Console.WriteLine($"Error retrieving followedArtists: {ex.Message}");
+                followedArtists = new List<string>();
+            }
+
+            isFollowed = followedArtists.Contains(artistName);
+
+            Console.WriteLine($"Followed Artists: {string.Join(", ", followedArtists)}");
 
             FollowButton.Content = isFollowed ? "Unfollow" : "Follow";
         }
@@ -140,7 +159,7 @@ namespace MusicAF.AppPages
                     Frame.Navigate(typeof(NowPlayingPage), track);
 
                     App.PlaybackService.SetTrackList(Tracks.ToList(), track);
-                    App.PlaybackService.PlayTrack(track);
+                    await App.PlaybackService.PlayTrack(track);
 
                     Debug.WriteLine($"Play button clicked for: {track.Title}");
 

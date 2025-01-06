@@ -179,8 +179,8 @@ HorizontalScrollBarVisibility="Disabled">
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
+                    <StackPanel Height="100"></StackPanel>
                 </ListView>
-
             </ScrollViewer>
         </Grid>
     </Grid>

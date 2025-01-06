@@ -44,6 +44,7 @@
                    FontSize="12"/>
         <StackPanel Height="30">
         </StackPanel>
+        <StackPanel Height="100"></StackPanel>
     </StackPanel>
 </ContentDialog>
 

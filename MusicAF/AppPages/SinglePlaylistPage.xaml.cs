@@ -190,7 +190,7 @@ namespace MusicAF.AppPages
 
                     // Play the selected track
                     App.PlaybackService.SetTrackList(Tracks.ToList(), track);
-                    App.PlaybackService.PlayTrack(track);
+                    await App.PlaybackService.PlayTrack(track);
 
                     Debug.WriteLine($"Play button clicked for: {track.Title}");
 
@@ -293,7 +293,7 @@ namespace MusicAF.AppPages
             if (sender is Button button && button.Content is TextBlock textBlock)
             {
                 string artistName = textBlock.Text;
-                Frame.Navigate(typeof(ArtistPage), artistName);
+                Frame.Navigate(typeof(ArtistPage), (_currentUser: currentUserEmail, _artist: artistName));
             }
         }
 

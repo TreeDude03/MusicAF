@@ -72,9 +72,11 @@ namespace MusicAF.AppPages
                     }
                 }
 
-                // When Enter, update latest track that user listens to to firestore
-                await UpdateUserLatestTrackAsync(currentUserEmail, currentTrack.SongId);
-
+                //IF track is not provate, update it as user's latest listened track
+                if (!currentTrack.IsPrivate)
+                {
+                    await UpdateUserLatestTrackAsync(listenerEmail, currentTrack.SongId);
+                }
 
                 UpdateUI();
             }
@@ -87,8 +89,6 @@ namespace MusicAF.AppPages
                 icon.Foreground = liked ? new SolidColorBrush(Microsoft.UI.Colors.Red) : new SolidColorBrush(Microsoft.UI.Colors.White);
                 likeButton.Foreground = liked ? new SolidColorBrush(Microsoft.UI.Colors.Red) : new SolidColorBrush(Microsoft.UI.Colors.White);
             }
-
-            //likeButton.IsEnabled = !liked; // Disable the button if already liked
         }
         private void UpdateUI()
         {
@@ -133,31 +133,6 @@ namespace MusicAF.AppPages
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error showing dialog: {ex.Message}");
-            }
-        }
-
-
-        private void Library_Tapped(object sender, TappedRoutedEventArgs e)
-
-        {
-            try
-            {
-                // Stop playback and clean up before navigating
-                if (mediaPlayer != null)
-                {
-                    mediaPlayer.Pause();
-                    mediaPlayer.Source = null;
-                }
-
-                _progressTimer?.Stop();
-
-                // Navigate to MyLibraryPage
-                Frame.Navigate(typeof(MyLibraryPage), currentUserEmail);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error navigating to library: {ex.Message}");
-                ShowErrorDialogAsync($"Error navigating to library: {ex.Message}").ConfigureAwait(false);
             }
         }
 
@@ -235,22 +210,21 @@ namespace MusicAF.AppPages
             }
         }
 
-        //update latest track
-        private async Task UpdateUserLatestTrackAsync(string userEmail, string latestTrackId)
+        //update latest track for user
+        private async Task UpdateUserLatestTrackAsync(string userEmail, string LatestTrackId)
         {
             try
             {
                 var userRef = _firestoreService.FirestoreDb.Collection("users").Document(userEmail);
 
-                //SetAsync to update LatestTrack
-                await userRef.SetAsync(new { LatestTrack = latestTrackId }, SetOptions.MergeAll);
+                // SetAsync to update LatestTrack
+                await userRef.SetAsync(new {LatestTrackId}, SetOptions.MergeAll);
 
-                Debug.WriteLine($"Updated latest track for user {userEmail} to {latestTrackId}");
+                Debug.WriteLine($"---Updated latest track for user {userEmail} to {LatestTrackId}");
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error updating latest track: {ex.Message}");
-                await ShowErrorDialogAsync($"Error updating latest track: {ex.Message}");
+                Debug.WriteLine($"---TracError updating latest track: {ex.Message}");
             }
         }
     }

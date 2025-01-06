@@ -143,7 +143,7 @@ namespace MusicAF.AppPages
                     Frame.Navigate(typeof(NowPlayingPage), (_track: track, _email: currentUserEmail));
 
                     App.PlaybackService.SetTrackList(Tracks.ToList(), track);
-                    App.PlaybackService.PlayTrack(track);
+                    await App.PlaybackService.PlayTrack(track);
 
                     Debug.WriteLine($"Play button clicked for: {track.Title}");
 
