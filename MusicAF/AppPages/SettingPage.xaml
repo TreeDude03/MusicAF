@@ -25,13 +25,13 @@
                     <!-- Right column for the toggle switch -->
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="Music-Off Timer"
+                <TextBlock Text="Music-Off Timer" Foreground="White"
                    FontSize="18"
                    VerticalAlignment="Center"
                    Grid.Column="0" 
                    Margin="20,10,0,0"/>
 
-                <ToggleSwitch x:Name="MusicOffToggle"
+                <ToggleSwitch x:Name="MusicOffToggle" Foreground="White"
                       Header="Enable Timer"
                       OffContent="Off"
                       OnContent="On"
@@ -43,7 +43,7 @@
 
             <!-- Timer Picker Section -->
             <StackPanel x:Name="TimerPickerSection" Visibility="Collapsed" Margin="0,20,0,0">
-                <TextBlock Text="Select Timer:"
+                <TextBlock Text="Select Timer:" Foreground="White"
                FontSize="16"
                Margin="20,10,0,0" />
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">

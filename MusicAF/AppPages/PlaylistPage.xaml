@@ -26,7 +26,7 @@
             </Button>
 
             <TextBlock Grid.Column="1" Text="My Playlist" Foreground="White"
-      FontSize="32" FontWeight="SemiBold"/>
+                       FontSize="32" FontWeight="SemiBold"/>
             <!-- Upload Button -->
             <Button Grid.Column="2" Background="#25202f" Foreground="White" Padding="15,8" Click="AddPlaylistButton_Click">
                 <StackPanel Orientation="Horizontal">
@@ -44,20 +44,20 @@
 
             <!-- No Playlists Message -->
             <TextBlock x:Name="NoPlaylistsMessage"
-                Text="No playlist found. Add some for yourself"
-                Foreground="#808080"
-                TextAlignment="Center"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center"
-                TextWrapping="Wrap"
-                Visibility="Collapsed"/>
+                       Text="No playlist found. Add some for yourself"
+                       Foreground="#808080"
+                       TextAlignment="Center"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       TextWrapping="Wrap"
+                       Visibility="Collapsed"/>
 
             <!-- Playlists List -->
             <ListView x:Name="PlaylistsListView"
-        ItemsSource="{x:Bind Playlists, Mode=OneWay}"
-        SelectionMode="None"
-        Background="Transparent"
-        Padding="0,8">
+                      ItemsSource="{x:Bind Playlists, Mode=OneWay}"
+                      SelectionMode="None"
+                      Background="Transparent"
+                      Padding="0,8">
 
                 <!-- List Header -->
                 <ListView.Header>
@@ -68,10 +68,12 @@
                             <ColumnDefinition Width="*"/>
                             <!-- Title -->
                             <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="100"/>
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="1" Text="PLAYLIST"  Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
                         <TextBlock Grid.Column="2" Text="CREATED DATE" Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
+                        <TextBlock Grid.Column="3" Text="ACTIONS" Foreground="#808080" FontSize="13" FontWeight="SemiBold"/>
                     </Grid>
                 </ListView.Header>
 
@@ -111,17 +113,18 @@
                                 <ColumnDefinition Width="*"/>
                                 <!-- Title -->
                                 <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="100"/>
                             </Grid.ColumnDefinitions>
 
                             <!-- Go To Button -->
                             <Button Grid.Column="0"
-                            Width="36"
-                            Height="36"
-                            Background="Transparent"
-                            BorderThickness="0"
-                            Padding="0"
-                            Click="PlaylistGoTo_Click"
-                            VerticalAlignment="Center">
+                                    Width="36"
+                                    Height="36"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Padding="0"
+                                    Click="PlaylistGoTo_Click"
+                                    VerticalAlignment="Center">
                                 <Button.Tag>
                                     <local:Playlist 
                                         Id="{x:Bind Id}"
@@ -138,6 +141,14 @@
                             </StackPanel>
                             <!-- Upload Date -->
                             <TextBlock Grid.Column="2" Text="{x:Bind CreatedAt}" Foreground="#909090" VerticalAlignment="Center" Margin="8,0"/>
+                            <!-- Delete Button -->
+                            <Button Grid.Column="3"
+                                    Content="Delete"
+                                    Background="Transparent"
+                                    BorderBrush="Red"
+                                    Foreground="Red"
+                                    Click="DeletePlaylistButton_Click"
+                                    Tag="{x:Bind}"/>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

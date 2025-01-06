@@ -1,4 +1,4 @@
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using System;
@@ -67,7 +67,6 @@ namespace MusicAF.AppPages
             }
         }
 
-
         private async void AddPlaylistButton_Click(object sender, RoutedEventArgs e)
         {
             // Create and configure the dialog
@@ -108,12 +107,40 @@ namespace MusicAF.AppPages
             }
         }
 
-
         private void PlaylistGoTo_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && button.Tag is Playlist playlist)
             {
                 Frame.Navigate(typeof(SinglePlaylistPage), (currentUserEmail, playlist.Id, playlist.Name));
+            }
+        }
+
+        private async void DeletePlaylistButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Tag is Playlist playlist)
+            {
+                var dialog = new DeletePlaylistDialog(playlist.Name)
+                {
+                    XamlRoot = this.XamlRoot 
+                };
+
+                // check 
+                if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+                {
+                    try
+                    {
+                        // delete playlist in firestore
+                        var playlistRef = _firestoreService.FirestoreDb.Collection("playlists").Document(playlist.Id);
+                        await playlistRef.DeleteAsync();
+
+                        // remove from ui
+                        Playlists.Remove(playlist);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error deleting playlist: {ex.Message}");
+                    }
+                }
             }
         }
 
