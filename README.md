@@ -1,12 +1,17 @@
 # MusicAF
-21120040 - Phạm Công Bằng, 
-21120182 - Phan Trí Nhân, 
-21120185 - Phạm Vân Anh Thư, 
+MusicAF là một ứng dụng hỗ trợ nghe nhạc trên nền tảng Windows. Ứng dụng này còn có thể cho phép người dùng chia sẻ bài nhạc mình sáng tác lên nền tảng và theo dõi nghệ sĩ yêu thích.
 
-Link github của đồ án https://github.com/TreeDude03/MusicAF.git
-Link Drive các minh chứng, báo cáo, phân công công việc, demo: https://drive.google.com/drive/folders/1GO-mFtUMB_2_zT21JzaPGbdsrVmafVE_
+- Link github của đồ án: https://github.com/TreeDude03/MusicAF.git
+- Link Drive các minh chứng, báo cáo, phân công công việc, demo: https://drive.google.com/drive/folders/1GO-mFtUMB_2_zT21JzaPGbdsrVmafVE_
 
-Những công việc đã hoàn thành trong milestone 1:
+## Thành viên
+- 21120040 - Phạm Công Bằng
+- 21120182 - Phan Trí Nhân
+- 21120185 - Phạm Vân Anh Thư
+
+## Chức năng
+
+### Milestone 1 (branch master)
 - Khởi tạo dự án, cấu hình các dịch vụ third-party (Firebase Firestore cho cơ sở dữ liệu, Google Drive Api cho lưu trữ file): 2h
 - Chức năng đăng nhập, đăng ký: 2h
 - Chức năng upload nhạc: 2h
@@ -14,16 +19,16 @@ Những công việc đã hoàn thành trong milestone 1:
 - Màn hình xem danh sách nhạc chung: 2h
 - Chức năng phát nhạc: 2h
 
-Những công việc đã hoàn thành trong milestone 2: (branch milestone2)
+### Milestone 2 (branch milestone2)
 - Chỉnh sửa chức năng phát nhạc thành phát nhạc trong nên, không chỉ ở NowPlayingPage: 2h
 - Chỉnh sửa thuật toán đề xuất qua StatsRecord, lưu lại những từ khóa của người dùng đã nghe: 2h
 - Chức năng xem các bài hát của người dùng khác trong trang cá nhân của họ: 2h
-- Chức năng tải nhạc xuống thiết bị 1h
+- Chức năng tải nhạc xuống thiết bị: 1h
 - Chức năng tìm kiếm nhạc: 2h
 - Chức năng bình luận trên bài nhạc: 2h
 - Chức năng tạo playlist cá nhân: 3h
 
-Những công việc đã hoàn thành trong milestone 3: (branch milestone3)
+### Milestone 3 (branch milestone3)
 - Thêm chức năng xóa playlist (Bằng): 1h
 - Thêm hiển thị stream bài nhạc (Thư): 0.5h
 - Service phát hiện bản quyền nhạc trên các nền tảng khác và áp dung khi upload nhạc (Bằng): 2h
