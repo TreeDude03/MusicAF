@@ -151,6 +151,11 @@ namespace MusicAF.AppWindows
             MainFrame.Navigate(typeof(PlaylistPage), currentUserEmail);
         }
 
+        private void ListenAlso_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(typeof(FolloweePage), currentUserEmail);
+        }
+
         private void FollowingButton_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(typeof(FollowingPage), currentUserEmail);

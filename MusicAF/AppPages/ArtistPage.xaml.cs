@@ -158,8 +158,7 @@ namespace MusicAF.AppPages
                     // Navigate to NowPlayingPage
                     Frame.Navigate(typeof(NowPlayingPage), track);
 
-                    App.PlaybackService.SetTrackList(Tracks.ToList(), track);
-                    await App.PlaybackService.PlayTrack(track);
+                    App.PlaybackService.SetTrackList(Tracks.ToList(), track);;
 
                     Debug.WriteLine($"Play button clicked for: {track.Title}");
 

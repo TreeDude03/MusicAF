@@ -150,7 +150,7 @@ namespace MusicAF.AppPages
                     Frame.Navigate(typeof(NowPlayingPage), (_track: track, _email: currentUserEmail));
 
                     App.PlaybackService.SetTrackList(Tracks.ToList(), track);
-                    await App.PlaybackService.PlayTrack(track);
+                    App.PlaybackService.PlayTrack(track);
 
                     Debug.WriteLine($"Play button clicked for: {track.Title}");
 
@@ -169,7 +169,7 @@ namespace MusicAF.AppPages
         {
             DispatcherQueue.TryEnqueue(() =>
             {
-                NoTracksMessage.Text = message ?? "No tracks found. Click the 'Upload music' button to add some tracks.";
+                NoTracksMessage.Text = message ?? "No tracks found. Follow artists to see more";
                 NoTracksMessage.Visibility = Visibility.Visible;
                 TracksListView.Visibility = Visibility.Collapsed;
             });

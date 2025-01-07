@@ -51,32 +51,26 @@ namespace MusicAF.Helpers
             }
         }
 
-        public async Task PlayNextTrack()
+        public void PlayNextTrack()
         {
             if (_currentTrackList == null || _currentTrackList.Count == 0) return;
 
             _currentTrackIndex = (_currentTrackIndex + 1) % _currentTrackList.Count;
             Console.WriteLine(_currentTrackList[_currentTrackIndex].Title);
-            await PlayTrack(_currentTrackList[_currentTrackIndex]);
+            PlayTrack(_currentTrackList[_currentTrackIndex]);
         }
 
-        public async Task PlayPreviousTrack()
+        public void PlayPreviousTrack()
         {
             if (_currentTrackList == null || _currentTrackList.Count == 0) return;
 
             _currentTrackIndex = (_currentTrackIndex - 1 + _currentTrackList.Count) % _currentTrackList.Count;
             Console.WriteLine(_currentTrackList[_currentTrackIndex].Title);
-            await PlayTrack(_currentTrackList[_currentTrackIndex]);
+            PlayTrack(_currentTrackList[_currentTrackIndex]);
         }
 
-        public async Task PlayTrack(Track track)
+        public void PlayTrack(Track track)
         {
-            //IF track is not provate, update it as user's latest listened track
-            if (!track.IsPrivate)
-            {
-                await UpdateUserLatestTrackAsync(App.CurrentUserEmail, track.SongId);
-            }
-            //
             _currentTrack = track;
             TrackChanged?.Invoke(track); // Notify listeners about the track change
         }

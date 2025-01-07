@@ -77,7 +77,7 @@
                             <Button  Click="NavigateToLikedPage_Click" Background="Transparent" BorderThickness="0">
                                 <Grid Height="35">
                                     <StackPanel Orientation="Horizontal">
-                                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8F1;" Foreground="#808080"/>
+                                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB51;" Foreground="#808080"/>
                                         <TextBlock Text="Liked" Margin="10,5,0,0" Foreground="#808080"/>
                                     </StackPanel>
                                 </Grid>
@@ -89,6 +89,16 @@
                                     <StackPanel Orientation="Horizontal">
                                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE90B;" Foreground="#808080"/>
                                         <TextBlock Text="Playlists" Margin="10,5,0,0" Foreground="#808080"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Button>
+
+                            <!-- ListenAlso -->
+                            <Button Click="ListenAlso_Click" Background="Transparent" BorderThickness="0">
+                                <Grid Height="35">
+                                    <StackPanel Orientation="Horizontal">
+                                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE716;" Foreground="#808080"/>
+                                        <TextBlock Text="Listen Also" Margin="10,5,0,0" Foreground="#808080"/>
                                     </StackPanel>
                                 </Grid>
                             </Button>
